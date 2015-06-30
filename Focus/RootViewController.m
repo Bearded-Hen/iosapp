@@ -88,6 +88,7 @@
 - (void)centralManager:(CBCentralManager*)central didConnectPeripheral:(CBPeripheral*)peripheral
 {
     NSLog(@"Connected to peripheral %@", peripheral);
+    [peripheral discoverServices:nil];
 }
 
 // CBCentralManagerDelegate - This is called with the CBPeripheral class as its main input parameter. This contains most of the information there is to know about a BLE peripheral.
@@ -136,13 +137,22 @@
 // CBPeripheralDelegate - Invoked when you discover the peripheral's available services.
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error
 {
-    NSLog(@"Discovered services on peripheral %@", peripheral);
+    for (CBService *service in peripheral.services) {
+        NSLog(@"Discovered peripheral service, reading characteristics %@", service);
+        [peripheral discoverCharacteristics:nil forService:service];
+    }
 }
 
 // Invoked when you discover the characteristics of a specified service.
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverCharacteristicsForService:(CBService*)service error:(NSError*)error
 {
-    NSLog(@"Discovered characteristics for service on peripheral %@ %@", peripheral, service);
+    NSLog(@"Discovered characteristics for service %@", service);
+    
+    for (CBCharacteristic* characteristic in service.characteristics) {
+        NSLog(@"Characteristic: %@", characteristic);
+        NSLog(@"Value: %@, Descriptors: %@, Properties:%lu", characteristic.value, characteristic.descriptors, (unsigned long)characteristic.properties);
+        
+    }
 }
 
 // Invoked when you retrieve a specified characteristic's value, or when the peripheral device notifies your app that the characteristic's value has changed.
