@@ -16,6 +16,10 @@
 		F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F08E18991B3D691A00FA765C /* Images.xcassets */; };
 		F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F08E189B1B3D691A00FA765C /* LaunchScreen.xib */; };
 		F08E18A91B3D691A00FA765C /* FocusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18A81B3D691A00FA765C /* FocusTests.m */; };
+		F08E18B31B3D821500FA765C /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B21B3D821500FA765C /* CoreBluetooth.framework */; };
+		F08E18B61B3D856600FA765C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B41B3D856600FA765C /* CoreFoundation.framework */; };
+		F08E18B71B3D856600FA765C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B51B3D856600FA765C /* CoreGraphics.framework */; };
+		F08E18B91B3D857A00FA765C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B81B3D857A00FA765C /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +50,10 @@
 		F08E18A21B3D691A00FA765C /* FocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08E18A71B3D691A00FA765C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F08E18A81B3D691A00FA765C /* FocusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FocusTests.m; sourceTree = "<group>"; };
+		F08E18B21B3D821500FA765C /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		F08E18B41B3D856600FA765C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		F08E18B51B3D856600FA765C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F08E18B81B3D857A00FA765C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F08E18B91B3D857A00FA765C /* Foundation.framework in Frameworks */,
+				F08E18B61B3D856600FA765C /* CoreFoundation.framework in Frameworks */,
+				F08E18B71B3D856600FA765C /* CoreGraphics.framework in Frameworks */,
+				F08E18B31B3D821500FA765C /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +81,10 @@
 		F08E187A1B3D691A00FA765C = {
 			isa = PBXGroup;
 			children = (
+				F08E18B81B3D857A00FA765C /* Foundation.framework */,
+				F08E18B41B3D856600FA765C /* CoreFoundation.framework */,
+				F08E18B51B3D856600FA765C /* CoreGraphics.framework */,
+				F08E18B21B3D821500FA765C /* CoreBluetooth.framework */,
 				F08E18851B3D691A00FA765C /* Focus */,
 				F08E18A51B3D691A00FA765C /* FocusTests */,
 				F08E18841B3D691A00FA765C /* Products */,
@@ -355,7 +371,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iOS Development: Peter Hendry (3V295AV9B2)";
 				INFOPLIST_FILE = Focus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -365,7 +383,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iOS Development: Peter Hendry (3V295AV9B2)";
 				INFOPLIST_FILE = Focus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -424,6 +444,7 @@
 				F08E18AE1B3D691A00FA765C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F08E18AF1B3D691A00FA765C /* Build configuration list for PBXNativeTarget "FocusTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +453,7 @@
 				F08E18B11B3D691A00FA765C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

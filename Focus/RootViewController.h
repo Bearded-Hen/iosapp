@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@import CoreBluetooth;
+@import QuartzCore;
 
-@interface RootViewController : UIViewController <UIPageViewControllerDelegate>
+@interface RootViewController : UIViewController <UIPageViewControllerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>
 
-@property (strong, nonatomic) UIPageViewController *pageViewController;
+@property (strong, nonatomic) UIPageViewController* pageViewController;
 
 @end
-
