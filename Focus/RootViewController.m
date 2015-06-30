@@ -27,7 +27,6 @@
     [super viewDidLoad];
     
     self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
-    [self scanForFocusDevices];
     
     // Do any additional setup after loading the view, typically from a nib.
     // Configure the page view controller and add it as a child view controller.
@@ -94,25 +93,21 @@
 // CBCentralManagerDelegate - This is called with the CBPeripheral class as its main input parameter. This contains most of the information there is to know about a BLE peripheral.
 - (void)centralManager:(CBCentralManager*)central didDiscoverPeripheral:(CBPeripheral*)peripheral advertisementData:(NSDictionary*)advertisementData RSSI:(NSNumber*)RSSI
 {
-    NSLog(@"Discovered peripheral %@", peripheral);
-
-    NSString* localName = [advertisementData objectForKey:CBAdvertisementDataLocalNameKey];
-    if ([localName length] > 0) {
-
-        [self.cbCentralManager stopScan];
-        NSLog(@"BLE scan terminated");
-
-        //        self.polarH7HRMPeripheral = peripheral;
-        peripheral.delegate = self;
-        [self.cbCentralManager connectPeripheral:peripheral options:nil];
-    }
+    NSLog(@"Discovered peripheral %@", peripheral); // FIXME check if interested in this peripheral
+    
+//    [self.cbCentralManager stopScan];
+//    NSLog(@"BLE scan terminated");
+    
+    self.cbPeripheral = peripheral;
+    self.cbPeripheral.delegate = self;
+    
+    [self.cbCentralManager connectPeripheral:self.cbPeripheral options:nil];
 }
 
 // method called whenever the device state changes.
 - (void)centralManagerDidUpdateState:(CBCentralManager*)central
 {
     NSLog(@"Central manager device state updated");
-    [self scanForFocusDevices];
     
     // Determine the state of the peripheral
     if ([central state] == CBCentralManagerStatePoweredOff) {
@@ -120,6 +115,7 @@
     }
     else if ([central state] == CBCentralManagerStatePoweredOn) {
         NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
+        [self scanForFocusDevices];
     }
     else if ([central state] == CBCentralManagerStateUnauthorized) {
         NSLog(@"CoreBluetooth BLE state is unauthorized");
