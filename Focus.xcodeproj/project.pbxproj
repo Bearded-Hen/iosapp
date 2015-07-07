@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F08834631B42E1310022400A /* FocusDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FocusDeviceManager.m */; };
+		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
-		F08E188C1B3D691A00FA765C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* AppDelegate.m */; };
-		F08E188F1B3D691A00FA765C /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188E1B3D691A00FA765C /* RootViewController.m */; };
-		F08E18921B3D691A00FA765C /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18911B3D691A00FA765C /* DataViewController.m */; };
-		F08E18951B3D691A00FA765C /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18941B3D691A00FA765C /* ModelController.m */; };
+		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
+		F08E188F1B3D691A00FA765C /* FOCRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188E1B3D691A00FA765C /* FOCRootViewController.m */; };
+		F08E18921B3D691A00FA765C /* FOCDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18911B3D691A00FA765C /* FOCDataViewController.m */; };
+		F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18941B3D691A00FA765C /* FOCModelController.m */; };
 		F08E18981B3D691A00FA765C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F08E18961B3D691A00FA765C /* Main.storyboard */; };
 		F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F08E18991B3D691A00FA765C /* Images.xcassets */; };
 		F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F08E189B1B3D691A00FA765C /* LaunchScreen.xib */; };
@@ -34,20 +34,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F08834611B42E1310022400A /* FocusDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusDeviceManager.h; sourceTree = "<group>"; };
-		F08834621B42E1310022400A /* FocusDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusDeviceManager.m; sourceTree = "<group>"; };
-		F08834641B42E1D90022400A /* FocusDeviceApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FocusDeviceApi.h; sourceTree = "<group>"; };
+		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
+		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
+		F08834641B42E1D90022400A /* FOCDeviceStateListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateListener.h; sourceTree = "<group>"; };
 		F08E18831B3D691A00FA765C /* Focus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Focus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08E18871B3D691A00FA765C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F08E18881B3D691A00FA765C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F08E188A1B3D691A00FA765C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		F08E188B1B3D691A00FA765C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F08E188D1B3D691A00FA765C /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		F08E188E1B3D691A00FA765C /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		F08E18901B3D691A00FA765C /* DataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
-		F08E18911B3D691A00FA765C /* DataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
-		F08E18931B3D691A00FA765C /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
-		F08E18941B3D691A00FA765C /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
+		F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCAppDelegate.h; sourceTree = "<group>"; };
+		F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FOCAppDelegate.m; sourceTree = "<group>"; };
+		F08E188D1B3D691A00FA765C /* FOCRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCRootViewController.h; sourceTree = "<group>"; };
+		F08E188E1B3D691A00FA765C /* FOCRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FOCRootViewController.m; sourceTree = "<group>"; };
+		F08E18901B3D691A00FA765C /* FOCDataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDataViewController.h; sourceTree = "<group>"; };
+		F08E18911B3D691A00FA765C /* FOCDataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FOCDataViewController.m; sourceTree = "<group>"; };
+		F08E18931B3D691A00FA765C /* FOCModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCModelController.h; sourceTree = "<group>"; };
+		F08E18941B3D691A00FA765C /* FOCModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FOCModelController.m; sourceTree = "<group>"; };
 		F08E18971B3D691A00FA765C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F08E18991B3D691A00FA765C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F08E189C1B3D691A00FA765C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -92,12 +92,12 @@
 		F088345E1B42E0210022400A /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F08E188D1B3D691A00FA765C /* RootViewController.h */,
-				F08E188E1B3D691A00FA765C /* RootViewController.m */,
-				F08E18901B3D691A00FA765C /* DataViewController.h */,
-				F08E18911B3D691A00FA765C /* DataViewController.m */,
-				F08E18931B3D691A00FA765C /* ModelController.h */,
-				F08E18941B3D691A00FA765C /* ModelController.m */,
+				F08E188D1B3D691A00FA765C /* FOCRootViewController.h */,
+				F08E188E1B3D691A00FA765C /* FOCRootViewController.m */,
+				F08E18901B3D691A00FA765C /* FOCDataViewController.h */,
+				F08E18911B3D691A00FA765C /* FOCDataViewController.m */,
+				F08E18931B3D691A00FA765C /* FOCModelController.h */,
+				F08E18941B3D691A00FA765C /* FOCModelController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -112,9 +112,9 @@
 		F08834601B42E02C0022400A /* api */ = {
 			isa = PBXGroup;
 			children = (
-				F08834611B42E1310022400A /* FocusDeviceManager.h */,
-				F08834621B42E1310022400A /* FocusDeviceManager.m */,
-				F08834641B42E1D90022400A /* FocusDeviceApi.h */,
+				F08834611B42E1310022400A /* FOCDeviceManager.h */,
+				F08834621B42E1310022400A /* FOCDeviceManager.m */,
+				F08834641B42E1D90022400A /* FOCDeviceStateListener.h */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -148,8 +148,8 @@
 				F088345E1B42E0210022400A /* controllers */,
 				F08834601B42E02C0022400A /* api */,
 				F088345F1B42E0270022400A /* model */,
-				F08E188A1B3D691A00FA765C /* AppDelegate.h */,
-				F08E188B1B3D691A00FA765C /* AppDelegate.m */,
+				F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */,
+				F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */,
 				F08E18961B3D691A00FA765C /* Main.storyboard */,
 				F08E18991B3D691A00FA765C /* Images.xcassets */,
 				F08E189B1B3D691A00FA765C /* LaunchScreen.xib */,
@@ -284,12 +284,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F08834631B42E1310022400A /* FocusDeviceManager.m in Sources */,
-				F08E18921B3D691A00FA765C /* DataViewController.m in Sources */,
-				F08E188C1B3D691A00FA765C /* AppDelegate.m in Sources */,
-				F08E18951B3D691A00FA765C /* ModelController.m in Sources */,
+				F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */,
+				F08E18921B3D691A00FA765C /* FOCDataViewController.m in Sources */,
+				F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */,
+				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
-				F08E188F1B3D691A00FA765C /* RootViewController.m in Sources */,
+				F08E188F1B3D691A00FA765C /* FOCRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

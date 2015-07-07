@@ -6,17 +6,14 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#ifndef Focus_FocusDeviceApi_h
-#define Focus_FocusDeviceApi_h
-
 /**
  * Defines callbacks that will be fired when the Focus device state changes.
  */
-@protocol FocusDeviceApi <NSObject>
+@protocol FOCDeviceStateListener <NSObject>
 
 typedef NS_ENUM(NSInteger, FocusConnectionState) {
     CONNECTED,
-    CONNECTING,
+    SCANNING,
     DISCONNECTED,
     UNKNOWN
 };
@@ -24,5 +21,3 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
 - (void)didChangeConnectionState: (FocusConnectionState *)connectionState;
 
 @end
-
-#endif

@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "FocusDeviceManager.h"
+#import "FOCDeviceManager.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface FOCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) FocusDeviceManager *focusDeviceManager;
+@property (strong, nonatomic) FOCDeviceManager *focusDeviceManager;
 
 @end
 

@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#import "DataViewController.h"
+#import "FOCDataViewController.h"
 
-@interface DataViewController ()
+@interface FOCDataViewController ()
 
 @end
 
-@implementation DataViewController
+@implementation FOCDataViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -1,59 +1,35 @@
 //
-//  RootViewController.m
+//  FocusDeviceManager.m
 //  Focus
 //
-//  Created by Jamie Lynch on 26/06/2015.
+//  Created by Jamie Lynch on 30/06/2015.
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#define TDCS_SERVICE = @"0000AAB0­F845­40FA­995D­658A43FEEA4C"
-#define CONTROL_COMMAND = @"0000AAB1­F845­40FA­995D­658A43FEEA4C"
+#import "FOCDeviceManager.h"
 
-#import "RootViewController.h"
-#import "ModelController.h"
-#import "DataViewController.h"
+#define TDCS_SERVICE = @"0000AAB0­F845­40FA­995D­658A43FEEA4C" //FIXME
+#define CONTROL_COMMAND = @"0000AAB1­F845­40FA­995D­658A43FEEA4C" //FIXME
 
-@interface RootViewController ()
+@interface FOCDeviceManager ()
 
-@property (readonly, strong, nonatomic) ModelController* modelController;
 @property CBCentralManager* cbCentralManager;
 @property CBPeripheral* cbPeripheral;
 
 @end
 
-@implementation RootViewController
+@implementation FOCDeviceManager
 
-@synthesize modelController = _modelController;
+-(id)init {
+    if (self = [super init]) {
+        self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+    }
+    return self;
+}
 
-
-- (void)viewDidLoad
+- (void)requestUpdate
 {
-    [super viewDidLoad];
-    
-    self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
-    
-    // Do any additional setup after loading the view, typically from a nib.
-    // Configure the page view controller and add it as a child view controller.
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    self.pageViewController.delegate = self;
-
-    DataViewController* startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
-    NSArray* viewControllers = @[ startingViewController ];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-
-    self.pageViewController.dataSource = self.modelController;
-
-    [self addChildViewController:self.pageViewController];
-    [self.view addSubview:self.pageViewController.view];
-
-    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-    CGRect pageViewRect = self.view.bounds;
-    self.pageViewController.view.frame = pageViewRect;
-
-    [self.pageViewController didMoveToParentViewController:self];
-
-    // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
-    self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    NSLog(@"Root View Controller requested update");
 }
 
 - (void)scanForFocusDevices
@@ -63,29 +39,6 @@
     
     [self.cbCentralManager scanForPeripheralsWithServices:nil options:nil]; // FIXME should scan for SPECIFIC services
     NSLog(@"BLE scan initiated");
-}
-
-- (ModelController*)modelController
-{
-    // Return the model controller object, creating it if necessary.
-    // In more complex implementations, the model controller may be passed to the view controller.
-    if (!_modelController) {
-        _modelController = [[ModelController alloc] init];
-    }
-    return _modelController;
-}
-
-#pragma mark - UIPageViewController delegate methods
-
-- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
-{
-    // Set the spine position to "min" and the page view controller's view controllers array to contain just one view controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the doubleSided property to YES, so set it to NO here.
-    UIViewController* currentViewController = self.pageViewController.viewControllers[0];
-    NSArray* viewControllers = @[ currentViewController ];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-
-    self.pageViewController.doubleSided = NO;
-    return UIPageViewControllerSpineLocationMin;
 }
 
 #pragma mark - CBCentralManagerDelegate
@@ -102,8 +55,8 @@
 {
     NSLog(@"Discovered peripheral %@", peripheral); // FIXME check if interested in this peripheral
     
-//    [self.cbCentralManager stopScan];
-//    NSLog(@"BLE scan terminated");
+    //    [self.cbCentralManager stopScan];
+    //    NSLog(@"BLE scan terminated");
     
     self.cbPeripheral = peripheral;
     self.cbPeripheral.delegate = self;
@@ -119,6 +72,8 @@
     // Determine the state of the peripheral
     if ([central state] == CBCentralManagerStatePoweredOff) {
         NSLog(@"CoreBluetooth BLE hardware is powered off");
+        
+        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
     }
     else if ([central state] == CBCentralManagerStatePoweredOn) {
         NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
@@ -126,16 +81,24 @@
     }
     else if ([central state] == CBCentralManagerStateUnauthorized) {
         NSLog(@"CoreBluetooth BLE state is unauthorized");
+        
+        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise bluetooth to control your Focus device."];
     }
     else if ([central state] == CBCentralManagerStateUnknown) {
         NSLog(@"CoreBluetooth BLE state is unknown");
     }
     else if ([central state] == CBCentralManagerStateUnsupported) {
         NSLog(@"CoreBluetooth BLE hardware is unsupported on this platform");
+        
+        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
     }
     else {
         NSLog(@"Unknown bluetooth CentralManager update");
     }
+}
+
+- (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
+     [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -165,5 +128,6 @@
 {
     NSLog(@"Updated characteristic value %@", characteristic);
 }
+
 
 @end

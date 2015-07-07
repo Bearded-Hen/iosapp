@@ -6,16 +6,19 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "FOCAppDelegate.h"
 
-@interface AppDelegate ()
+@interface FOCAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation FOCAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    self.focusDeviceManager = [[FOCDeviceManager alloc] init];
+    
     // Override point for customization after application launch.
     return YES;
 }
