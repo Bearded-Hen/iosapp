@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
+#define TDCS_SERVICE = @"0000AAB0­F845­40FA­995D­658A43FEEA4C"
+#define CONTROL_COMMAND = @"0000AAB1­F845­40FA­995D­658A43FEEA4C"
+
 #import "RootViewController.h"
 #import "ModelController.h"
 #import "DataViewController.h"
@@ -21,6 +24,7 @@
 @implementation RootViewController
 
 @synthesize modelController = _modelController;
+
 
 - (void)viewDidLoad
 {
@@ -50,12 +54,14 @@
 
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
-    
 }
 
 - (void)scanForFocusDevices
 {
-    [self.cbCentralManager scanForPeripheralsWithServices:nil options:nil];
+    CBUUID *tdcsService = [CBUUID UUIDWithString:@"EA935A36-D185-730B-00C5-2522A48FE677"];
+    NSArray *desiredServices = [[NSArray alloc] initWithObjects:tdcsService, nil];
+    
+    [self.cbCentralManager scanForPeripheralsWithServices:nil options:nil]; // FIXME should scan for SPECIFIC services
     NSLog(@"BLE scan initiated");
 }
 
@@ -138,7 +144,7 @@
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error
 {
     for (CBService *service in peripheral.services) {
-        NSLog(@"Discovered peripheral service, reading characteristics %@", service);
+        NSLog(@"Discovered service, attempting to discover characteristics %@", service);
         [peripheral discoverCharacteristics:nil forService:service];
     }
 }
@@ -149,8 +155,7 @@
     NSLog(@"Discovered characteristics for service %@", service);
     
     for (CBCharacteristic* characteristic in service.characteristics) {
-        NSLog(@"Characteristic: %@", characteristic);
-        NSLog(@"Value: %@, Descriptors: %@, Properties:%lu", characteristic.value, characteristic.descriptors, (unsigned long)characteristic.properties);
+        [peripheral readValueForCharacteristic:characteristic];
         
     }
 }
@@ -158,7 +163,7 @@
 // Invoked when you retrieve a specified characteristic's value, or when the peripheral device notifies your app that the characteristic's value has changed.
 - (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
 {
-    NSLog(@"Updated characteristic value on peripheral %@ %@", peripheral, characteristic);
+    NSLog(@"Updated characteristic value %@", characteristic);
 }
 
 @end

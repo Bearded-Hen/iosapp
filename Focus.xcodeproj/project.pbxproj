@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F08834631B42E1310022400A /* FocusDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FocusDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* AppDelegate.m */; };
 		F08E188F1B3D691A00FA765C /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188E1B3D691A00FA765C /* RootViewController.m */; };
@@ -33,6 +34,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F08834611B42E1310022400A /* FocusDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusDeviceManager.h; sourceTree = "<group>"; };
+		F08834621B42E1310022400A /* FocusDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusDeviceManager.m; sourceTree = "<group>"; };
+		F08834641B42E1D90022400A /* FocusDeviceApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FocusDeviceApi.h; sourceTree = "<group>"; };
 		F08E18831B3D691A00FA765C /* Focus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Focus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08E18871B3D691A00FA765C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F08E18881B3D691A00FA765C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -78,6 +82,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F088345D1B42E0090022400A /* ui */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
+		F088345E1B42E0210022400A /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F08E188D1B3D691A00FA765C /* RootViewController.h */,
+				F08E188E1B3D691A00FA765C /* RootViewController.m */,
+				F08E18901B3D691A00FA765C /* DataViewController.h */,
+				F08E18911B3D691A00FA765C /* DataViewController.m */,
+				F08E18931B3D691A00FA765C /* ModelController.h */,
+				F08E18941B3D691A00FA765C /* ModelController.m */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
+		F088345F1B42E0270022400A /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		F08834601B42E02C0022400A /* api */ = {
+			isa = PBXGroup;
+			children = (
+				F08834611B42E1310022400A /* FocusDeviceManager.h */,
+				F08834621B42E1310022400A /* FocusDeviceManager.m */,
+				F08834641B42E1D90022400A /* FocusDeviceApi.h */,
+			);
+			name = api;
+			sourceTree = "<group>";
+		};
 		F08E187A1B3D691A00FA765C = {
 			isa = PBXGroup;
 			children = (
@@ -103,14 +144,12 @@
 		F08E18851B3D691A00FA765C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
+				F088345D1B42E0090022400A /* ui */,
+				F088345E1B42E0210022400A /* controllers */,
+				F08834601B42E02C0022400A /* api */,
+				F088345F1B42E0270022400A /* model */,
 				F08E188A1B3D691A00FA765C /* AppDelegate.h */,
 				F08E188B1B3D691A00FA765C /* AppDelegate.m */,
-				F08E188D1B3D691A00FA765C /* RootViewController.h */,
-				F08E188E1B3D691A00FA765C /* RootViewController.m */,
-				F08E18901B3D691A00FA765C /* DataViewController.h */,
-				F08E18911B3D691A00FA765C /* DataViewController.m */,
-				F08E18931B3D691A00FA765C /* ModelController.h */,
-				F08E18941B3D691A00FA765C /* ModelController.m */,
 				F08E18961B3D691A00FA765C /* Main.storyboard */,
 				F08E18991B3D691A00FA765C /* Images.xcassets */,
 				F08E189B1B3D691A00FA765C /* LaunchScreen.xib */,
@@ -245,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F08834631B42E1310022400A /* FocusDeviceManager.m in Sources */,
 				F08E18921B3D691A00FA765C /* DataViewController.m in Sources */,
 				F08E188C1B3D691A00FA765C /* AppDelegate.m in Sources */,
 				F08E18951B3D691A00FA765C /* ModelController.m in Sources */,
