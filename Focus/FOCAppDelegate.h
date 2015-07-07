@@ -10,6 +10,10 @@
 
 #import "FOCDeviceManager.h"
 
+/**
+ * Contains a Device manager instance which allows the Focus Device to be interacted with
+ * via its Bluetooth API.
+ */
 @interface FOCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

@@ -23,13 +23,10 @@
 -(id)init {
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+        
+        [self updateConnectionState:UNKNOWN];
     }
     return self;
-}
-
-- (void)requestUpdate
-{
-    NSLog(@"Root View Controller requested update");
 }
 
 - (void)scanForFocusDevices
@@ -39,6 +36,13 @@
     
     [self.cbCentralManager scanForPeripheralsWithServices:nil options:nil]; // FIXME should scan for SPECIFIC services
     NSLog(@"BLE scan initiated");
+}
+
+- (void)updateConnectionState:(FocusConnectionState)state
+{
+    NSLog(@"Focus connection state changed to %ld", (long)state);
+    self.connectionState = state;
+    [self.delegate didChangeConnectionState:self.connectionState];
 }
 
 #pragma mark - CBCentralManagerDelegate

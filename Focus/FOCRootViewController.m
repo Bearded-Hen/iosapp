@@ -26,7 +26,8 @@
     [super viewDidLoad];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
-    [delegate.focusDeviceManager requestUpdate];
+    FOCDeviceManager *deviceManager = delegate.focusDeviceManager;
+    deviceManager.delegate = self;
     
     // Do any additional setup after loading the view, typically from a nib.
     // Configure the page view controller and add it as a child view controller.
@@ -73,6 +74,12 @@
         _modelController = [[FOCModelController alloc] init];
     }
     return _modelController;
+}
+
+#pragma mark DeviceStateListener
+
+- (void)didChangeConnectionState: (FocusConnectionState)connectionState {
+    NSLog(@"Received connection state change %ld", (long)connectionState);
 }
 
 @end
