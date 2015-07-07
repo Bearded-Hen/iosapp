@@ -79,7 +79,7 @@
 #pragma mark DeviceStateListener
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState {
-    NSLog(@"Received connection state change %ld", (long)connectionState);
+    // TODO handle connection change
 }
 
 @end

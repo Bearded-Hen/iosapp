@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F071131F1B4C232A00D0A7D1 /* FocusConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F071131E1B4C232A00D0A7D1 /* FocusConstants.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F071131D1B4C232A00D0A7D1 /* FocusConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusConstants.h; sourceTree = "<group>"; };
+		F071131E1B4C232A00D0A7D1 /* FocusConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusConstants.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateListener.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				F08834611B42E1310022400A /* FOCDeviceManager.h */,
 				F08834621B42E1310022400A /* FOCDeviceManager.m */,
 				F08834641B42E1D90022400A /* FOCDeviceStateListener.h */,
+				F071131D1B4C232A00D0A7D1 /* FocusConstants.h */,
+				F071131E1B4C232A00D0A7D1 /* FocusConstants.m */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -289,6 +294,7 @@
 				F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */,
 				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
+				F071131F1B4C232A00D0A7D1 /* FocusConstants.m in Sources */,
 				F08E188F1B3D691A00FA765C /* FOCRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

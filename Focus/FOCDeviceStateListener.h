@@ -13,6 +13,7 @@
 
 typedef NS_ENUM(NSInteger, FocusConnectionState) {
     CONNECTED,
+    CONNECTING,
     SCANNING,
     DISCONNECTED,
     UNKNOWN
