@@ -205,12 +205,12 @@
             }
         }
         
-        if (_controlCmdRequest != nil) {
-            const unsigned char bytes[] = {0x02, 0x00, 0x00, 0x00, 0x00};
-            NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+        if (_controlCmdRequest != nil) { // FIXME refactor byte array creation to own method
+            
+            NSData *data = [self generateByteArray:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS progId:0x00 progDescId:0x00];
             
             [peripheral writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
-            NSLog(@"Writing %@ to %@", data, _controlCmdRequest.UUID.UUIDString);
+            NSLog(@"Writing %@", [self loggableCharacteristicName:_controlCmdRequest]);
         }
     }
 }
@@ -237,15 +237,46 @@
     }
     else {
         NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic);
+        
+        [self deserialiseByteArray:characteristic.value];
     }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     
-    NSLog(@"Wrote characteristic '%@' to value '%@', error %@", [self loggableCharacteristicName:characteristic], characteristic, error);
+    NSLog(@"Wrote characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
     
     [peripheral readValueForCharacteristic:_controlCmdResponse];
+}
+
+#pragma mark
+
+
+- (NSData *)generateByteArray:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
+{
+    Byte lastByte = 0x00;
     
+    const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, lastByte};
+    NSLog(@"Preparing byte array: {cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, lastByte);
+    return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
+}
+
+- (void) deserialiseByteArray:(NSData *)data
+{
+    if (data != nil) {
+        int length = [data length];
+        
+        Byte *bd = (Byte*)malloc(length);
+        memcpy(bd, [data bytes], length);
+        
+        Byte cmdId = bd[0];
+        Byte status = bd[1];
+        
+        const unsigned char bytes[] = {bd[2], bd[3], bd[4], bd[5]};
+        
+        free(bd);
+        NSLog(@"Interpreted control command response. {cmdId=%hhu, status=%hhu, data=%s}", cmdId, status, bytes);
+    }
 }
 
 @end
