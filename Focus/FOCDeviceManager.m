@@ -18,10 +18,12 @@
 
 @implementation FOCDeviceManager // TODO should connect to BLE device as in apple guide (waiting on clarifications)
 
--(id)init {
+-(id)init { // TODO should handle refresh when the app gets put in the background
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
+        
+        NSLog(@"Byte: %hhu", CMD_ID_MANAGE_PROGRAMS);
     }
     return self;
 }
@@ -38,6 +40,7 @@
     // FIXME should scan for TDCS service, doesn't appear to be advertised
 
     [self.cbCentralManager scanForPeripheralsWithServices:desiredServices options:nil];
+//    [self.cbCentralManager retrievePeripheralsWithIdentifiers:<#(NSArray *)#>] // FIXME should retain previously connected peripheral and attempt connection to this
     NSLog(@"BLE scan initiated");
 }
 
@@ -74,10 +77,10 @@
 {
     NSString *name;
     
-    if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_COMMAND_REQUEST]) {
+    if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_REQUEST]) {
         name = @"Control Command Request";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_COMMAND_RESPONSE]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_RESPONSE]) {
         name = @"Control Command Response";
     }
     else if ([characteristic.UUID.UUIDString isEqualToString:FOC_DATA_BUFFER]) {
@@ -121,7 +124,7 @@
     CBUUID *tdcsService = [CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN];
     NSArray *desiredServices = [[NSArray alloc] initWithObjects:tdcsService, unknownService, nil];
     
-    [peripheral discoverServices:desiredServices]; // FIXME look for services interested in only
+    [peripheral discoverServices:desiredServices];
     [self updateConnectionState:CONNECTED];
 }
 
@@ -160,7 +163,7 @@
 {
     for (CBService *service in self.focusDevice.services) {
         NSLog(@"Discovered service '%@'", [self loggableServiceName:service]);
-        [self.focusDevice discoverCharacteristics:nil forService:service];
+        [self.focusDevice discoverCharacteristics:nil forService:service]; // FIXME scan only for desired characteristics
     }
 }
 
@@ -182,11 +185,31 @@
 - (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
 {
     if (error != nil) {
-        NSLog(@"Error updating characteristic '%@' value %@", characteristic.UUID.UUIDString, error);
+        
+        if (error.code == CBATTErrorReadNotPermitted) {
+            NSLog(@"Error updating characteristic '%@', read not permitted!", [self loggableCharacteristicName:characteristic]);
+        }
+        else if (error.code == CBATTErrorWriteNotPermitted) {
+            NSLog(@"Error updating characteristic '%@', write not permitted!", [self loggableCharacteristicName:characteristic]);
+        }
+        else if (error.code == CBATTErrorInsufficientAuthentication) {
+            NSLog(@"Insufficient authentication when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+        }
+        else if (error.code == CBATTErrorInsufficientEncryption) {
+            NSLog(@"Insufficient encryption when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+        }
+        else {
+            NSLog(@"General CBATT Error updating characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
+        }
     }
     else {
-        NSLog(@"Updated '%@' characteristic to value %@", [self loggableCharacteristicName:characteristic], characteristic.value);
+        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic.value);
     }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+    
+    NSLog(@"Wrote characteristic '%@' to value '%@'", [self loggableCharacteristicName:characteristic], characteristic.value);
 }
 
 @end
