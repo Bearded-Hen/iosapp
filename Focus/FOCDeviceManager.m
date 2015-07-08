@@ -9,10 +9,15 @@
 #import "FOCDeviceManager.h"
 #import "FocusConstants.h"
 
+#import "FOCProgramManager.h"
+
 @interface FOCDeviceManager ()
 
 @property CBCentralManager* cbCentralManager;
 @property CBPeripheral* focusDevice;
+
+@property CBCharacteristic *controlCmdResponse;
+@property CBCharacteristic *controlCmdRequest;
 
 @end
 
@@ -24,6 +29,11 @@
         [self updateConnectionState:UNKNOWN];
     }
     return self;
+}
+
+- (void)refreshStateIfNeeded
+{
+    // TODO refresh peripheral connection state if needed
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
@@ -118,7 +128,6 @@
     
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_TDCS]];
-    [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
     
     [peripheral discoverServices:desiredServices];
     [self updateConnectionState:CONNECTED];
@@ -140,7 +149,7 @@
     }
     else if ([central state] == CBCentralManagerStateUnauthorized) {
         [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise bluetooth to control your Focus device."];
+        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
     }
     else if ([central state] == CBCentralManagerStateUnsupported) {
         [self updateConnectionState:DISCONNECTED];
@@ -185,7 +194,23 @@
         
         for (CBCharacteristic* characteristic in service.characteristics) {
             NSLog(@"Characteristic '%@'", [self loggableCharacteristicName:characteristic]);
-            [peripheral readValueForCharacteristic:characteristic];
+//            [peripheral readValueForCharacteristic:characteristic];
+            
+            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_REQUEST]) {
+                _controlCmdRequest = characteristic;
+            }
+            
+            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_RESPONSE]) {
+                _controlCmdResponse = characteristic;
+            }
+        }
+        
+        if (_controlCmdRequest != nil) {
+            const unsigned char bytes[] = {0x02, 0x00, 0x00, 0x00, 0x00};
+            NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+            
+            [peripheral writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+            NSLog(@"Writing %@ to %@", data, _controlCmdRequest.UUID.UUIDString);
         }
     }
 }
@@ -211,13 +236,16 @@
         }
     }
     else {
-        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic.value);
+        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic);
     }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     
-    NSLog(@"Wrote characteristic '%@' to value '%@'", [self loggableCharacteristicName:characteristic], characteristic.value);
+    NSLog(@"Wrote characteristic '%@' to value '%@', error %@", [self loggableCharacteristicName:characteristic], characteristic, error);
+    
+    [peripheral readValueForCharacteristic:_controlCmdResponse];
+    
 }
 
 @end

@@ -26,4 +26,6 @@
 
 @property FocusConnectionState connectionState;
 
+- (void)refreshStateIfNeeded;
+
 @end
