@@ -22,8 +22,6 @@
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
-        
-        NSLog(@"Byte: %hhu", CMD_ID_MANAGE_PROGRAMS);
     }
     return self;
 }
@@ -34,13 +32,11 @@
 
 - (void)scanForFocusDevices
 {
-    CBUUID *unknownService = [CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN];
-    NSArray *desiredServices = [[NSArray alloc] initWithObjects:unknownService, nil];
-
-    // FIXME should scan for TDCS service, doesn't appear to be advertised
+    NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
+    [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
 
     [self.cbCentralManager scanForPeripheralsWithServices:desiredServices options:nil];
-//    [self.cbCentralManager retrievePeripheralsWithIdentifiers:<#(NSArray *)#>] // FIXME should retain previously connected peripheral and attempt connection to this
+//    [self.cbCentralManager retrievePeripheralsWithIdentifiers:(NSArray *)] // FIXME should retain previously connected peripheral and attempt connection to this
     NSLog(@"BLE scan initiated");
 }
 
@@ -120,9 +116,9 @@
 {
     NSLog(@"Connected to peripheral '%@' with UUID '%@'", peripheral.name, peripheral.identifier.UUIDString);
     
-    CBUUID *unknownService = [CBUUID UUIDWithString:FOC_SERVICE_TDCS];
-    CBUUID *tdcsService = [CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN];
-    NSArray *desiredServices = [[NSArray alloc] initWithObjects:tdcsService, unknownService, nil];
+    NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
+    [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_TDCS]];
+    [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
     
     [peripheral discoverServices:desiredServices];
     [self updateConnectionState:CONNECTED];
@@ -138,6 +134,9 @@
         NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
         [self scanForFocusDevices];
         [self updateConnectionState:SCANNING];
+        
+        // FIXME need to retrieve previously connected peripherals and attempt connection
+//        [self.cbCentralManager retrievePeripheralsWithIdentifiers:nil];
     }
     else if ([central state] == CBCentralManagerStateUnauthorized) {
         [self updateConnectionState:DISCONNECTED];
@@ -163,7 +162,16 @@
 {
     for (CBService *service in self.focusDevice.services) {
         NSLog(@"Discovered service '%@'", [self loggableServiceName:service]);
-        [self.focusDevice discoverCharacteristics:nil forService:service]; // FIXME scan only for desired characteristics
+        
+        NSMutableArray *desiredCharacteristics = [[NSMutableArray alloc] init];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_REQUEST]];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_RESPONSE]];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_DATA_BUFFER]];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTUAL_CURRENT]];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_DURATION]];
+        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_REMAINING_TIME]];
+        
+        [self.focusDevice discoverCharacteristics:desiredCharacteristics forService:service];
     }
 }
 
