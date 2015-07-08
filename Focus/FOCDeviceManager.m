@@ -20,7 +20,6 @@
 
 -(id)init {
     if (self = [super init]) {
-        
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
     }
@@ -49,13 +48,63 @@
     [self.delegate didChangeConnectionState:self.connectionState];
 }
 
+- (NSString *)loggableServiceName:(CBService *)service
+{
+    NSString *name;
+    
+    if ([service.UUID.UUIDString isEqualToString:BLE_SERVICE_BATTERY]) {
+        name = @"BLE Device Battery";
+    }
+    else if ([service.UUID.UUIDString isEqualToString:BLE_SERVICE_INFO]) {
+        name = @"BLE Device Info";
+    }
+    else if ([service.UUID.UUIDString isEqualToString:FOC_SERVICE_TDCS]) {
+        name = @"TDCS Service";
+    }
+    else if ([service.UUID.UUIDString isEqualToString:FOC_SERVICE_UNKNOWN]) {
+        name = @"Unknown Focus Service";
+    }
+    else {
+        name = service.UUID.UUIDString;
+    }
+    return name;
+}
+
+- (NSString *)loggableCharacteristicName:(CBCharacteristic *)characteristic
+{
+    NSString *name;
+    
+    if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_COMMAND_REQUEST]) {
+        name = @"Control Command Request";
+    }
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_COMMAND_RESPONSE]) {
+        name = @"Control Command Response";
+    }
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_DATA_BUFFER]) {
+        name = @"Data Buffer";
+    }
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTUAL_CURRENT]) {
+        name = @"Actual Current";
+    }
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_DURATION]) {
+        name = @"Active Mode Duration";
+    }
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_REMAINING_TIME]) {
+        name = @"Active Mode Remaining Time";
+    }
+    else {
+        name = characteristic.UUID.UUIDString;
+    }
+    return name;
+}
+
 #pragma mark - CBCentralManagerDelegate
 
 - (void)centralManager:(CBCentralManager*)central didDiscoverPeripheral:(CBPeripheral*)peripheral advertisementData:(NSDictionary*)advertisementData RSSI:(NSNumber*)RSSI
 {
-    NSLog(@"Discovered peripheral %@", peripheral);
+    NSLog(@"Discovered '%@ - %@'", peripheral.name, peripheral.identifier.UUIDString);
     [self.cbCentralManager stopScan];
-    NSLog(@"BLE scan terminated");
+    NSLog(@"Terminating BLE Scan, initiating connection");
     
     self.focusDevice = peripheral;
     self.focusDevice.delegate = self;
@@ -64,10 +113,9 @@
     [self updateConnectionState:CONNECTING];
 }
 
-
 - (void)centralManager:(CBCentralManager*)central didConnectPeripheral:(CBPeripheral*)peripheral
 {
-    NSLog(@"Connected to peripheral %@", peripheral);
+    NSLog(@"Connected to peripheral '%@' with UUID '%@'", peripheral.name, peripheral.identifier.UUIDString);
     
     CBUUID *unknownService = [CBUUID UUIDWithString:FOC_SERVICE_TDCS];
     CBUUID *tdcsService = [CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN];
@@ -76,6 +124,7 @@
     [peripheral discoverServices:desiredServices]; // FIXME look for services interested in only
     [self updateConnectionState:CONNECTED];
 }
+
 - (void)centralManagerDidUpdateState:(CBCentralManager*)central
 {
     if ([central state] == CBCentralManagerStatePoweredOff) {
@@ -110,25 +159,34 @@
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error
 {
     for (CBService *service in self.focusDevice.services) {
-        NSLog(@"Discovered service with UUID %@", service.UUID.UUIDString);
+        NSLog(@"Discovered service '%@'", [self loggableServiceName:service]);
         [self.focusDevice discoverCharacteristics:nil forService:service];
     }
 }
 
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverCharacteristicsForService:(CBService*)service error:(NSError*)error
 {
-    NSLog(@"Discovered characteristics for service %@", service);
-    
-    for (CBCharacteristic* characteristic in service.characteristics) {
-        [peripheral readValueForCharacteristic:characteristic];
+    if (error != nil) {
+        NSLog(@"Error listing characteristics for service, %@", error);
+    }
+    else {
+        NSLog(@"Listing characteristics for service %@", [self loggableServiceName:service]);
         
+        for (CBCharacteristic* characteristic in service.characteristics) {
+            NSLog(@"Characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+            [peripheral readValueForCharacteristic:characteristic];
+        }
     }
 }
 
 - (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
 {
-    NSLog(@"Updated characteristic value %@", characteristic);
+    if (error != nil) {
+        NSLog(@"Error updating characteristic '%@' value %@", characteristic.UUID.UUIDString, error);
+    }
+    else {
+        NSLog(@"Updated '%@' characteristic to value %@", [self loggableCharacteristicName:characteristic], characteristic.value);
+    }
 }
-
 
 @end
