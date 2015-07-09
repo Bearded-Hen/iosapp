@@ -52,7 +52,7 @@
     }
     
     if (_controlCmdRequest != nil && _controlCmdResponse != nil && _dataBuffer != nil) {
-        [self.delegate didFinishCharacteristicDiscovery:nil];
+        [self.delegate didFinishCharacteristicDiscovery:error];
     }
 }
 
