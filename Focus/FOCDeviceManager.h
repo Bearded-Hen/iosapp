@@ -18,7 +18,7 @@
  * call methods defined in this interface, and receive callbacks by setting the delegate
  * to an appropriate responder.
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CBPeripheralDelegate> {
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate> {
     __weak id<FOCDeviceStateListener> delegate_;
 }
 

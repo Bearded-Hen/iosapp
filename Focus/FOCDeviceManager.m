@@ -11,6 +11,8 @@
 
 #import "FOCProgramManager.h"
 
+#import "FOCPeripheralDelegate.h"
+
 @interface FOCDeviceManager ()
 
 @property CBCentralManager* cbCentralManager;
@@ -18,6 +20,8 @@
 
 @property CBCharacteristic *controlCmdResponse;
 @property CBCharacteristic *controlCmdRequest;
+
+@property FOCPeripheralDelegate *periphDelegate;
 
 @end
 
@@ -116,7 +120,6 @@
     NSLog(@"Terminating BLE Scan, initiating connection");
     
     self.focusDevice = peripheral;
-    self.focusDevice.delegate = self;
     
     [self.cbCentralManager connectPeripheral:self.focusDevice options:nil];
     [self updateConnectionState:CONNECTING];
@@ -129,7 +132,12 @@
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_TDCS]];
     
-    [peripheral discoverServices:desiredServices];
+    _focusDevice = peripheral;
+    
+    _periphDelegate = [[FOCPeripheralDelegate alloc] initWithPeripheral:_focusDevice];
+    _focusDevice.delegate = _periphDelegate;
+    
+    [_focusDevice discoverServices:desiredServices];
     [self updateConnectionState:CONNECTED];
 }
 
@@ -165,118 +173,118 @@
     }
 }
 
-#pragma mark - CBPeripheralDelegate
-
-- (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error
-{
-    for (CBService *service in self.focusDevice.services) {
-        NSLog(@"Discovered service '%@'", [self loggableServiceName:service]);
-        
-        NSMutableArray *desiredCharacteristics = [[NSMutableArray alloc] init];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_REQUEST]];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_RESPONSE]];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_DATA_BUFFER]];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTUAL_CURRENT]];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_DURATION]];
-        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_REMAINING_TIME]];
-        
-        [self.focusDevice discoverCharacteristics:desiredCharacteristics forService:service];
-    }
-}
-
-- (void)peripheral:(CBPeripheral*)peripheral didDiscoverCharacteristicsForService:(CBService*)service error:(NSError*)error
-{
-    if (error != nil) {
-        NSLog(@"Error listing characteristics for service, %@", error);
-    }
-    else {
-        NSLog(@"Listing characteristics for service %@", [self loggableServiceName:service]);
-        
-        for (CBCharacteristic* characteristic in service.characteristics) {
-            NSLog(@"Characteristic '%@'", [self loggableCharacteristicName:characteristic]);
-//            [peripheral readValueForCharacteristic:characteristic];
-            
-            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_REQUEST]) {
-                _controlCmdRequest = characteristic;
-            }
-            
-            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_RESPONSE]) {
-                _controlCmdResponse = characteristic;
-            }
-        }
-        
-        if (_controlCmdRequest != nil) { // FIXME refactor byte array creation to own method
-            
-            NSData *data = [self generateByteArray:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS progId:0x00 progDescId:0x00];
-            
-            [peripheral writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
-            NSLog(@"Writing %@", [self loggableCharacteristicName:_controlCmdRequest]);
-        }
-    }
-}
-
-- (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
-{
-    if (error != nil) {
-        
-        if (error.code == CBATTErrorReadNotPermitted) {
-            NSLog(@"Error updating characteristic '%@', read not permitted!", [self loggableCharacteristicName:characteristic]);
-        }
-        else if (error.code == CBATTErrorWriteNotPermitted) {
-            NSLog(@"Error updating characteristic '%@', write not permitted!", [self loggableCharacteristicName:characteristic]);
-        }
-        else if (error.code == CBATTErrorInsufficientAuthentication) {
-            NSLog(@"Insufficient authentication when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
-        }
-        else if (error.code == CBATTErrorInsufficientEncryption) {
-            NSLog(@"Insufficient encryption when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
-        }
-        else {
-            NSLog(@"General CBATT Error updating characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
-        }
-    }
-    else {
-        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic);
-        
-        [self deserialiseByteArray:characteristic.value];
-    }
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    
-    NSLog(@"Wrote characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
-    
-    [peripheral readValueForCharacteristic:_controlCmdResponse];
-}
-
-#pragma mark
-
-
-- (NSData *)generateByteArray:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
-{
-    Byte lastByte = 0x00;
-    
-    const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, lastByte};
-    NSLog(@"Preparing byte array: {cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, lastByte);
-    return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
-}
-
-- (void) deserialiseByteArray:(NSData *)data
-{
-    if (data != nil) {
-        int length = [data length];
-        
-        Byte *bd = (Byte*)malloc(length);
-        memcpy(bd, [data bytes], length);
-        
-        Byte cmdId = bd[0];
-        Byte status = bd[1];
-        
-        const unsigned char bytes[] = {bd[2], bd[3], bd[4], bd[5]};
-        
-        free(bd);
-        NSLog(@"Interpreted control command response. {cmdId=%hhu, status=%hhu, data=%s}", cmdId, status, bytes);
-    }
-}
+//#pragma mark - CBPeripheralDelegate
+//
+//- (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error
+//{
+//    for (CBService *service in self.focusDevice.services) {
+//        NSLog(@"Discovered service '%@'", [self loggableServiceName:service]);
+//        
+//        NSMutableArray *desiredCharacteristics = [[NSMutableArray alloc] init];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_REQUEST]];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_CONTROL_CMD_RESPONSE]];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_DATA_BUFFER]];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTUAL_CURRENT]];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_DURATION]];
+//        [desiredCharacteristics addObject:[CBUUID UUIDWithString:FOC_ACTIVE_MODE_REMAINING_TIME]];
+//        
+//        [self.focusDevice discoverCharacteristics:desiredCharacteristics forService:service];
+//    }
+//}
+//
+//- (void)peripheral:(CBPeripheral*)peripheral didDiscoverCharacteristicsForService:(CBService*)service error:(NSError*)error
+//{
+//    if (error != nil) {
+//        NSLog(@"Error listing characteristics for service, %@", error);
+//    }
+//    else {
+//        NSLog(@"Listing characteristics for service %@", [self loggableServiceName:service]);
+//        
+//        for (CBCharacteristic* characteristic in service.characteristics) {
+//            NSLog(@"Characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+////            [peripheral readValueForCharacteristic:characteristic];
+//            
+//            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_REQUEST]) {
+//                _controlCmdRequest = characteristic;
+//            }
+//            
+//            if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_RESPONSE]) {
+//                _controlCmdResponse = characteristic;
+//            }
+//        }
+//        
+//        if (_controlCmdRequest != nil) { // FIXME refactor byte array creation to own method
+//            
+//            NSData *data = [self generateByteArray:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS progId:0x00 progDescId:0x00];
+//            
+//            [peripheral writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+//            NSLog(@"Writing %@", [self loggableCharacteristicName:_controlCmdRequest]);
+//        }
+//    }
+//}
+//
+//- (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
+//{
+//    if (error != nil) {
+//        
+//        if (error.code == CBATTErrorReadNotPermitted) {
+//            NSLog(@"Error updating characteristic '%@', read not permitted!", [self loggableCharacteristicName:characteristic]);
+//        }
+//        else if (error.code == CBATTErrorWriteNotPermitted) {
+//            NSLog(@"Error updating characteristic '%@', write not permitted!", [self loggableCharacteristicName:characteristic]);
+//        }
+//        else if (error.code == CBATTErrorInsufficientAuthentication) {
+//            NSLog(@"Insufficient authentication when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+//        }
+//        else if (error.code == CBATTErrorInsufficientEncryption) {
+//            NSLog(@"Insufficient encryption when attempting to update characteristic '%@'", [self loggableCharacteristicName:characteristic]);
+//        }
+//        else {
+//            NSLog(@"General CBATT Error updating characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
+//        }
+//    }
+//    else {
+//        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic);
+//        
+//        [self deserialiseByteArray:characteristic.value];
+//    }
+//}
+//
+//- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+//    
+//    NSLog(@"Wrote characteristic '%@' %@", [self loggableCharacteristicName:characteristic], error);
+//    
+//    [peripheral readValueForCharacteristic:_controlCmdResponse];
+//}
+//
+//#pragma mark
+//
+//
+//- (NSData *)generateByteArray:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
+//{
+//    Byte lastByte = 0x00;
+//    
+//    const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, lastByte};
+//    NSLog(@"Preparing byte array: {cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, lastByte);
+//    return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
+//}
+//
+//- (void) deserialiseByteArray:(NSData *)data
+//{
+//    if (data != nil) {
+//        int length = [data length];
+//        
+//        Byte *bd = (Byte*)malloc(length);
+//        memcpy(bd, [data bytes], length);
+//        
+//        Byte cmdId = bd[0];
+//        Byte status = bd[1];
+//        
+//        const unsigned char bytes[] = {bd[2], bd[3], bd[4], bd[5]};
+//        
+//        free(bd);
+//        NSLog(@"Interpreted control command response. {cmdId=%hhu, status=%hhu, data=%s}", cmdId, status, bytes);
+//    }
+//}
 
 @end
