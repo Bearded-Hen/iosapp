@@ -11,6 +11,8 @@
 @import CoreBluetooth;
 @import QuartzCore;
 
+#import "FocusConstants.h"
+
 @interface FOCBasePeripheralManager : NSObject<CBPeripheralDelegate>
 
 - (id)initWithPeripheral:(CBPeripheral *) focusDevice;

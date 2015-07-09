@@ -142,7 +142,6 @@
     FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
     
     [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
-    
 }
 
 @end

@@ -8,8 +8,6 @@
 
 #import "FOCBasePeripheralManager.h"
 
-#import "FocusConstants.h"
-
 @interface FOCBasePeripheralManager ()
 @end
 
