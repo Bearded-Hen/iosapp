@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 #import "FOCDeviceStateListener.h"
+#import "FOCCharacteristicDiscoveryManager.h"
 
 @import CoreBluetooth;
 @import QuartzCore;
@@ -18,7 +20,7 @@
  * call methods defined in this interface, and receive callbacks by setting the delegate
  * to an appropriate responder.
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate> {
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryListener> {
     __weak id<FOCDeviceStateListener> delegate_;
 }
 
