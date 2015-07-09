@@ -13,7 +13,7 @@
 /**
  * Delegate which will be called as soon as the required characteristics & services have been discovered on the device
  */
-@protocol CharacteristicDiscoveryListener <NSObject>
+@protocol CharacteristicDiscoveryDelegate <NSObject>
 
 - (void)didFinishCharacteristicDiscovery:(NSError *) error;
 
@@ -23,10 +23,10 @@
  * Delegate which handles the discovery of services & characteristics on the Focus device.
  */
 @interface FOCCharacteristicDiscoveryManager : FOCBasePeripheralManager {
-    __weak id<CharacteristicDiscoveryListener> delegate_;
+    __weak id<CharacteristicDiscoveryDelegate> delegate_;
 }
 
-@property (weak) id <CharacteristicDiscoveryListener> delegate;
+@property (weak) id <CharacteristicDiscoveryDelegate> delegate;
 @property (readonly) CBCharacteristic *controlCmdResponse;
 @property (readonly) CBCharacteristic *controlCmdRequest;
 @property (readonly) CBCharacteristic *dataBuffer;

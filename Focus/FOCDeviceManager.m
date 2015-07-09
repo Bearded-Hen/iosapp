@@ -130,7 +130,7 @@
     }
 }
 
-#pragma mark - CharacteristicDiscoveryListener
+#pragma mark - CharacteristicDiscoveryDelegate
 
 -(void)didFinishCharacteristicDiscovery:(NSError *)error
 {
@@ -142,6 +142,15 @@
     FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
     
     [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+}
+
+#pragma mark - ProgramSyncDelegate
+
+-(void)didFinishProgramSync:(NSError *)error
+{
+    NSLog(@"Finished program sync %@", error);
+    
+    // TODO notify UI and allow requests to modify data
 }
 
 @end

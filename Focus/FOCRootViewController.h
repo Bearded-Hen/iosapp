@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, FOCDeviceStateListener>
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, FOCDeviceStateDelegate>
 
 @property (strong, nonatomic) UIPageViewController* pageViewController;
 

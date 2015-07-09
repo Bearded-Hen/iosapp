@@ -11,6 +11,7 @@
 
 #import "FOCDeviceStateListener.h"
 #import "FOCCharacteristicDiscoveryManager.h"
+#import "FOCProgramSyncManager.h"
 
 @import CoreBluetooth;
 @import QuartzCore;
@@ -21,11 +22,11 @@
  *
  * 
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryListener> {
-    __weak id<FOCDeviceStateListener> delegate_;
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate> {
+    __weak id<FOCDeviceStateDelegate> delegate_;
 }
 
-@property (weak) id <FOCDeviceStateListener> delegate;
+@property (weak) id <FOCDeviceStateDelegate> delegate;
 
 @property FocusConnectionState connectionState;
 
