@@ -18,15 +18,6 @@
 
 @implementation FOCCharacteristicDiscoveryManager
 
-
-- (id)initWithPeripheral:(CBPeripheral *) focusDevice
-{
-    if (self = [super init]) {
-        _focusDevice = focusDevice;
-    }
-    return self;
-}
-
 #pragma mark - CBPeripheralDelegate
 
 - (void)peripheral:(CBPeripheral*)peripheral didDiscoverServices:(NSError*)error

@@ -11,9 +11,6 @@
 #import "FocusConstants.h"
 
 @interface FOCBasePeripheralManager ()
-
-@property CBPeripheral *focusDevice;
-
 @end
 
 @implementation FOCBasePeripheralManager

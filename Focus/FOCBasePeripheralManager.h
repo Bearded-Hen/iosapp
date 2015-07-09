@@ -13,7 +13,11 @@
 
 @interface FOCBasePeripheralManager : NSObject<CBPeripheralDelegate>
 
+- (id)initWithPeripheral:(CBPeripheral *) focusDevice;
+
 - (NSString *)loggableServiceName:(CBService *)service;
 - (NSString *)loggableCharacteristicName:(CBCharacteristic *)characteristic;
+
+@property CBPeripheral *focusDevice;
 
 @end

@@ -26,8 +26,6 @@
     __weak id<CharacteristicDiscoveryListener> delegate_;
 }
 
-- (id)initWithPeripheral:(CBPeripheral *) focusDevice;
-
 @property (weak) id <CharacteristicDiscoveryListener> delegate;
 @property (readonly) CBCharacteristic *controlCmdResponse;
 @property (readonly) CBCharacteristic *controlCmdRequest;

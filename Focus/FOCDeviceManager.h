@@ -16,9 +16,10 @@
 @import QuartzCore;
 
 /**
- * Manages bluetooth communication between the iOS and Focus devices. Consumers of the api should
- * call methods defined in this interface, and receive callbacks by setting the delegate
- * to an appropriate responder.
+ * Manages bluetooth communication between the iOS and Focus devices. A delegate is available which
+ * allows consumers of the Api to receive callbacks when the Device connection state changes.
+ *
+ * 
  */
 @interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryListener> {
     __weak id<FOCDeviceStateListener> delegate_;

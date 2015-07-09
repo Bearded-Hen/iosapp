@@ -9,17 +9,15 @@
 #import "FOCDeviceManager.h"
 #import "FocusConstants.h"
 
-#import "FOCProgramManager.h"
+#import "FOCProgramSyncManager.h"
 
 @interface FOCDeviceManager ()
 
 @property CBCentralManager* cbCentralManager;
 @property CBPeripheral* focusDevice;
 
-@property CBCharacteristic *controlCmdResponse;
-@property CBCharacteristic *controlCmdRequest;
-
-@property FOCCharacteristicDiscoveryManager *periphDelegate;
+@property FOCCharacteristicDiscoveryManager *characteristicManager;
+@property FOCProgramSyncManager *syncManager;
 
 @end
 
@@ -92,9 +90,9 @@
     
     _focusDevice = peripheral;
     
-    _periphDelegate = [[FOCCharacteristicDiscoveryManager alloc] initWithPeripheral:_focusDevice];
-    _periphDelegate.delegate = self;
-    _focusDevice.delegate = _periphDelegate;
+    _characteristicManager = [[FOCCharacteristicDiscoveryManager alloc] initWithPeripheral:_focusDevice];
+    _characteristicManager.delegate = self;
+    _focusDevice.delegate = _characteristicManager;
     
     [_focusDevice discoverServices:desiredServices];
     [self updateConnectionState:CONNECTED];
@@ -136,7 +134,15 @@
 
 -(void)didFinishCharacteristicDiscovery:(NSError *)error
 {
-    NSLog(@"Finished discovering characteristics");
+    NSLog(@"Finished discovering characteristics, beginning program sync");
+    
+    _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice ];
+    _focusDevice.delegate = _syncManager;
+    
+    FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
+    
+    [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+    
 }
 
 @end
