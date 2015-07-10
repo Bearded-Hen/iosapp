@@ -107,7 +107,9 @@
             
             if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
                 _programCount = data[0];
-                NSLog(@"Beginning sync of %d programs", _programCount);
+                
+                NSLog(@"========================================");
+                NSLog(@"*****Beginning sync of %d programs*****", _programCount);
                 
                 // Only begin syncing process if there remain unsynced programs
                 if (_currentProgram <= _programCount) {
@@ -149,11 +151,10 @@
 -(void)interpretDataBuffer:(CBCharacteristic *)characteristic
 {
     NSData *data = characteristic.value;
-    NSLog(@"Data buffer %@", data);
-    
     
     if (_firstDescriptor == nil) { // retrieve second descriptor before proceeding
         _firstDescriptor = data;
+        NSLog(@"Retrieving second descriptor.");
         [self writeProgramDescriptor:FOC_PROG_DESC_SECOND];
     }
     else {
@@ -193,7 +194,8 @@
         
         free(sd);
         
-        NSLog(@"Finished sync for program '%@'", [[NSString alloc] initWithData:nameData encoding:NSUTF8StringEncoding]);
+        NSLog(@"*****Finished sync for program '%@'*****", [[NSString alloc] initWithData:nameData encoding:NSUTF8StringEncoding]);
+        NSLog(@"========================================");
         
         _currentProgram++;
         [self checkCurrentProgramEnabled]; // continue iterating over available programs
