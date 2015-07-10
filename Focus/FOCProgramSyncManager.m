@@ -7,6 +7,7 @@
 //
 
 #import "FOCProgramSyncManager.h"
+#import "FOCDeviceProgramEntity.h"
 
 @interface FOCProgramSyncManager ()
 
@@ -160,65 +161,10 @@
     else {
         _secondDescriptor = data;
         
-        // deserialise first descriptor
-        int length = [_firstDescriptor length];
-    
-        Byte *fd = (Byte*)malloc(length);
-        memcpy(fd, [_firstDescriptor bytes], length);
-    
-        bool valid = fd[0];
-        int mode = fd[10];
-        bool sham = fd[13];
+        FOCDeviceProgramEntity *deviceProgramEntity = [[FOCDeviceProgramEntity alloc] init];
+        [deviceProgramEntity deserialiseDescriptors:_firstDescriptor secondDescriptor:_secondDescriptor];
         
-        NSData *durationData = [_firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
-        NSData *shamDurationData = [_firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
-        NSData *currentData = [_firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
-        NSData *currentOffset = [_firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
-        
-        int nameLength = 0;
-        
-        for (int i=1; i<=9; i++) {
-            if (fd[i] != FOC_EMPTY_BYTE) { // don't want to include empty bytes
-                nameLength++;
-            }
-            else {
-                break;
-            }
-        }
-        NSData *nameData = [_firstDescriptor subdataWithRange:NSMakeRange(1, nameLength)];
-        
-        
-        
-        free(fd);
-        
-        // deserialise second descriptor
-        length = [_secondDescriptor length];
-        
-        Byte *sd = (Byte*)malloc(length);
-        memcpy(sd, [_secondDescriptor bytes], length);
-        
-        Byte volt = sd[0];
-        bool bipolar = sd[1];
-        bool randomCurrent = sd[10];
-        bool randomFreq = sd[11];
-
-        NSData *frequencyData = [_secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
-        NSData *dutyCycle = [_secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
-        
-        free(sd);
-        
-        // handle deserialised data
-        
-//        const unsigned char terminator[] = {'\0'};
-//        NSMutableData *data = [[NSMutableData alloc] init];
-//        
-//        [data appendBytes:terminator length:1];
-//        
-//        NSLog(@"Program bytes %@", data);
-        NSString *programName = [[NSString alloc] initWithBytes:nameData.bytes length:nameData.length encoding:NSUTF8StringEncoding];
-        NSLog(@"Program bytes %@", nameData);
-        
-        NSLog(@"*****Finished sync for program '%@'*****", programName);
+        NSLog(@"*****Finished sync for program '%@'*****", deviceProgramEntity.name);
         NSLog(@"========================================");
         
         _currentProgram++;
