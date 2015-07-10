@@ -16,8 +16,8 @@
 @property CBCharacteristic *dataBuffer;
 
 @property Byte lastSubCmd;
-@property int programCount;
-@property int currentProgram;
+@property Byte programCount;
+@property Byte currentProgram;
 
 @property NSData* firstDescriptor;
 @property NSData* secondDescriptor;
@@ -171,8 +171,8 @@
         _secondDescriptor = data;
         
         FOCDeviceProgramEntity *deviceProgramEntity = [[FOCDeviceProgramEntity alloc] init];
-
         [deviceProgramEntity deserialiseDescriptors:_firstDescriptor secondDescriptor:_secondDescriptor];
+        deviceProgramEntity.programId = _currentProgram;
         
         // FIXME set program id
         

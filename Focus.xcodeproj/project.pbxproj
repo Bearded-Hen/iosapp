@@ -54,7 +54,7 @@
 		F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramRequestManager.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
-		F08834641B42E1D90022400A /* FOCDeviceStateListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateListener.h; sourceTree = "<group>"; };
+		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
 		F08E18831B3D691A00FA765C /* Focus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Focus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08E18871B3D691A00FA765C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F08E18881B3D691A00FA765C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 			children = (
 				F071133A1B4E888100D0A7D1 /* requests */,
 				F07113391B4E887400D0A7D1 /* manager */,
-				F08834641B42E1D90022400A /* FOCDeviceStateListener.h */,
+				F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */,
 				F071131D1B4C232A00D0A7D1 /* FocusConstants.h */,
 				F071131E1B4C232A00D0A7D1 /* FocusConstants.m */,
 			);

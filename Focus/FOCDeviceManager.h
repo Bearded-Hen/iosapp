@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "FOCDeviceStateListener.h"
+#import "FOCDeviceStateDelegate.h"
 #import "FOCCharacteristicDiscoveryManager.h"
 
 #import "FOCProgramSyncManager.h"
