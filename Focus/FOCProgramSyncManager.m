@@ -15,6 +15,11 @@
 @property CBCharacteristic *dataBuffer;
 
 @property Byte lastSubCmd;
+@property int programCount;
+@property int currentProgram;
+
+@property NSData* firstDescriptor;
+@property NSData* secondDescriptor;
 
 @end
 
@@ -26,7 +31,7 @@
     _controlCmdResponse = controlCmdResponse;
     _dataBuffer = dataBuffer;
     
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS];
     
     [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
     
@@ -42,6 +47,9 @@
     if (error == nil) {
         if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
             [self interpretCommandResponse:characteristic]; // read response buffer data
+        }
+        else if ([FOC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
+            [self interpretDataBuffer:characteristic];
         }
         else {
             NSLog(@"Program sync manager encountered unknown udpate value characteristic %@", [self loggableCharacteristicName:characteristic]);
@@ -65,14 +73,19 @@
 
 #pragma mark - deserialisation
 
+- (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId
+{
+    return [self constructCommandRequest:cmdId subCmdId:subCmdId progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
+}
+
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
 {
     const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE};
-    NSLog(@"Preparing byte array: {cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE);
+    NSLog(@"{cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE);
     return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
 }
 
-- (void) interpretCommandResponse:(CBCharacteristic *)characteristic
+- (void)interpretCommandResponse:(CBCharacteristic *)characteristic
 {
     NSData *data = characteristic.value;
     
@@ -89,11 +102,32 @@
         free(bd);
         
         if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-            // continue interpretation
+
+            // Handles Program sync callbacks.
             
             if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
-                int progCount = data[0];
-                NSLog(@"Beginning sync of %d programs", progCount);
+                _programCount = data[0];
+                NSLog(@"Beginning sync of %d programs", _programCount);
+                
+                // Only begin syncing process if there remain unsynced programs
+                if (_currentProgram <= _programCount) {
+                    [self checkCurrentProgramEnabled];
+                }
+            }
+            else if (FOC_SUBCMD_PROG_STATUS == _lastSubCmd) {
+                int progStatus = data[0];
+                
+                if (FOC_PROG_STATUS_VALID == progStatus) {
+                    [self writeProgramDescriptor:FOC_PROG_DESC_FIRST];
+                }
+                else {
+                    NSLog(@"Program %d status is not valid, skipping", _currentProgram);
+                    _currentProgram++;
+                    [self checkCurrentProgramEnabled];
+                }
+            }
+            else if (FOC_SUBCMD_READ_PROG == _lastSubCmd) {
+                [self readProgramDescriptorBuffer];
             }
         }
         else if (status == FOC_STATUS_CMD_FAILURE) {
@@ -112,7 +146,104 @@
     }
 }
 
+-(void)interpretDataBuffer:(CBCharacteristic *)characteristic
+{
+    NSData *data = characteristic.value;
+    NSLog(@"Data buffer %@", data);
+    
+    
+    if (_firstDescriptor == nil) { // retrieve second descriptor before proceeding
+        _firstDescriptor = data;
+        [self writeProgramDescriptor:FOC_PROG_DESC_SECOND];
+    }
+    else {
+        _secondDescriptor = data;
+        
+        // deserialise first descriptor
+        int length = [_firstDescriptor length];
+    
+        Byte *fd = (Byte*)malloc(length);
+        memcpy(fd, [_firstDescriptor bytes], length);
+    
+        bool valid = fd[0];
+        int mode = fd[10];
+        bool sham = fd[13];
+        
+        NSData *nameData = [_firstDescriptor subdataWithRange:NSMakeRange(1, 8)];
+        NSData *durationData = [_firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
+        NSData *shamDurationData = [_firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
+        NSData *currentData = [_firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
+        NSData *currentOffset = [_firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+        
+        free(fd);
+        
+        // deserialise second descriptor
+        length = [_secondDescriptor length];
+        
+        Byte *sd = (Byte*)malloc(length);
+        memcpy(sd, [_secondDescriptor bytes], length);
+        
+        Byte volt = sd[0];
+        bool bipolar = sd[1];
+        bool randomCurrent = sd[10];
+        bool randomFreq = sd[11];
 
+        NSData *frequencyData = [_secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
+        NSData *dutyCycle = [_secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
+        
+        free(sd);
+        
+        NSLog(@"Finished sync for program '%@'", [[NSString alloc] initWithData:nameData encoding:NSUTF8StringEncoding]);
+        
+        _currentProgram++;
+        [self checkCurrentProgramEnabled]; // continue iterating over available programs
+    }
+}
+
+/**
+ * Initiates the syncing process for one program, which involves the following:
+ *
+ * 1. Check if program status is valid, if not skip to the next program.
+ * 2. Write program descriptor[0] to the data buffer & deserialise contents.
+ * 3. Write program descriptor[1] to the data buffer & deserialise contents.
+ */
+-(void)checkCurrentProgramEnabled
+{
+    if (_currentProgram < _programCount) {
+        _firstDescriptor = nil;
+        _secondDescriptor = nil;
+        
+        NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_PROG_STATUS];
+        
+        _lastSubCmd = FOC_SUBCMD_PROG_STATUS;
+        
+        [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+    }
+    else {
+        NSLog(@"Finishing program sync!");
+        [self.delegate didFinishProgramSync:nil];
+    }
+}
+
+/**
+ * Writes the first program descriptor to the data buffer.
+ */
+-(void)writeProgramDescriptor:(Byte)progDescId
+{
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_READ_PROG progId:_currentProgram progDescId:progDescId];
+
+    _lastSubCmd = FOC_SUBCMD_READ_PROG;
+    
+    [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+/**
+ * Reads the program descriptor from the data buffer (assumes a write command has been called before)
+ */
+-(void)readProgramDescriptorBuffer
+{
+    [self.focusDevice readValueForCharacteristic:_dataBuffer];
+}
 
 
 @end

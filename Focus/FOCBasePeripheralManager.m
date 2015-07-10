@@ -67,7 +67,7 @@
         }
     }
     else {
-        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic);
+        NSLog(@"Characteristic '%@' was updated to value %@", [self loggableCharacteristicName:characteristic], characteristic.value);
     }
 }
 

@@ -43,4 +43,10 @@ const Byte FOC_SUBCMD_DISABLE_PROG = 0x06;
 const Byte FOC_SUBCMD_START_PROG = 0x07;
 const Byte FOC_SUBCMD_STOP_PROG = 0x08;
 
+const Byte FOC_PROG_DESC_FIRST = 0x00;
+const Byte FOC_PROG_DESC_SECOND = 0x01;
+
+const int FOC_PROG_STATUS_VALID = 1;
+const int FOC_PROG_STATUS_INVALID = 0;
+
 @end

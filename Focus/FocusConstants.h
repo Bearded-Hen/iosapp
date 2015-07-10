@@ -44,4 +44,10 @@ extern const Byte FOC_SUBCMD_DISABLE_PROG;
 extern const Byte FOC_SUBCMD_START_PROG;
 extern const Byte FOC_SUBCMD_STOP_PROG;
 
+extern const Byte FOC_PROG_DESC_FIRST;
+extern const Byte FOC_PROG_DESC_SECOND;
+
+extern const int FOC_PROG_STATUS_VALID;
+extern const int FOC_PROG_STATUS_INVALID;
+
 @end
