@@ -26,12 +26,8 @@
     memcpy(descriptor, [firstDescriptor bytes], length);
     
     // serialise bools
-    if (FOC_EMPTY_BYTE != descriptor[0]) {
-        _valid = [[NSNumber alloc] initWithBool:descriptor[0]];
-    }
-    if (FOC_EMPTY_BYTE != descriptor[13]) {
-        _sham = [[NSNumber alloc] initWithBool:descriptor[13]];
-    }
+    _valid = [[NSNumber alloc] initWithBool:descriptor[0]];
+    _sham = [[NSNumber alloc] initWithBool:descriptor[13]];
     
     // serialise program mode
     switch (descriptor[10]) {
@@ -55,11 +51,16 @@
     NSData *nameData = [firstDescriptor subdataWithRange:NSMakeRange(1, nameLength)];
     _name = [[NSString alloc] initWithBytes:nameData.bytes length:nameData.length encoding:NSUTF8StringEncoding];
     
-    // serialise misc data
+    // serialise duration/current data
     NSData *durationData = [firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
     NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
     NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
     NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+    
+    _duration = [self getIntegerFromBytes:durationData];
+    _shamDuration = [self getIntegerFromBytes:shamDurationData];
+    _current = [self getIntegerFromBytes:currentData];
+    _currentOffset = [self getIntegerFromBytes:currentOffset];
     
     free(descriptor);
 }
@@ -72,16 +73,10 @@
     memcpy(descriptor, [secondDescriptor bytes], length);
     
     // serialise bools
-    if (FOC_EMPTY_BYTE != descriptor[1]) {
-        _bipolar = [[NSNumber alloc] initWithBool:descriptor[1]];
-    }
-    if (FOC_EMPTY_BYTE != descriptor[10]) {
-        _randomCurrent = [[NSNumber alloc] initWithBool:descriptor[10]];
-    }
-    if (FOC_EMPTY_BYTE != descriptor[11]) {
-        _randomFrequency = [[NSNumber alloc] initWithBool:descriptor[11]];
-    }
-
+    _bipolar = [[NSNumber alloc] initWithBool:descriptor[1]];
+    _randomCurrent = [[NSNumber alloc] initWithBool:descriptor[10]];
+    _randomFrequency = [[NSNumber alloc] initWithBool:descriptor[11]];
+    
     //serialise misc values
     if (FOC_EMPTY_BYTE != descriptor[0]) {
         _voltage = descriptor[0];
@@ -89,7 +84,10 @@
     
     // TODO below values
     NSData *frequencyData = [secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
-    NSData *dutyCycle = [secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
+    NSData *dutyData = [secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
+    
+    _frequency = [self getLongFromBytes:frequencyData];
+    _dutyCycle = [self getLongFromBytes:dutyData];
     
     free(descriptor);
 }
@@ -103,62 +101,27 @@
     return info;
 }
 
-//public void parseDescriptors(byte apiId,
-//                             byte[] descriptor0,
-//                             byte[] descriptor1) {
-//    
-//    this.apiId = apiId;
-//    // Decode the first Descriptor:
-//    // Btye 0: Valid
-//    // Byte 1-9 : Name
-//    // Byte 10 : Mode
-//    // Byte 11-12 : Duration
-//    // Byte 13 : Sham
-//    // Byte 14-15 : Duration (Sham)
-//    // Byte 16-17 : Current
-//    // Byte 18-19 : Current offset
-//    if (descriptor0.length >= 20) {
-//        valid = getBoolean(descriptor0, 0);
-//        //            programId = getString(descriptor0, 1, 9);
-//        programMode = ProgramMode.getFromByte(descriptor0[10]);
-//        if (duration != null) {
-//            duration = getInteger(descriptor0, 11);
-//        }
-//        sham = getBoolean(descriptor0, 13);
-//        shamDuration = getInteger(descriptor0, 14);
-//        if (current != null) {
-//            current = getInteger(descriptor0, 16);
-//        }
-//        if (currentOffset != null) {
-//            currentOffset = getInteger(descriptor0, 18);
-//        }
-//    }
-//    
-//    // Decode the second Descriptor:
-//    // Btye 0: Voltage
-//    // Byte 1 : Bipolar
-//    // Byte 2-5 : Frequency / Min Frequency
-//    // Byte 6-9 : Max Frequency / Duty Cycle
-//    // Byte 11 : Random Current
-//    // Byte 12 : Random Current
-//    if (descriptor1.length >= 20) {
-//        voltage = getSmallInteger(descriptor1, 0);
-//        if (bipolar != null) {
-//            bipolar = getBoolean(descriptor1, 1);
-//        }
-//        if (frequency != null) {
-//            frequency = getLong(descriptor1, 2);
-//        }
-//        if (minFrequency != null) {
-//            minFrequency = getLong(descriptor1, 2);
-//        }
-//        if (maxFrequency != null) {
-//            maxFrequency = getLong(descriptor1, 6);
-//        }
-//        if (dutyCycle != null) {
-//            dutyCycle = getLong(descriptor1, 6);
-//        }
-//    }
-//}
+- (int)getIntegerFromBytes:(NSData *)data
+{
+    Byte *bytes = (Byte*)malloc(data.length);
+    memcpy(bytes, data.bytes, data.length);
+    
+    int n = (bytes[1] & 0xff << 8) + (bytes[0] & 0xff);
+    free(bytes);
+    return n;
+}
+
+- (long)getLongFromBytes:(NSData *)data
+{
+    Byte *bytes = (Byte*)malloc(data.length);
+    memcpy(bytes, data.bytes, data.length);
+    
+    long n =    ((long) (bytes[3] & 0xff) << 24) +
+                ((long) (bytes[2] & 0xff) << 16) +
+                ((long) (bytes[1] & 0xff) << 8) +
+                ((long) (bytes[0] & 0xff));
+    free(bytes);
+    return n;
+}
 
 @end
