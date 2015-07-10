@@ -170,11 +170,24 @@
         int mode = fd[10];
         bool sham = fd[13];
         
-        NSData *nameData = [_firstDescriptor subdataWithRange:NSMakeRange(1, 8)];
         NSData *durationData = [_firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
         NSData *shamDurationData = [_firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
         NSData *currentData = [_firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
         NSData *currentOffset = [_firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+        
+        int nameLength = 0;
+        
+        for (int i=1; i<=9; i++) {
+            if (fd[i] != FOC_EMPTY_BYTE) { // don't want to include empty bytes
+                nameLength++;
+            }
+            else {
+                break;
+            }
+        }
+        NSData *nameData = [_firstDescriptor subdataWithRange:NSMakeRange(1, nameLength)];
+        
+        
         
         free(fd);
         
@@ -194,7 +207,18 @@
         
         free(sd);
         
-        NSLog(@"*****Finished sync for program '%@'*****", [[NSString alloc] initWithData:nameData encoding:NSUTF8StringEncoding]);
+        // handle deserialised data
+        
+//        const unsigned char terminator[] = {'\0'};
+//        NSMutableData *data = [[NSMutableData alloc] init];
+//        
+//        [data appendBytes:terminator length:1];
+//        
+//        NSLog(@"Program bytes %@", data);
+        NSString *programName = [[NSString alloc] initWithBytes:nameData.bytes length:nameData.length encoding:NSUTF8StringEncoding];
+        NSLog(@"Program bytes %@", nameData);
+        
+        NSLog(@"*****Finished sync for program '%@'*****", programName);
         NSLog(@"========================================");
         
         _currentProgram++;
