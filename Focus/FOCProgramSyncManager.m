@@ -22,9 +22,19 @@
 @property NSData* firstDescriptor;
 @property NSData* secondDescriptor;
 
+@property NSMutableArray *programArray;
+
 @end
 
 @implementation FOCProgramSyncManager
+
+- (id)initWithPeripheral:(CBPeripheral *)focusDevice
+{
+    if (self = [super initWithPeripheral:focusDevice]) {
+        _programArray = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 
 - (void)startProgramSync:(CBCharacteristic *)controlCmdRequest controlCmdResponse:(CBCharacteristic *)controlCmdResponse dataBuffer:(CBCharacteristic *)dataBuffer
 {
@@ -103,7 +113,6 @@
         free(bd);
         
         if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-
             // Handles Program sync callbacks.
             
             if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
@@ -162,7 +171,12 @@
         _secondDescriptor = data;
         
         FOCDeviceProgramEntity *deviceProgramEntity = [[FOCDeviceProgramEntity alloc] init];
+
         [deviceProgramEntity deserialiseDescriptors:_firstDescriptor secondDescriptor:_secondDescriptor];
+        
+        // FIXME set program id
+        
+        [_programArray addObject:deviceProgramEntity];
         
         NSLog(@"*****Finished sync for program '%@'*****", deviceProgramEntity.name);
         NSLog(@"========================================");
@@ -193,6 +207,11 @@
     }
     else {
         NSLog(@"Finishing program sync!");
+        
+        for (FOCDeviceProgramEntity *entity in _programArray) {
+            NSLog(@"%@", [entity programDebugInfo]);
+        }
+        
         [self.delegate didFinishProgramSync:nil];
     }
 }

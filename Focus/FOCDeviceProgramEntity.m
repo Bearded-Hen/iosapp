@@ -12,7 +12,6 @@
 
 @implementation FOCDeviceProgramEntity
 
-
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor
 {
     [self deserialiseFirstDescriptor:firstDescriptor];
@@ -21,27 +20,32 @@
 
 - (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor
 {
-    // TODO
-    
-    // deserialise first descriptor
     int length = [firstDescriptor length];
     
-    Byte *fd = (Byte*)malloc(length);
-    memcpy(fd, [firstDescriptor bytes], length);
+    Byte *descriptor = (Byte*)malloc(length);
+    memcpy(descriptor, [firstDescriptor bytes], length);
     
-    bool valid = fd[0];
-    int mode = fd[10];
-    bool sham = fd[13];
+    // serialise bools
+    if (FOC_EMPTY_BYTE != descriptor[0]) {
+        _valid = [[NSNumber alloc] initWithBool:descriptor[0]];
+    }
+    if (FOC_EMPTY_BYTE != descriptor[13]) {
+        _sham = [[NSNumber alloc] initWithBool:descriptor[13]];
+    }
     
-    NSData *durationData = [firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
-    NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
-    NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
-    NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+    // serialise program mode
+    switch (descriptor[10]) {
+        case 0x00: _programMode = DCS; break;
+        case 0x01: _programMode = ACS; break;
+        case 0x02: _programMode = RNS; break;
+        case 0x03: _programMode = PCS; break;
+    }
     
+    // serialise program name
     int nameLength = 0;
     
     for (int i=1; i<=9; i++) {
-        if (fd[i] != FOC_EMPTY_BYTE) { // don't want to include empty bytes
+        if (descriptor[i] != FOC_EMPTY_BYTE) { // don't want to include empty bytes
             nameLength++;
         }
         else {
@@ -49,32 +53,54 @@
         }
     }
     NSData *nameData = [firstDescriptor subdataWithRange:NSMakeRange(1, nameLength)];
-    
     _name = [[NSString alloc] initWithBytes:nameData.bytes length:nameData.length encoding:NSUTF8StringEncoding];
     
-    free(fd);
+    // serialise misc data
+    NSData *durationData = [firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
+    NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
+    NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
+    NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+    
+    free(descriptor);
 }
 
 - (void)deserialiseSecondDescriptor:(NSData *)secondDescriptor
 {
-    // TODO
-    
-    // deserialise second descriptor
     int length = [secondDescriptor length];
     
-    Byte *sd = (Byte*)malloc(length);
-    memcpy(sd, [secondDescriptor bytes], length);
+    Byte *descriptor = (Byte*)malloc(length);
+    memcpy(descriptor, [secondDescriptor bytes], length);
     
-    Byte volt = sd[0];
-    bool bipolar = sd[1];
-    bool randomCurrent = sd[10];
-    bool randomFreq = sd[11];
+    // serialise bools
+    if (FOC_EMPTY_BYTE != descriptor[1]) {
+        _bipolar = [[NSNumber alloc] initWithBool:descriptor[1]];
+    }
+    if (FOC_EMPTY_BYTE != descriptor[10]) {
+        _randomCurrent = [[NSNumber alloc] initWithBool:descriptor[10]];
+    }
+    if (FOC_EMPTY_BYTE != descriptor[11]) {
+        _randomFrequency = [[NSNumber alloc] initWithBool:descriptor[11]];
+    }
+
+    //serialise misc values
+    if (FOC_EMPTY_BYTE != descriptor[0]) {
+        _voltage = descriptor[0];
+    }
     
+    // TODO below values
     NSData *frequencyData = [secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
     NSData *dutyCycle = [secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
     
-    free(sd);
+    free(descriptor);
+}
 
+- (NSString *)programDebugInfo
+{
+    NSMutableString *info = [[NSMutableString alloc] init];
+    
+    [info appendString:[NSString stringWithFormat:@"Program Name '%@', ", _name]];
+    [info appendString:[NSString stringWithFormat:@"id='%hhu'", _programId]];
+    return info;
 }
 
 //public void parseDescriptors(byte apiId,

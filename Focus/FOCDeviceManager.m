@@ -9,8 +9,6 @@
 #import "FOCDeviceManager.h"
 #import "FocusConstants.h"
 
-#import "FOCProgramSyncManager.h"
-
 @interface FOCDeviceManager ()
 
 @property CBCentralManager* cbCentralManager;
@@ -18,6 +16,7 @@
 
 @property FOCCharacteristicDiscoveryManager *characteristicManager;
 @property FOCProgramSyncManager *syncManager;
+@property FOCProgramRequestManager *requestManager;
 
 @end
 
@@ -136,7 +135,7 @@
 {
     NSLog(@"Finished discovering characteristics, beginning program sync");
     
-    _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice ];
+    _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice];
     _focusDevice.delegate = _syncManager;
     
     FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
@@ -150,7 +149,16 @@
 {
     NSLog(@"Finished program sync %@", error);
     
-    // TODO notify UI and allow requests to modify data
+    _requestManager = [[FOCProgramRequestManager alloc] initWithPeripheral:_focusDevice];
+    _focusDevice.delegate = _requestManager;
+}
+
+#pragma mark - ProgramRequestDelegate
+
+- (void)didFinishProgramRequest:(NSError *)error
+{
+    NSLog(@"Program request finished");
+    // TODO program request logic
 }
 
 @end

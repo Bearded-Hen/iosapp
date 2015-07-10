@@ -12,6 +12,7 @@
 		F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113371B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m */; };
 		F071133D1B4E88A500D0A7D1 /* FOCProgramSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F071133C1B4E88A500D0A7D1 /* FOCProgramSyncManager.m */; };
 		F07113401B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = F071133F1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m */; };
+		F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -49,6 +50,8 @@
 		F071133C1B4E88A500D0A7D1 /* FOCProgramSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramSyncManager.m; sourceTree = "<group>"; };
 		F071133E1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceProgramEntity.h; sourceTree = "<group>"; };
 		F071133F1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceProgramEntity.m; sourceTree = "<group>"; };
+		F07113411B4FF64000D0A7D1 /* FOCProgramRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCProgramRequestManager.h; sourceTree = "<group>"; };
+		F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramRequestManager.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateListener.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 			children = (
 				F071133B1B4E88A500D0A7D1 /* FOCProgramSyncManager.h */,
 				F071133C1B4E88A500D0A7D1 /* FOCProgramSyncManager.m */,
+				F07113411B4FF64000D0A7D1 /* FOCProgramRequestManager.h */,
+				F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */,
 			);
 			name = requests;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				F07113401B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m in Sources */,
 				F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */,
 				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
+				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
 				F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */,
