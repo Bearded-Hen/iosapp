@@ -7,6 +7,7 @@
 //
 
 #import "FOCDataViewController.h"
+#import "FOCFontAwesome.h"
 
 @interface FOCDataViewController ()
 
@@ -17,6 +18,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
+    [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {

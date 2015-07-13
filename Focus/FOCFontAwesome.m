@@ -11,6 +11,7 @@
 @implementation FOCFontAwesome
 
 NSString *const FONT_AWESOME = @"FontAwesome";
+const float DEFAULT_ICON_SIZE = 32.0;
 
 static NSDictionary *faMap;
 
@@ -23,7 +24,7 @@ static NSDictionary *faMap;
               };
 }
 
-+(NSString *) unicodeForIconNamed:(NSString *)iconName
++(NSString *)unicodeForIcon:(NSString *)iconName
 {
     if (faMap == nil) {
         [self initialize];
@@ -31,6 +32,11 @@ static NSDictionary *faMap;
     
     NSString *unicodeValue = [faMap objectForKey:iconName];
     return (unicodeValue == nil) ? [faMap objectForKey:@"fa-question-circle"] : unicodeValue;
+}
+
++(UIFont *)font
+{
+    return [UIFont fontWithName:FONT_AWESOME size:DEFAULT_ICON_SIZE];
 }
 
 @end

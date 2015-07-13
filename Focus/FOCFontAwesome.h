@@ -6,12 +6,14 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface FOCFontAwesome : NSObject
 
-+(NSString *) unicodeForIconNamed:(NSString *)iconName;
++(NSString *) unicodeForIcon:(NSString *)iconName;
++(UIFont *) font;
 
 extern NSString *const FONT_AWESOME;
+extern const float DEFAULT_ICON_SIZE;
 
 @end

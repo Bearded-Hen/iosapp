@@ -14,7 +14,7 @@
 		F07113401B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = F071133F1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m */; };
 		F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */; };
 		F07113461B5405B400D0A7D1 /* FOCFontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113451B5405B400D0A7D1 /* FOCFontAwesome.m */; };
-		F07113481B54072600D0A7D1 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07113471B54068E00D0A7D1 /* fontawesome-webfont.ttf */; };
+		F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -56,7 +56,7 @@
 		F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramRequestManager.m; sourceTree = "<group>"; };
 		F07113441B5405B400D0A7D1 /* FOCFontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCFontAwesome.h; sourceTree = "<group>"; };
 		F07113451B5405B400D0A7D1 /* FOCFontAwesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCFontAwesome.m; sourceTree = "<group>"; };
-		F07113471B54068E00D0A7D1 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fontawesome-webfont.ttf"; path = "../../../../Downloads/font-awesome-4.3.0/fonts/fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -197,6 +197,7 @@
 		F08E18851B3D691A00FA765C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
+				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
 				F088345D1B42E0090022400A /* ui */,
 				F088345E1B42E0210022400A /* controllers */,
 				F08834601B42E02C0022400A /* api */,
@@ -214,7 +215,6 @@
 		F08E18861B3D691A00FA765C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F07113471B54068E00D0A7D1 /* fontawesome-webfont.ttf */,
 				F08E18871B3D691A00FA765C /* Info.plist */,
 				F08E18881B3D691A00FA765C /* main.m */,
 			);
@@ -318,7 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F07113481B54072600D0A7D1 /* fontawesome-webfont.ttf in Resources */,
+				F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */,
 				F08E18981B3D691A00FA765C /* Main.storyboard in Resources */,
 				F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */,
 				F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */,
