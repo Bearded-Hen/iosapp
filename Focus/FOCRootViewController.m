@@ -82,4 +82,9 @@
     // TODO handle connection change
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end
