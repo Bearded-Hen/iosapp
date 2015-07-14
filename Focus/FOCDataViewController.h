@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "FOCDeviceProgramEntity.h"
+
 @interface FOCDataViewController : UIViewController
 
-@property (strong, nonatomic) id dataObject;
+@property (strong, nonatomic) FOCDeviceProgramEntity *program;
 
 @property (weak, nonatomic) IBOutlet UILabel *programTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *programControlContainer;

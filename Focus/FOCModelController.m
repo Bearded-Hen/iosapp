@@ -9,6 +9,8 @@
 #import "FOCModelController.h"
 #import "FOCDataViewController.h"
 
+#import "FOCDefaultProgramProvider.h"
+
 /*
  A controller object that manages a simple model -- a collection of month names.
  
@@ -29,28 +31,24 @@
     self = [super init];
     if (self) {
         // Create the data model.
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        _pageData = [[dateFormatter monthSymbols] copy];
+        _pageData = [FOCDefaultProgramProvider allDefaults];
     }
     return self;
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
-    // Return the data view controller for the given index.
+    
     if (([self.pageData count] == 0) || (index >= [self.pageData count])) {
         return nil;
     }
 
-    // Create a new view controller and pass suitable data.
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
-    dataViewController.dataObject = self.pageData[index];
+    dataViewController.program = self.pageData[index];
     return dataViewController;
 }
 
 - (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController {
-    // Return the index of the given data view controller.
-    // For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
-    return [self.pageData indexOfObject:viewController.dataObject];
+    return [self.pageData indexOfObject:viewController.program];
 }
 
 #pragma mark - Page View Controller Data Source

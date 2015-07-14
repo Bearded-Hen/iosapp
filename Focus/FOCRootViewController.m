@@ -68,8 +68,6 @@
 
 - (FOCModelController*)modelController
 {
-    // Return the model controller object, creating it if necessary.
-    // In more complex implementations, the model controller may be passed to the view controller.
     if (!_modelController) {
         _modelController = [[FOCModelController alloc] init];
     }
@@ -78,7 +76,8 @@
 
 #pragma mark DeviceStateListener
 
-- (void)didChangeConnectionState: (FocusConnectionState)connectionState {
+- (void)didChangeConnectionState: (FocusConnectionState)connectionState
+{
     // TODO handle connection change
 }
 
