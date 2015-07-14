@@ -10,8 +10,13 @@
 
 @interface FOCDataViewController : UIViewController
 
-@property (strong, nonatomic) IBOutlet UILabel *dataLabel;
 @property (strong, nonatomic) id dataObject;
+
+@property (weak, nonatomic) IBOutlet UILabel *programTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *programControlContainer;
 @property (weak, nonatomic) IBOutlet UIButton *btnPlayProgram;
+@property (weak, nonatomic) IBOutlet UIButton *btnProgramSettings;
+@property (weak, nonatomic) IBOutlet UIButton *btnConnectionState;
+
 @end
 

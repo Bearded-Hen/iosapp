@@ -20,7 +20,12 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
+    [_btnProgramSettings.titleLabel setFont:[FOCFontAwesome font]];
+    
     [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
+    [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
+    
+    _programTitleLabel.text = [self.dataObject description];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -30,7 +35,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.dataLabel.text = [self.dataObject description];
 }
 
 @end

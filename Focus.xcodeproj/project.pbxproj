@@ -160,7 +160,7 @@
 			name = model;
 			sourceTree = "<group>";
 		};
-		F08834601B42E02C0022400A /* api */ = {
+		F08834601B42E02C0022400A /* bluetooth */ = {
 			isa = PBXGroup;
 			children = (
 				F071133A1B4E888100D0A7D1 /* requests */,
@@ -169,7 +169,7 @@
 				F071131D1B4C232A00D0A7D1 /* FocusConstants.h */,
 				F071131E1B4C232A00D0A7D1 /* FocusConstants.m */,
 			);
-			name = api;
+			name = bluetooth;
 			sourceTree = "<group>";
 		};
 		F08E187A1B3D691A00FA765C = {
@@ -200,7 +200,7 @@
 				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
 				F088345D1B42E0090022400A /* ui */,
 				F088345E1B42E0210022400A /* controllers */,
-				F08834601B42E02C0022400A /* api */,
+				F08834601B42E02C0022400A /* bluetooth */,
 				F088345F1B42E0270022400A /* model */,
 				F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */,
 				F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */,

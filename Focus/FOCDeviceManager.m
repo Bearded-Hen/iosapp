@@ -32,7 +32,10 @@
 
 - (void)refreshStateIfNeeded
 {
-    // TODO refresh peripheral connection state if needed
+    if ([_cbCentralManager state] != CBCentralManagerStatePoweredOn || _connectionState != CONNECTED) {
+        
+        [self handleBluetoothStateUpdate];
+    }
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
@@ -41,6 +44,8 @@
 
 - (void)scanForFocusDevices
 {
+    [self updateConnectionState:SCANNING];
+    
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
 
@@ -54,16 +59,40 @@
     NSString *stateName;
     
     switch (state) {
-        case CONNECTED: stateName = @"Connected";
-        case CONNECTING: stateName = @"Connecting";
-        case SCANNING: stateName = @"Scanning";
-        case DISCONNECTED: stateName = @"Disconnected";
-        case UNKNOWN: stateName = @"Unknown";
+        case CONNECTED: stateName = @"Connected"; break;
+        case CONNECTING: stateName = @"Connecting"; break;
+        case SCANNING: stateName = @"Scanning"; break;
+        case DISCONNECTED: stateName = @"Disconnected"; break;
+        case UNKNOWN: stateName = @"Unknown"; break;
     }
     
     NSLog(@"Focus connection state changed to '%@'", stateName);
     self.connectionState = state;
     [self.delegate didChangeConnectionState:self.connectionState];
+}
+
+- (void)handleBluetoothNotReady
+{
+    if ([_cbCentralManager state] == CBCentralManagerStatePoweredOff) {
+        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
+        [self updateConnectionState:DISCONNECTED];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnauthorized) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
+        NSLog(@"CoreBluetooth BLE state is unknown");
+        [self updateConnectionState:UNKNOWN];
+    }
+    else {
+        NSLog(@"Unknown bluetooth CentralManager update");
+        [self updateConnectionState:UNKNOWN];
+    }
 }
 
 #pragma mark - CBCentralManagerDelegate
@@ -99,33 +128,19 @@
 
 - (void)centralManagerDidUpdateState:(CBCentralManager*)central
 {
-    if ([central state] == CBCentralManagerStatePoweredOff) {
-        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
-        [self updateConnectionState:DISCONNECTED];
-    }
-    else if ([central state] == CBCentralManagerStatePoweredOn) {
+    [self handleBluetoothStateUpdate];
+}
+
+- (void)handleBluetoothStateUpdate
+{
+    if ([_cbCentralManager state] == CBCentralManagerStatePoweredOn) {
         NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
         [self scanForFocusDevices];
-        [self updateConnectionState:SCANNING];
-        
         // FIXME need to retrieve previously connected peripherals and attempt connection
-//        [self.cbCentralManager retrievePeripheralsWithIdentifiers:nil];
-    }
-    else if ([central state] == CBCentralManagerStateUnauthorized) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
-    }
-    else if ([central state] == CBCentralManagerStateUnsupported) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
-    }
-    else if ([central state] == CBCentralManagerStateUnknown) {
-        NSLog(@"CoreBluetooth BLE state is unknown");
-        [self updateConnectionState:UNKNOWN];
+        //        [self.cbCentralManager retrievePeripheralsWithIdentifiers:nil];
     }
     else {
-        NSLog(@"Unknown bluetooth CentralManager update");
-        [self updateConnectionState:UNKNOWN];
+        [self handleBluetoothNotReady];
     }
 }
 
