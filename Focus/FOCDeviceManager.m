@@ -19,13 +19,15 @@
 @property FOCProgramSyncManager *syncManager;
 @property FOCProgramRequestManager *requestManager;
 
+@property BOOL isDevicePaired;
+
 @end
 
 static const int kPairButton = 1;
 
 @implementation FOCDeviceManager // TODO should connect to BLE device as in apple guide (waiting on clarifications)
 
--(id)init { // TODO should handle refresh when the app gets put in the background
+-(id)init {
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
@@ -35,13 +37,12 @@ static const int kPairButton = 1;
 
 - (void)refreshStateIfNeeded
 {
-    CBPeripheralState state = _focusDevice.state;
-    
     if (_focusDevice == nil || _focusDevice.state != CBPeripheralStateConnected) {
         [self handleBluetoothStateUpdate];
     }
-    
-    // TODO check bluetooth pairing
+    else if (!_isDevicePaired) {
+        [self promptPairingDialog];
+    }
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
@@ -160,6 +161,8 @@ static const int kPairButton = 1;
 
 - (void)didDiscoverBluetoothPairState:(BOOL)paired error:(NSError *)error
 {
+    _isDevicePaired = paired;
+    
     if (paired) {
         NSLog(@"Devices are paired, initiating program sync");
         [self updateConnectionState:CONNECTED];
@@ -200,8 +203,16 @@ static const int kPairButton = 1;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == kPairButton) {
-        [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
+        [self promptPairingDialog];
     }
+}
+
+- (void)promptPairingDialog
+{
+    [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
+    [_cbCentralManager cancelPeripheralConnection:_focusDevice];
+    _focusDevice = nil;
+    [self handleBluetoothStateUpdate];
 }
 
 @end
