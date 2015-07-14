@@ -25,7 +25,7 @@
  *
  * 
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate, ProgramRequestDelegate, BluetoothPairingDelegate> {
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate, ProgramRequestDelegate, BluetoothPairingDelegate, UIAlertViewDelegate> {
     __weak id<FOCDeviceStateDelegate> delegate_;
 }
 

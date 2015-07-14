@@ -21,6 +21,8 @@
 
 @end
 
+static const int kPairButton = 1;
+
 @implementation FOCDeviceManager // TODO should connect to BLE device as in apple guide (waiting on clarifications)
 
 -(id)init { // TODO should handle refresh when the app gets put in the background
@@ -33,10 +35,13 @@
 
 - (void)refreshStateIfNeeded
 {
-    if ([_cbCentralManager state] != CBCentralManagerStatePoweredOn || _connectionState != CONNECTED) {
-        
+    CBPeripheralState state = _focusDevice.state;
+    
+    if (_focusDevice == nil || _focusDevice.state != CBPeripheralStateConnected) {
         [self handleBluetoothStateUpdate];
     }
+    
+    // TODO check bluetooth pairing
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
@@ -100,7 +105,7 @@
     _focusDevice.delegate = _characteristicManager;
     
     [_focusDevice discoverServices:desiredServices];
-    [self updateConnectionState:CONNECTED]; // FIXME need to check if the device is paired!
+    [self updateConnectionState:SCANNING];
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager*)central
@@ -157,6 +162,7 @@
 {
     if (paired) {
         NSLog(@"Devices are paired, initiating program sync");
+        [self updateConnectionState:CONNECTED];
         
         _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice];
         _syncManager.delegate = self;
@@ -167,6 +173,8 @@
     }
     else {
         NSLog(@"Focus device is not paired. Prompting user.");
+        
+        [[[UIAlertView alloc] initWithTitle:@"Pair Bluetooth" message:@"The app can't talk to your device without pairing." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Pair", nil] show];
     }
 }
 
@@ -187,6 +195,13 @@
 {
     NSLog(@"Program request finished");
     // TODO program request logic
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == kPairButton) {
+        [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
+    }
 }
 
 @end
