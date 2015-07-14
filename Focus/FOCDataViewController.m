@@ -26,6 +26,8 @@
     [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
     
     _programTitleLabel.text = [_program name];
+    _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
+    _backgroundImageView.image = [UIImage imageNamed:_program.imageName];
 }
 
 @end

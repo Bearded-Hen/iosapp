@@ -14,6 +14,8 @@
 {
     FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] init];
     entity.name = @"Gamer";
+    entity.imageName = @"program_gamer.png";
+
     entity.programMode = DCS;
     entity.current = 1500;
     entity.duration = 600;
@@ -28,6 +30,8 @@
 {
     FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] init];
     entity.name = @"Enduro";
+    entity.imageName = @"program_enduro.png";
+    
     entity.programMode = DCS;
     entity.current = 1700;
     entity.duration = 900;
@@ -42,6 +46,8 @@
 {
     FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] init];
     entity.name = @"Wave";
+    entity.imageName = @"program_wave.png";
+    
     entity.programMode = ACS;
     entity.current = 1500;
     entity.duration = 1080;
@@ -60,6 +66,8 @@
 {
     FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] init];
     entity.name = @"Pulse";
+    entity.imageName = @"program_pulse.png";
+    
     entity.programMode = PCS;
     entity.current = 1500;
     entity.duration = 600;
@@ -79,6 +87,8 @@
 {
     FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] init];
     entity.name = @"Noise";
+    entity.imageName = @"program_noise.png";
+    
     entity.programMode = RNS;
     entity.current = 1600;
     entity.duration = 600;

@@ -27,7 +27,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFW-NB-ba9">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFW-NB-ba9" customClass="UIImageView">
                                 <rect key="frame" x="0.0" y="45" width="600" height="555"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q8m-AG-Kp0">
@@ -149,7 +149,7 @@
                                         </variation>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="q8m-AG-Kp0" secondAttribute="bottom" id="HBZ-lx-35c"/>
                                     <constraint firstItem="q8m-AG-Kp0" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" id="HtA-uz-5iL"/>
@@ -175,6 +175,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="backgroundImageView" destination="wFW-NB-ba9" id="E63-Rm-BkV"/>
                         <outlet property="btnConnectionState" destination="8YZ-oY-Bc1" id="vQq-np-yeN"/>
                         <outlet property="btnPlayProgram" destination="pIl-H5-jT5" id="uRJ-vy-PlN"/>
                         <outlet property="btnProgramSettings" destination="sy5-cC-SEH" id="QAK-ox-I9f"/>

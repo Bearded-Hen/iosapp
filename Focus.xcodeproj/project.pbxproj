@@ -17,6 +17,11 @@
 		F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */; };
 		F071135D1B551EF800D0A7D1 /* FOCBluetoothPairManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */; };
 		F07113601B55543200D0A7D1 /* FOCDefaultProgramProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */; };
+		F07113661B555DEA00D0A7D1 /* program_wave.png in Resources */ = {isa = PBXBuildFile; fileRef = F07113611B555DEA00D0A7D1 /* program_wave.png */; };
+		F07113671B555DEA00D0A7D1 /* program_pulse.png in Resources */ = {isa = PBXBuildFile; fileRef = F07113621B555DEA00D0A7D1 /* program_pulse.png */; };
+		F07113681B555DEA00D0A7D1 /* program_gamer.png in Resources */ = {isa = PBXBuildFile; fileRef = F07113631B555DEA00D0A7D1 /* program_gamer.png */; };
+		F07113691B555DEA00D0A7D1 /* program_enduro.png in Resources */ = {isa = PBXBuildFile; fileRef = F07113641B555DEA00D0A7D1 /* program_enduro.png */; };
+		F071136A1B555DEA00D0A7D1 /* program_noise.png in Resources */ = {isa = PBXBuildFile; fileRef = F07113651B555DEA00D0A7D1 /* program_noise.png */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -63,6 +68,11 @@
 		F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCBluetoothPairManager.m; sourceTree = "<group>"; };
 		F071135E1B55543200D0A7D1 /* FOCDefaultProgramProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDefaultProgramProvider.h; sourceTree = "<group>"; };
 		F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDefaultProgramProvider.m; sourceTree = "<group>"; };
+		F07113611B555DEA00D0A7D1 /* program_wave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = program_wave.png; sourceTree = "<group>"; };
+		F07113621B555DEA00D0A7D1 /* program_pulse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = program_pulse.png; sourceTree = "<group>"; };
+		F07113631B555DEA00D0A7D1 /* program_gamer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = program_gamer.png; sourceTree = "<group>"; };
+		F07113641B555DEA00D0A7D1 /* program_enduro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = program_enduro.png; sourceTree = "<group>"; };
+		F07113651B555DEA00D0A7D1 /* program_noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = program_noise.png; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -225,6 +235,11 @@
 		F08E18861B3D691A00FA765C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F07113611B555DEA00D0A7D1 /* program_wave.png */,
+				F07113621B555DEA00D0A7D1 /* program_pulse.png */,
+				F07113631B555DEA00D0A7D1 /* program_gamer.png */,
+				F07113641B555DEA00D0A7D1 /* program_enduro.png */,
+				F07113651B555DEA00D0A7D1 /* program_noise.png */,
 				F08E18871B3D691A00FA765C /* Info.plist */,
 				F08E18881B3D691A00FA765C /* main.m */,
 			);
@@ -328,9 +343,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F07113681B555DEA00D0A7D1 /* program_gamer.png in Resources */,
+				F07113691B555DEA00D0A7D1 /* program_enduro.png in Resources */,
 				F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */,
 				F08E18981B3D691A00FA765C /* Main.storyboard in Resources */,
+				F07113671B555DEA00D0A7D1 /* program_pulse.png in Resources */,
+				F071136A1B555DEA00D0A7D1 /* program_noise.png in Resources */,
 				F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */,
+				F07113661B555DEA00D0A7D1 /* program_wave.png in Resources */,
 				F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

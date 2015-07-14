@@ -16,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *programTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *programControlContainer;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPlayProgram;
 @property (weak, nonatomic) IBOutlet UIButton *btnProgramSettings;
 @property (weak, nonatomic) IBOutlet UIButton *btnConnectionState;

@@ -26,6 +26,7 @@ typedef NS_ENUM(int, ProgramMode){
 
 @property Byte programId;
 @property NSString *name;
+@property NSString *imageName;
 @property ProgramMode programMode;
 
 // Bools as numbers
