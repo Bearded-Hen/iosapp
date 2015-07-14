@@ -14,6 +14,7 @@
 @interface FOCRootViewController ()
 
 @property (readonly, strong, nonatomic) FOCModelController* modelController;
+@property FOCDeviceManager *deviceManager;
 
 @end
 
@@ -26,8 +27,8 @@
     [super viewDidLoad];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
-    FOCDeviceManager *deviceManager = delegate.focusDeviceManager;
-    deviceManager.delegate = self;
+    _deviceManager = delegate.focusDeviceManager;
+    _deviceManager.delegate = self;
     
     // Do any additional setup after loading the view, typically from a nib.
     // Configure the page view controller and add it as a child view controller.
@@ -58,7 +59,7 @@
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     // Set the spine position to "min" and the page view controller's view controllers array to contain just one view controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the doubleSided property to YES, so set it to NO here.
-    UIViewController* currentViewController = self.pageViewController.viewControllers[0];
+    FOCDataViewController* currentViewController = [self currentViewController];
     NSArray* viewControllers = @[ currentViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     
@@ -74,11 +75,23 @@
     return _modelController;
 }
 
+- (void)pageViewController:(UIPageViewController *)pvc didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+{
+    if (completed) {
+        [[self currentViewController] notifyConnectionStateChanged:_deviceManager.connectionState];
+    }
+}
+
+- (FOCDataViewController *)currentViewController
+{
+    return (FOCDataViewController*) self.pageViewController.viewControllers[0];
+}
+
 #pragma mark DeviceStateListener
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
 {
-    // TODO handle connection change
+    [[self currentViewController] notifyConnectionStateChanged:connectionState];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

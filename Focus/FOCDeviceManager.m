@@ -102,6 +102,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         case CONNECTING: stateName = @"Connecting"; break;
         case SCANNING: stateName = @"Scanning"; break;
         case DISCONNECTED: stateName = @"Disconnected"; break;
+        case DISABLED: stateName = @"Disabled"; break;
         case UNKNOWN: stateName = @"Unknown"; break;
     }
     
@@ -136,12 +137,12 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
     }
     else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
-        [self updateConnectionState:DISCONNECTED];
+        [self updateConnectionState:DISABLED];
         [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
     }
     else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
         NSLog(@"CoreBluetooth BLE state is unknown");
-        [self updateConnectionState:UNKNOWN];
+        [self updateConnectionState:DISABLED];
     }
     else {
         NSLog(@"Unknown bluetooth CentralManager update");

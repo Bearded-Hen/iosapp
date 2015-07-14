@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "FOCDeviceProgramEntity.h"
+#import "FOCDeviceStateDelegate.h"
 
 @interface FOCDataViewController : UIViewController
 
@@ -19,7 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPlayProgram;
 @property (weak, nonatomic) IBOutlet UIButton *btnProgramSettings;
-@property (weak, nonatomic) IBOutlet UIButton *btnConnectionState;
+@property (weak, nonatomic) IBOutlet UIImageView *bluetoothConnectionIcon;
+
+-(void)notifyConnectionStateChanged:(FocusConnectionState)state;
 
 @end
-
