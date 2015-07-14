@@ -33,6 +33,15 @@
 
 @property FocusConnectionState connectionState;
 
-- (void)refreshStateIfNeeded;
+/**
+ * If the Focus device is not connected, attempt to connect it again, and handle any bluetooth
+ * errors such as disabled/no connection
+ */
+- (void)refreshDeviceState;
+
+/**
+ * Close the BLE connection.
+ */
+- (void)closeConnection;
 
 @end

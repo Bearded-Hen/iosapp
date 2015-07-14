@@ -36,7 +36,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     return self;
 }
 
-- (void)refreshStateIfNeeded
+- (void)refreshDeviceState
 {
     if (_focusDevice == nil || _focusDevice.state != CBPeripheralStateConnected) {
         [self handleBluetoothStateUpdate];
@@ -44,6 +44,11 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     else if (!_isDevicePaired) {
         [self promptPairingDialog];
     }
+}
+
+- (void)closeConnection
+{
+    [_cbCentralManager cancelPeripheralConnection:_focusDevice];
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {

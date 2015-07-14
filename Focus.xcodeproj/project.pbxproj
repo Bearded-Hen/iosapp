@@ -16,6 +16,7 @@
 		F07113461B5405B400D0A7D1 /* FOCFontAwesome.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113451B5405B400D0A7D1 /* FOCFontAwesome.m */; };
 		F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */; };
 		F071135D1B551EF800D0A7D1 /* FOCBluetoothPairManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */; };
+		F07113601B55543200D0A7D1 /* FOCDefaultProgramProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -60,6 +61,8 @@
 		F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		F071135B1B551EF800D0A7D1 /* FOCBluetoothPairManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCBluetoothPairManager.h; sourceTree = "<group>"; };
 		F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCBluetoothPairManager.m; sourceTree = "<group>"; };
+		F071135E1B55543200D0A7D1 /* FOCDefaultProgramProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDefaultProgramProvider.h; sourceTree = "<group>"; };
+		F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDefaultProgramProvider.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -161,6 +164,8 @@
 			children = (
 				F071133E1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.h */,
 				F071133F1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m */,
+				F071135E1B55543200D0A7D1 /* FOCDefaultProgramProvider.h */,
+				F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
 				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
+				F07113601B55543200D0A7D1 /* FOCDefaultProgramProvider.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
 				F07113461B5405B400D0A7D1 /* FOCFontAwesome.m in Sources */,
 				F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */,
