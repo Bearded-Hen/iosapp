@@ -14,6 +14,7 @@
 
 #import "FOCProgramSyncManager.h"
 #import "FOCProgramRequestManager.h"
+#import "FOCBluetoothPairManager.h"
 
 @import CoreBluetooth;
 @import QuartzCore;
@@ -24,7 +25,7 @@
  *
  * 
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate, ProgramRequestDelegate> {
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate, ProgramRequestDelegate, BluetoothPairingDelegate> {
     __weak id<FOCDeviceStateDelegate> delegate_;
 }
 

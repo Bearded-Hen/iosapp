@@ -14,6 +14,7 @@
 @property CBCentralManager* cbCentralManager;
 @property CBPeripheral* focusDevice;
 
+@property FOCBluetoothPairManager *bluetoothPairManager;
 @property FOCCharacteristicDiscoveryManager *characteristicManager;
 @property FOCProgramSyncManager *syncManager;
 @property FOCProgramRequestManager *requestManager;
@@ -71,30 +72,6 @@
     [self.delegate didChangeConnectionState:self.connectionState];
 }
 
-- (void)handleBluetoothNotReady
-{
-    if ([_cbCentralManager state] == CBCentralManagerStatePoweredOff) {
-        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
-        [self updateConnectionState:DISCONNECTED];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnauthorized) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
-        NSLog(@"CoreBluetooth BLE state is unknown");
-        [self updateConnectionState:UNKNOWN];
-    }
-    else {
-        NSLog(@"Unknown bluetooth CentralManager update");
-        [self updateConnectionState:UNKNOWN];
-    }
-}
-
 #pragma mark - CBCentralManagerDelegate
 
 - (void)centralManager:(CBCentralManager*)central didDiscoverPeripheral:(CBPeripheral*)peripheral advertisementData:(NSDictionary*)advertisementData RSSI:(NSNumber*)RSSI
@@ -123,7 +100,7 @@
     _focusDevice.delegate = _characteristicManager;
     
     [_focusDevice discoverServices:desiredServices];
-    [self updateConnectionState:CONNECTED];
+    [self updateConnectionState:CONNECTED]; // FIXME need to check if the device is paired!
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager*)central
@@ -139,8 +116,25 @@
         // FIXME need to retrieve previously connected peripherals and attempt connection
         //        [self.cbCentralManager retrievePeripheralsWithIdentifiers:nil];
     }
+    else if ([_cbCentralManager state] == CBCentralManagerStatePoweredOff) {
+        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
+        [self updateConnectionState:DISCONNECTED];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnauthorized) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
+        NSLog(@"CoreBluetooth BLE state is unknown");
+        [self updateConnectionState:UNKNOWN];
+    }
     else {
-        [self handleBluetoothNotReady];
+        NSLog(@"Unknown bluetooth CentralManager update");
+        [self updateConnectionState:UNKNOWN];
     }
 }
 
@@ -148,14 +142,32 @@
 
 -(void)didFinishCharacteristicDiscovery:(NSError *)error
 {
-    NSLog(@"Finished discovering characteristics, beginning program sync");
+    NSLog(@"Finished discovering characteristics, beginning pairing check");
     
-    _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice];
-    _focusDevice.delegate = _syncManager;
-    
-    FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
-    
-    [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+    _bluetoothPairManager = [[FOCBluetoothPairManager alloc] initWithPeripheral:_focusDevice];
+    _focusDevice.delegate = _bluetoothPairManager;
+
+    _bluetoothPairManager.delegate = self;
+    [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
+}
+
+#pragma mark - BluetoothPairingDelegate
+
+- (void)didDiscoverBluetoothPairState:(BOOL)paired error:(NSError *)error
+{
+    if (paired) {
+        NSLog(@"Devices are paired, initiating program sync");
+        
+        _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice];
+        _syncManager.delegate = self;
+        _focusDevice.delegate = _syncManager;
+        
+        FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
+        [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+    }
+    else {
+        NSLog(@"Focus device is not paired. Prompting user.");
+    }
 }
 
 #pragma mark - ProgramSyncDelegate
@@ -166,6 +178,7 @@
     
     _requestManager = [[FOCProgramRequestManager alloc] initWithPeripheral:_focusDevice];
     _focusDevice.delegate = _requestManager;
+    _requestManager.delegate = self;
 }
 
 #pragma mark - ProgramRequestDelegate
