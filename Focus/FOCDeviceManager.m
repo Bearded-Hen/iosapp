@@ -24,8 +24,9 @@
 @end
 
 static const int kPairButton = 1;
+static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
-@implementation FOCDeviceManager // TODO should connect to BLE device as in apple guide (waiting on clarifications)
+@implementation FOCDeviceManager
 
 -(id)init {
     if (self = [super init]) {
@@ -49,16 +50,42 @@ static const int kPairButton = 1;
     [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
 }
 
-- (void)scanForFocusDevices
+- (void)connectFocusDevice
 {
     [self updateConnectionState:SCANNING];
     
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] init];
+    id storedId = [userDefaults objectForKey:kStoredPeripheralId];
+    
+    if (storedId != nil) {
+        NSLog(@"Attempting connection to previous peripheral %@", storedId);
+        
+        NSMutableArray *peripheralArray = [[NSMutableArray alloc] init];
+        [peripheralArray addObject:[CBUUID UUIDWithString:storedId]];
+        
+        NSArray *peripherals = [_cbCentralManager retrievePeripheralsWithIdentifiers:peripheralArray];
+        
+        if (peripherals != nil && [peripherals count] > 0) {
+            _focusDevice = peripherals[0];
+            [_cbCentralManager connectPeripheral:_focusDevice options:nil];
+            [self updateConnectionState:CONNECTING];
+        }
+        else {
+            [self scanForFocusPeripherals];
+        }
+    }
+    else {
+        [self scanForFocusPeripherals];
+    }
+}
+
+- (void)scanForFocusPeripherals
+{
+    NSLog(@"BLE peripheral scan initiated");
+    
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
-
     [self.cbCentralManager scanForPeripheralsWithServices:desiredServices options:nil];
-//    [self.cbCentralManager retrievePeripheralsWithIdentifiers:(NSArray *)] // FIXME should retain previously connected peripheral and attempt connection to this
-    NSLog(@"BLE scan initiated");
 }
 
 - (void)updateConnectionState:(FocusConnectionState)state
@@ -76,6 +103,45 @@ static const int kPairButton = 1;
     NSLog(@"Focus connection state changed to '%@'", stateName);
     self.connectionState = state;
     [self.delegate didChangeConnectionState:self.connectionState];
+}
+
+/**
+ * Disconnects from the peripheral then reconnects, which triggers a pairing request.
+ */
+- (void)promptPairingDialog
+{
+    [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
+    [_cbCentralManager cancelPeripheralConnection:_focusDevice];
+    _focusDevice = nil;
+    [self handleBluetoothStateUpdate];
+}
+
+- (void)handleBluetoothStateUpdate
+{
+    if ([_cbCentralManager state] == CBCentralManagerStatePoweredOn) {
+        NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
+        [self connectFocusDevice];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStatePoweredOff) {
+        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
+        [self updateConnectionState:DISCONNECTED];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnauthorized) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
+        [self updateConnectionState:DISCONNECTED];
+        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
+    }
+    else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
+        NSLog(@"CoreBluetooth BLE state is unknown");
+        [self updateConnectionState:UNKNOWN];
+    }
+    else {
+        NSLog(@"Unknown bluetooth CentralManager update");
+        [self updateConnectionState:UNKNOWN];
+    }
 }
 
 #pragma mark - CBCentralManagerDelegate
@@ -114,36 +180,6 @@ static const int kPairButton = 1;
     [self handleBluetoothStateUpdate];
 }
 
-- (void)handleBluetoothStateUpdate
-{
-    if ([_cbCentralManager state] == CBCentralManagerStatePoweredOn) {
-        NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
-        [self scanForFocusDevices];
-        // FIXME need to retrieve previously connected peripherals and attempt connection
-        //        [self.cbCentralManager retrievePeripheralsWithIdentifiers:nil];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStatePoweredOff) {
-        [self displayUserErrMessage:@"Bluetooth disabled" message:@"Please turn on bluetooth to control your Focus device."];
-        [self updateConnectionState:DISCONNECTED];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnauthorized) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unauthorised" message:@"Please authorise the bluetooth permission to control your Focus device."];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnsupported) {
-        [self updateConnectionState:DISCONNECTED];
-        [self displayUserErrMessage:@"Bluetooth unsupported" message:@"Your device does not currently support this Focus device."];
-    }
-    else if ([_cbCentralManager state] == CBCentralManagerStateUnknown) {
-        NSLog(@"CoreBluetooth BLE state is unknown");
-        [self updateConnectionState:UNKNOWN];
-    }
-    else {
-        NSLog(@"Unknown bluetooth CentralManager update");
-        [self updateConnectionState:UNKNOWN];
-    }
-}
-
 #pragma mark - CharacteristicDiscoveryDelegate
 
 -(void)didFinishCharacteristicDiscovery:(NSError *)error
@@ -166,6 +202,9 @@ static const int kPairButton = 1;
     if (paired) {
         NSLog(@"Devices are paired, initiating program sync");
         [self updateConnectionState:CONNECTED];
+        
+        NSUserDefaults *userDefaults = [[NSUserDefaults alloc] init];
+        [userDefaults setObject:_focusDevice.identifier.UUIDString forKey:kStoredPeripheralId];
         
         _syncManager = [[FOCProgramSyncManager alloc] initWithPeripheral:_focusDevice];
         _syncManager.delegate = self;
@@ -200,19 +239,13 @@ static const int kPairButton = 1;
     // TODO program request logic
 }
 
+#pragma mark - UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == kPairButton) {
         [self promptPairingDialog];
     }
-}
-
-- (void)promptPairingDialog
-{
-    [_bluetoothPairManager checkPairing:_characteristicManager.controlCmdRequest];
-    [_cbCentralManager cancelPeripheralConnection:_focusDevice];
-    _focusDevice = nil;
-    [self handleBluetoothStateUpdate];
 }
 
 @end
