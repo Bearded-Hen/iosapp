@@ -17,10 +17,20 @@ static NSString *kBluetoothConnected = @"bluetooth_connected.png";
 static NSString *kBluetoothDisconnected = @"bluetooth_disconnected.png";
 static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
+static const int kVerticalEdgeInset = 30;
+static const int kHorizontalEdgeInset = 20;
+
+@interface FOCDataViewController ()
+
+@property NSDictionary *editableAttributes;
+
+@end
+
 @implementation FOCDataViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view, typically from a nib.
     
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
@@ -32,6 +42,9 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
     _programTitleLabel.text = [_program name];
     _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
     _backgroundImageView.image = [UIImage imageNamed:_program.imageName];
+    
+    _editableAttributes = [_program editableAttributes];
+    [_collectionView reloadData];
 }
 
 -(void)notifyConnectionStateChanged:(FocusConnectionState)state
@@ -75,7 +88,7 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
 {
-    return [[_program editableAttributes] count];
+    return [_editableAttributes count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
@@ -83,8 +96,12 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
     return 1;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"ProgramAttributeCell" forIndexPath:indexPath];
+    
+    
+    
     return cell;
 }
 
@@ -105,16 +122,14 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO return size for item
-    
-    return CGSizeMake(100, 60);
+    float availableSpace = _collectionView.frame.size.width - (kHorizontalEdgeInset * 3);
+    return CGSizeMake(availableSpace / 2, 50);
 }
 
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    // spacing between cells, headers and footers
-    return UIEdgeInsetsMake(50, 20, 50, 20);
+    return UIEdgeInsetsMake(kVerticalEdgeInset, kHorizontalEdgeInset, kVerticalEdgeInset, kHorizontalEdgeInset);
 }
 
 @end
