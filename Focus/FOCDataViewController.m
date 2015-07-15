@@ -75,15 +75,11 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
 {
-    // TODO count of program fields
-    
-    return 8;
+    return [[_program editableAttributes] count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
 {
-    // TODO count of program fields
-    
     return 1;
 }
 
@@ -96,11 +92,13 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // TODO item selected
+    NSLog(@"Selected program attribute at index %d", indexPath.item);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // TODO item deselected
+    NSLog(@"Deselected program attribute at index %d", indexPath.item);
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

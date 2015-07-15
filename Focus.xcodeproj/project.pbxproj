@@ -25,6 +25,7 @@
 		F071136E1B5562E100D0A7D1 /* bluetooth_connected.png in Resources */ = {isa = PBXBuildFile; fileRef = F071136B1B5562E100D0A7D1 /* bluetooth_connected.png */; };
 		F071136F1B5562E100D0A7D1 /* bluetooth_disconnected.png in Resources */ = {isa = PBXBuildFile; fileRef = F071136C1B5562E100D0A7D1 /* bluetooth_disconnected.png */; };
 		F07113701B5562E100D0A7D1 /* bluetooth_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = F071136D1B5562E100D0A7D1 /* bluetooth_disabled.png */; };
+		F07113941B56774E00D0A7D1 /* FOCProgramModeWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113931B56774E00D0A7D1 /* FOCProgramModeWrapper.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -79,6 +80,8 @@
 		F071136B1B5562E100D0A7D1 /* bluetooth_connected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluetooth_connected.png; sourceTree = "<group>"; };
 		F071136C1B5562E100D0A7D1 /* bluetooth_disconnected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluetooth_disconnected.png; sourceTree = "<group>"; };
 		F071136D1B5562E100D0A7D1 /* bluetooth_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluetooth_disabled.png; sourceTree = "<group>"; };
+		F07113921B56774E00D0A7D1 /* FOCProgramModeWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCProgramModeWrapper.h; sourceTree = "<group>"; };
+		F07113931B56774E00D0A7D1 /* FOCProgramModeWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramModeWrapper.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -182,6 +185,8 @@
 				F071133F1B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m */,
 				F071135E1B55543200D0A7D1 /* FOCDefaultProgramProvider.h */,
 				F071135F1B55543200D0A7D1 /* FOCDefaultProgramProvider.m */,
+				F07113921B56774E00D0A7D1 /* FOCProgramModeWrapper.h */,
+				F07113931B56774E00D0A7D1 /* FOCProgramModeWrapper.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
 				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
+				F07113941B56774E00D0A7D1 /* FOCProgramModeWrapper.m in Sources */,
 				F07113601B55543200D0A7D1 /* FOCDefaultProgramProvider.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
 				F07113461B5405B400D0A7D1 /* FOCFontAwesome.m in Sources */,

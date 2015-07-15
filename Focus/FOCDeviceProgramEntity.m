@@ -7,10 +7,25 @@
 //
 
 #import "FOCDeviceProgramEntity.h"
-
 #import "FocusConstants.h"
+#import "FOCProgramModeWrapper.h"
 
 @implementation FOCDeviceProgramEntity
+
+NSString *const PROG_ATTR_MODE = @"PROG_ATTR_MODE";
+NSString *const PROG_ATTR_SHAM = @"PROG_ATTR_SHAM";
+NSString *const PROG_ATTR_BIPOLAR = @"PROG_ATTR_BIPOLAR";
+NSString *const PROG_ATTR_RAND_CURR = @"PROG_ATTR_RAND_CURR";
+NSString *const PROG_ATTR_RAND_FREQ = @"PROG_ATTR_RAND_FREQ";
+NSString *const PROG_ATTR_DURATION = @"PROG_ATTR_DURATION";
+NSString *const PROG_ATTR_CURRENT = @"PROG_ATTR_CURRENT";
+NSString *const PROG_ATTR_VOLTAGE = @"PROG_ATTR_VOLTAGE";
+NSString *const PROG_ATTR_SHAM_DURATION = @"PROG_ATTR_SHAM_DURATION";
+NSString *const PROG_ATTR_CURR_OFFSET = @"PROG_ATTR_CURR_OFFSET";
+NSString *const PROG_ATTR_MIN_FREQ = @"PROG_ATTR_MIN_FREQ";
+NSString *const PROG_ATTR_MAX_FREQ = @"PROG_ATTR_MAX_FREQ";
+NSString *const PROG_ATTR_FREQUENCY = @"PROG_ATTR_FREQUENCY";
+NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor
 {
@@ -79,7 +94,7 @@
     
     //serialise misc values
     if (FOC_EMPTY_BYTE != descriptor[0]) {
-        _voltage = descriptor[0];
+        _voltage = [[NSNumber alloc] initWithInt:descriptor[0]];
     }
     
     // TODO below values
@@ -101,17 +116,17 @@
     return info;
 }
 
-- (int)getIntegerFromBytes:(NSData *)data
+- (NSNumber *)getIntegerFromBytes:(NSData *)data
 {
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);
     
     int n = (bytes[1] & 0xff << 8) + (bytes[0] & 0xff);
     free(bytes);
-    return n;
+    return [[NSNumber alloc] initWithInt:n];
 }
 
-- (long)getLongFromBytes:(NSData *)data
+- (NSNumber *)getLongFromBytes:(NSData *)data
 {
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);
@@ -121,7 +136,51 @@
                 ((long) (bytes[1] & 0xff) << 8) +
                 ((long) (bytes[0] & 0xff));
     free(bytes);
-    return n;
+    return [[NSNumber alloc] initWithLong:n];
+}
+
+- (NSDictionary *)editableAttributes
+{
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    FOCProgramModeWrapper *wrapper = [[FOCProgramModeWrapper alloc] initWithMode:_programMode];
+    
+    // mandatory attributes
+
+    [attributes setValue:wrapper forKey:PROG_ATTR_MODE];
+    [attributes setObject:_duration forKey:PROG_ATTR_DURATION];
+    [attributes setObject:_current forKey:PROG_ATTR_CURRENT];
+    [attributes setObject:_sham forKey:PROG_ATTR_SHAM];
+    [attributes setObject:_shamDuration forKey:PROG_ATTR_SHAM_DURATION];
+    [attributes setObject:_voltage forKey:PROG_ATTR_VOLTAGE];
+    
+    // optional attributes
+    
+    if (_bipolar != nil) {
+        [attributes setObject:_bipolar forKey:PROG_ATTR_BIPOLAR];
+    }
+    if (_randomCurrent != nil) {
+        [attributes setObject:_randomCurrent forKey:PROG_ATTR_RAND_CURR];
+    }
+    if (_randomFrequency != nil) {
+        [attributes setObject:_randomFrequency forKey:PROG_ATTR_RAND_FREQ];
+    }
+    if (_currentOffset != nil) {
+        [attributes setObject:_currentOffset forKey:PROG_ATTR_CURR_OFFSET];
+    }
+    if (_frequency != nil) {
+        [attributes setObject:_frequency forKey:PROG_ATTR_FREQUENCY];
+    }
+    if (_dutyCycle != nil) {
+        [attributes setObject:_dutyCycle forKey:PROG_ATTR_DUTY_CYCLE];
+    }
+    if (_minFrequency != nil) {
+        [attributes setObject:_minFrequency forKey:PROG_ATTR_MIN_FREQ];
+    }
+    if (_maxFrequency != nil) {
+        [attributes setObject:_maxFrequency forKey:PROG_ATTR_MAX_FREQ];
+    }
+    
+    return attributes;
 }
 
 @end

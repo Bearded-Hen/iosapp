@@ -17,11 +17,11 @@
     entity.imageName = @"program_gamer.png";
 
     entity.programMode = DCS;
-    entity.current = 1500;
-    entity.duration = 600;
-    entity.voltage = 20;
-    entity.sham = false;
-    entity.shamDuration = 35;
+    entity.current = [[NSNumber alloc] initWithInt:1500];
+    entity.duration = [[NSNumber alloc] initWithInt:600];
+    entity.voltage = [[NSNumber alloc] initWithInt:20];
+    entity.sham = [[NSNumber alloc] initWithBool:false];
+    entity.shamDuration = [[NSNumber alloc] initWithInt:35];
     
     return entity;
 }
@@ -33,11 +33,11 @@
     entity.imageName = @"program_enduro.png";
     
     entity.programMode = DCS;
-    entity.current = 1700;
-    entity.duration = 900;
-    entity.voltage = 20;
-    entity.sham = false;
-    entity.shamDuration = 45;
+    entity.current = [[NSNumber alloc] initWithInt:1700];
+    entity.duration = [[NSNumber alloc] initWithInt:900];
+    entity.voltage = [[NSNumber alloc] initWithInt:20];
+    entity.sham = [[NSNumber alloc] initWithBool:false];
+    entity.shamDuration = [[NSNumber alloc] initWithInt:45];
     
     return entity;
 }
@@ -49,15 +49,15 @@
     entity.imageName = @"program_wave.png";
     
     entity.programMode = ACS;
-    entity.current = 1500;
-    entity.duration = 1080;
-    entity.voltage = 30;
-    entity.sham = false;
-    entity.shamDuration = 25;
+    entity.current = [[NSNumber alloc] initWithInt:1500];
+    entity.duration = [[NSNumber alloc] initWithInt:1080];
+    entity.voltage = [[NSNumber alloc] initWithInt:30];
+    entity.sham = [[NSNumber alloc] initWithBool:false];
+    entity.shamDuration = [[NSNumber alloc] initWithInt:25];
     
     entity.bipolar = [NSNumber numberWithBool:true];
-    entity.currentOffset = 100;
-    entity.frequency = 1000;
+    entity.currentOffset = [[NSNumber alloc] initWithInt:100];
+    entity.frequency = [[NSNumber alloc] initWithInt:1000];
     
     return entity;
 }
@@ -69,16 +69,16 @@
     entity.imageName = @"program_pulse.png";
     
     entity.programMode = PCS;
-    entity.current = 1500;
-    entity.duration = 600;
-    entity.voltage = 15;
-    entity.sham = false;
-    entity.bipolar = false;
-    entity.shamDuration = 25;
+    entity.current = [[NSNumber alloc] initWithInt:1500];
+    entity.duration = [[NSNumber alloc] initWithInt:600];
+    entity.voltage = [[NSNumber alloc] initWithInt:15];
+    entity.sham = [[NSNumber alloc] initWithBool:false];
+    entity.bipolar = [[NSNumber alloc] initWithBool:false];
+    entity.shamDuration = [[NSNumber alloc] initWithInt:25];
     
-    entity.currentOffset = 1200;
-    entity.frequency = 40000;
-    entity.dutyCycle = 20;
+    entity.currentOffset = [[NSNumber alloc] initWithInt:1200];
+    entity.frequency = [[NSNumber alloc] initWithInt:40000];
+    entity.dutyCycle = [[NSNumber alloc] initWithInt:20];
     
     return entity;
 }
@@ -90,20 +90,19 @@
     entity.imageName = @"program_noise.png";
     
     entity.programMode = RNS;
-    entity.current = 1600;
-    entity.duration = 600;
-    entity.voltage = 20;
-    entity.sham = false;
-    entity.bipolar = false;
-    entity.shamDuration = 25;
+    entity.current = [[NSNumber alloc] initWithInt:1600];
+    entity.duration = [[NSNumber alloc] initWithInt:600];
+    entity.voltage = [[NSNumber alloc] initWithInt:20];
+    entity.sham = [[NSNumber alloc] initWithBool:false];
+    entity.bipolar = [[NSNumber alloc] initWithBool:false];
+    entity.shamDuration = [[NSNumber alloc] initWithInt:25];
     
-    entity.frequency = 1000;
+    entity.frequency = [[NSNumber alloc] initWithInt:1000];
     entity.randomCurrent = [NSNumber numberWithBool:true];
     entity.randomFrequency = [NSNumber numberWithBool:true];
     
     return entity;
 }
-
 
 +(NSArray *) allDefaults
 {
@@ -115,6 +114,5 @@
     [array addObject:[self noise]];
     return array;
 }
-
 
 @end
