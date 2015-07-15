@@ -215,7 +215,9 @@ static const float kFontSize = 11.0;
 - (NSString *)readableFrequencyString:(id)value
 {
     NSNumber *number = (NSNumber *) value;
-    return [NSString stringWithFormat:@"%ldHz", number.longValue];
+    float freq = number.intValue;
+    freq /= 1000; // convert from amps to mA
+    return [NSString stringWithFormat:@"%dHz", (int)freq];
 }
 
 - (NSString *)readablePercentageString:(id)value
