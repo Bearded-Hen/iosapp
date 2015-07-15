@@ -220,4 +220,14 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     }
 }
 
++ (NSNumber *)persistableValueFor:(ProgramMode)mode
+{
+    switch (mode) {
+        case PCS: return [[NSNumber alloc] initWithInt:0];
+        case DCS: return [[NSNumber alloc] initWithInt:1];
+        case ACS: return [[NSNumber alloc] initWithInt:2];
+        case RNS: return [[NSNumber alloc] initWithInt:3];
+    }
+}
+
 @end

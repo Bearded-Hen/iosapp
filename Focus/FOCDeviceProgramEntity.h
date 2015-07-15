@@ -56,6 +56,7 @@ typedef NS_ENUM(int, ProgramMode) {
 };
 
 + (NSString *)readableLabelFor:(ProgramMode)mode;
++ (NSNumber *)persistableValueFor:(ProgramMode)mode;
 
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor;
 

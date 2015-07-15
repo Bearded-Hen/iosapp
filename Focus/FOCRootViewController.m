@@ -30,6 +30,8 @@
     _deviceManager = delegate.focusDeviceManager;
     _deviceManager.delegate = self;
     
+    [delegate saveProgram];
+    
     // Do any additional setup after loading the view, typically from a nib.
     // Configure the page view controller and add it as a child view controller.
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
