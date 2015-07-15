@@ -9,6 +9,7 @@
 #import "FOCDataViewController.h"
 #import "FOCFontAwesome.h"
 #import "FOCDisplayAttributeModel.h"
+#import "FOCProgramModeWrapper.h"
 
 @interface FOCDataViewController ()
 
@@ -104,51 +105,45 @@ static const int kHorizontalEdgeInset = 10;
  */
 - (NSString *)labelForAttrKey:(NSString *)dataKey
 {
-    NSString *title;
-    
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-        title = @"MODE";
+        return @"MODE";
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-        title = @"SHAM";
+        return @"SHAM";
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-        title = @"BIPOLAR";
+        return @"BIPOLAR";
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-        title = @"R. CURRENT";
+        return @"R. CURRENT";
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-        title = @"R. FREQ";
+        return @"R. FREQ";
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
-        title = @"TIME";
+        return @"TIME";
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
-        title = @"CURRENT";
+        return @"CURRENT";
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
-        title = @"VOLTAGE";
+        return @"VOLTAGE";
     }
     else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-        title = @"SHAM PERIOD";
+        return @"SHAM PERIOD";
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
-        title = @"OFFSET";
-    }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
-        title = @"CURRENT";
+        return @"OFFSET";
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-        title = @"FREQUENCY";
+        return @"FREQUENCY";
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
-        title = @"DUTY CYCLE";
+        return @"DUTY CYCLE";
     }
     else {
-        title = @"";
+        return @"";
     }
-    return title;
 }
 
 /**
@@ -156,11 +151,11 @@ static const int kHorizontalEdgeInset = 10;
  */
 - (NSString *)valueForAttrKey:(NSString *)dataKey
 {
-    NSString *valueText;
     id value = [_editableAttributes objectForKey:dataKey];
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-        // TODO
+        FOCProgramModeWrapper *wrapper = (FOCProgramModeWrapper *) value;
+        return [FOCDeviceProgramEntity readableLabelFor:wrapper.mode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey] ||
              [PROG_ATTR_BIPOLAR isEqualToString:dataKey] ||
@@ -169,39 +164,69 @@ static const int kHorizontalEdgeInset = 10;
         
         return [self readableBoolString:value];
     }
-    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_DURATION isEqualToString:dataKey] ||
+             [PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
         
+        return [self readableTimeString:value];
     }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey] ||
+             [PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
         
+        return [self readableCurrentString:value];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
-        
-    }
-    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-        
-    }
-    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
-        
-    }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
-        
+        return [self readableVoltageString:value];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-        
+        return [self readableFrequencyString:value];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
-        
+        return [self readablePercentageString:value];
     }
     else {
-        valueText = @"";
+        return @"";
     }
-    return valueText;
+    return nil;
 }
 
 - (NSString *)readableBoolString:(id)value
 {
-    return (BOOL) value ? @"ON" : @"OFF";
+    NSNumber *number = (NSNumber *) value;
+    return number.boolValue ? @"ON" : @"OFF";
+}
+
+- (NSString *)readableTimeString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    int seconds = number.intValue % 60;
+    int mins = (number.intValue - seconds) / 60;
+    return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
+}
+
+- (NSString *)readableVoltageString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    return [NSString stringWithFormat:@"%dV", number.intValue];
+}
+
+- (NSString *)readableFrequencyString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    return [NSString stringWithFormat:@"%ldHz", number.longValue];
+}
+
+- (NSString *)readablePercentageString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    return [NSString stringWithFormat:@"%ld%%", number.longValue];
+}
+
+- (NSString *)readableCurrentString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    float current = number.intValue;
+    current /= 1000; // convert from amps to mA
+    return [NSString stringWithFormat:@"%.1fmA", current];
 }
 
 #pragma mark - UICollectionView Datasource
@@ -222,9 +247,7 @@ static const int kHorizontalEdgeInset = 10;
     
     FOCDisplayAttributeModel *model = [self displayAttributeModelForIndex:indexPath];
     
-    CGRect cellFrame = cell.frame;
     CGSize cellSize = cell.frame.size;
-    
     float valueStart = cellSize.width * 0.6;
     
     CGRect keyFrame = CGRectMake(0, 0, valueStart, cellSize.height);
@@ -243,7 +266,7 @@ static const int kHorizontalEdgeInset = 10;
     valueLabel.backgroundColor = [UIColor whiteColor];
     
     for (UIView *view in [cell subviews]) {
-        [cell removeFromSuperview];
+        [view removeFromSuperview];
     }
     
     [cell addSubview:keyLabel];

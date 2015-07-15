@@ -210,4 +210,14 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return editKeys;
 }
 
++ (NSString *)readableLabelFor:(ProgramMode)mode
+{
+    switch (mode) {
+        case PCS: return @"tPCS";
+        case DCS: return @"tDCS";
+        case ACS: return @"tACS";
+        case RNS: return @"tRNS";
+    }
+}
+
 @end
