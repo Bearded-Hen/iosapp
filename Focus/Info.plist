@@ -34,7 +34,7 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>fontawesome-webfont.ttf</string>
+		<string>FontAwesome.ttf</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

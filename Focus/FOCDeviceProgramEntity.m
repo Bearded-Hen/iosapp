@@ -173,14 +173,41 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     if (_dutyCycle != nil) {
         [attributes setObject:_dutyCycle forKey:PROG_ATTR_DUTY_CYCLE];
     }
-    if (_minFrequency != nil) {
-        [attributes setObject:_minFrequency forKey:PROG_ATTR_MIN_FREQ];
-    }
-    if (_maxFrequency != nil) {
-        [attributes setObject:_maxFrequency forKey:PROG_ATTR_MAX_FREQ];
-    }
     
     return attributes;
+}
+
+- (NSArray *)orderedEditKeys
+{
+    NSMutableArray *editKeys = [[NSMutableArray alloc] init];
+    
+    [editKeys addObject:PROG_ATTR_MODE];
+    [editKeys addObject:PROG_ATTR_DURATION];
+    [editKeys addObject:PROG_ATTR_CURRENT];
+    [editKeys addObject:PROG_ATTR_SHAM];
+    [editKeys addObject:PROG_ATTR_SHAM_DURATION];
+    [editKeys addObject:PROG_ATTR_VOLTAGE];
+    
+    if (_bipolar != nil) {
+        [editKeys addObject:PROG_ATTR_BIPOLAR];
+    }
+    if (_randomCurrent != nil) {
+        [editKeys addObject:PROG_ATTR_RAND_CURR];
+    }
+    if (_randomFrequency != nil) {
+        [editKeys addObject:PROG_ATTR_RAND_FREQ];
+    }
+    if (_currentOffset != nil) {
+        [editKeys addObject:PROG_ATTR_CURR_OFFSET];
+    }
+    if (_frequency != nil) {
+        [editKeys addObject:PROG_ATTR_FREQUENCY];
+    }
+    if (_dutyCycle != nil) {
+        [editKeys addObject:PROG_ATTR_DUTY_CYCLE];
+    }
+
+    return editKeys;
 }
 
 @end

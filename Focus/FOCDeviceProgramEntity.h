@@ -58,6 +58,7 @@ typedef NS_ENUM(int, ProgramMode) {
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor;
 
 - (NSDictionary *)editableAttributes;
+- (NSArray *)orderedEditKeys;
 - (NSString *)programDebugInfo;
 
 @property Byte programId;

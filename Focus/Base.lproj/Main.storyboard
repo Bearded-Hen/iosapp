@@ -162,7 +162,7 @@
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
                                         <rect key="frame" x="8" y="8" width="584" height="459"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZRH-oF-5ou">
                                             <size key="itemSize" width="110" height="50"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -178,7 +178,6 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
-                                                <color key="backgroundColor" red="1" green="0.98211689199999996" blue="0.39016844270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </collectionViewCell>
                                         </cells>
                                         <connections>
