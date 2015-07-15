@@ -79,7 +79,7 @@
                                                     </mask>
                                                 </variation>
                                             </button>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="992-Zi-oRe">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bluetooth_disabled.png" translatesAutoresizingMaskIntoConstraints="NO" id="992-Zi-oRe">
                                                 <rect key="frame" x="108" y="16" width="48" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="86" id="9Ks-ht-dqA"/>
@@ -160,11 +160,41 @@
                                             </mask>
                                         </variation>
                                     </view>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
+                                        <rect key="frame" x="8" y="8" width="584" height="459"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZRH-oF-5ou">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProgramAttributeCell" id="U3D-ko-mI5">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <color key="backgroundColor" red="1" green="0.98211689199999996" blue="0.39016844270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hzS-jB-y9W" id="Ciy-Kg-X1y"/>
+                                            <outlet property="delegate" destination="hzS-jB-y9W" id="ur8-Lz-shr"/>
+                                        </connections>
+                                    </collectionView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="q8m-AG-Kp0" secondAttribute="bottom" id="HBZ-lx-35c"/>
                                     <constraint firstItem="q8m-AG-Kp0" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" id="HtA-uz-5iL"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" constant="8" id="O86-k3-WE5"/>
+                                    <constraint firstAttribute="trailing" secondItem="BfS-H7-5PZ" secondAttribute="trailing" constant="8" id="cTI-U4-jGJ"/>
+                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="top" secondItem="wFW-NB-ba9" secondAttribute="top" constant="8" id="sG9-mt-hZU"/>
+                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="8" id="tiv-Yb-3W3"/>
                                     <constraint firstAttribute="trailing" secondItem="q8m-AG-Kp0" secondAttribute="trailing" id="ukR-Xz-HMn"/>
                                 </constraints>
                             </view>
@@ -191,6 +221,7 @@
                         <outlet property="bluetoothConnectionIcon" destination="992-Zi-oRe" id="N2b-z0-YVW"/>
                         <outlet property="btnPlayProgram" destination="pIl-H5-jT5" id="uRJ-vy-PlN"/>
                         <outlet property="btnProgramSettings" destination="sy5-cC-SEH" id="QAK-ox-I9f"/>
+                        <outlet property="collectionView" destination="BfS-H7-5PZ" id="BFT-o9-09r"/>
                         <outlet property="programControlContainer" destination="q8m-AG-Kp0" id="aFa-MR-IIX"/>
                         <outlet property="programTitleLabel" destination="i7n-lc-4In" id="rcZ-OW-8pa"/>
                     </connections>
@@ -217,4 +248,7 @@
             <point key="canvasLocation" x="181" y="476"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bluetooth_disabled.png" width="36" height="36"/>
+    </resources>
 </document>

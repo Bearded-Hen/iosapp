@@ -71,4 +71,52 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
     _bluetoothConnectionIcon.image = [UIImage imageNamed:imagePath];
 }
 
+#pragma mark - UICollectionView Datasource
+
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
+{
+    // TODO count of program fields
+    
+    return 8;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
+{
+    // TODO count of program fields
+    
+    return 1;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"ProgramAttributeCell" forIndexPath:indexPath];
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO item selected
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO item deselected
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO return size for item
+    
+    return CGSizeMake(100, 60);
+}
+
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    // spacing between cells, headers and footers
+    return UIEdgeInsetsMake(50, 20, 50, 20);
+}
+
 @end

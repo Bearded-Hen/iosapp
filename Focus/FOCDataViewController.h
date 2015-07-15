@@ -11,7 +11,7 @@
 #import "FOCDeviceProgramEntity.h"
 #import "FOCDeviceStateDelegate.h"
 
-@interface FOCDataViewController : UIViewController
+@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) FOCDeviceProgramEntity *program;
 
@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnPlayProgram;
 @property (weak, nonatomic) IBOutlet UIButton *btnProgramSettings;
 @property (weak, nonatomic) IBOutlet UIImageView *bluetoothConnectionIcon;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 -(void)notifyConnectionStateChanged:(FocusConnectionState)state;
 
