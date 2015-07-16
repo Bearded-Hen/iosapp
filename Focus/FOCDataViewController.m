@@ -11,6 +11,8 @@
 #import "FOCDisplayAttributeModel.h"
 #import "FOCProgramModeWrapper.h"
 #import "FOCPaddedLabel.h"
+#import "FOCColorMap.h"
+#import "FOCProgramAttributeView.h"
 
 @interface FOCDataViewController ()
 
@@ -22,8 +24,6 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
 static const int kVerticalEdgeInset = 20;
 static const int kHorizontalEdgeInset = 10;
-static const float kLabelWeighting = 0.63;
-static const float kFontSize = 11.0;
 
 @interface FOCDataViewController ()
 
@@ -37,8 +37,6 @@ static const float kFontSize = 11.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view, typically from a nib.
     
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
     [_btnProgramSettings.titleLabel setFont:[FOCFontAwesome font]];
@@ -260,31 +258,10 @@ static const float kFontSize = 11.0;
     
     FOCDisplayAttributeModel *model = [self displayAttributeModelForIndex:indexPath];
     
-    CGSize cellSize = cell.frame.size;
-    float valueStart = cellSize.width * kLabelWeighting;
+    FOCProgramAttributeView *view = [[FOCProgramAttributeView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
     
-    CGRect keyFrame = CGRectMake(0, 0, valueStart, cellSize.height);
-    CGRect valueFrame = CGRectMake(valueStart, 0, cellSize.width, cellSize.height);
-    
-    FOCPaddedLabel *keyLabel = [[FOCPaddedLabel alloc] initWithFrame:keyFrame];
-    FOCPaddedLabel *valueLabel = [[FOCPaddedLabel alloc] initWithFrame:valueFrame];
-    
-    keyLabel.text = model.attrLabel;
-    valueLabel.text = model.attrValue;
-    
-    keyLabel.font = [UIFont systemFontOfSize:kFontSize];
-    valueLabel.font = [UIFont systemFontOfSize:kFontSize];
-    
-    keyLabel.backgroundColor = [UIColor grayColor];
-    valueLabel.backgroundColor = [UIColor whiteColor];
-    
-    for (UIView *view in [cell subviews]) {
-        [view removeFromSuperview];
-    }
-    
-    [cell addSubview:keyLabel];
-    [cell addSubview:valueLabel];
-    
+    [view updateModel:model];
+    [cell addSubview:view];
     return cell;
 }
 
@@ -306,7 +283,7 @@ static const float kFontSize = 11.0;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     float availableSpace = _collectionView.frame.size.width - (kHorizontalEdgeInset * 3);
-    return CGSizeMake(availableSpace / 2, 40);
+    return CGSizeMake(availableSpace / 2, 44);
 }
 
 - (UIEdgeInsets)collectionView:

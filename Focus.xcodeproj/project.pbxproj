@@ -30,6 +30,8 @@
 		F071139A1B569C7700D0A7D1 /* FOCPaddedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113991B569C7700D0A7D1 /* FOCPaddedLabel.m */; };
 		F07113DD1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */; };
 		F07113E01B57A84000D0A7D1 /* CoreDataProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */; };
+		F07113E31B57F00300D0A7D1 /* FOCColorMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113E21B57F00300D0A7D1 /* FOCColorMap.m */; };
+		F07113E61B5800C600D0A7D1 /* FOCProgramAttributeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -93,6 +95,10 @@
 		F07113DC1B56B85500D0A7D1 /* FocusProgram.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FocusProgram.xcdatamodel; sourceTree = "<group>"; };
 		F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataProgram.h; sourceTree = "<group>"; };
 		F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataProgram.m; sourceTree = "<group>"; };
+		F07113E11B57F00300D0A7D1 /* FOCColorMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCColorMap.h; sourceTree = "<group>"; };
+		F07113E21B57F00300D0A7D1 /* FOCColorMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCColorMap.m; sourceTree = "<group>"; };
+		F07113E41B5800C600D0A7D1 /* FOCProgramAttributeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCProgramAttributeView.h; sourceTree = "<group>"; };
+		F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramAttributeView.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -174,6 +180,8 @@
 				F07113451B5405B400D0A7D1 /* FOCFontAwesome.m */,
 				F07113981B569C7700D0A7D1 /* FOCPaddedLabel.h */,
 				F07113991B569C7700D0A7D1 /* FOCPaddedLabel.m */,
+				F07113E41B5800C600D0A7D1 /* FOCProgramAttributeView.h */,
+				F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */,
 			);
 			name = ui;
 			sourceTree = "<group>";
@@ -243,6 +251,8 @@
 		F08E18851B3D691A00FA765C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
+				F07113E11B57F00300D0A7D1 /* FOCColorMap.h */,
+				F07113E21B57F00300D0A7D1 /* FOCColorMap.m */,
 				F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */,
 				F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */,
 				F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */,
@@ -409,7 +419,9 @@
 				F071133D1B4E88A500D0A7D1 /* FOCProgramSyncManager.m in Sources */,
 				F08E18921B3D691A00FA765C /* FOCDataViewController.m in Sources */,
 				F07113401B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m in Sources */,
+				F07113E61B5800C600D0A7D1 /* FOCProgramAttributeView.m in Sources */,
 				F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */,
+				F07113E31B57F00300D0A7D1 /* FOCColorMap.m in Sources */,
 				F08E18951B3D691A00FA765C /* FOCModelController.m in Sources */,
 				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
