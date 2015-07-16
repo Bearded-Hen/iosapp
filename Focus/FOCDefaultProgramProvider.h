@@ -11,7 +11,8 @@
 #import "FOCDeviceProgramEntity.h"
 
 /**
- * Returns Focus Program models with their default settings.
+ * Returns Focus Program models with their default settings. Pre-loaded programs can be
+ * distinguished from those on the device, as their programId will always equal -1.
  */
 @interface FOCDefaultProgramProvider : NSObject
 

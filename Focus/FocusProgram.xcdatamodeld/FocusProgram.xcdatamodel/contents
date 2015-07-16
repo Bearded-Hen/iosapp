@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Program" syncable="YES">
+    <entity name="CoreDataProgram" representedClassName="CoreDataProgram" syncable="YES">
         <attribute name="bipolar" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="current" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="currentOffset" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -21,6 +21,6 @@
         <attribute name="voltage" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Program" positionX="-54" positionY="-9" width="128" height="315"/>
+        <element name="CoreDataProgram" positionX="-54" positionY="-9" width="128" height="315"/>
     </elements>
 </model>

@@ -8,6 +8,7 @@
 
 #import "FOCProgramSyncManager.h"
 #import "FOCDeviceProgramEntity.h"
+#import "FOCAppDelegate.h"
 
 @interface FOCProgramSyncManager ()
 
@@ -172,7 +173,7 @@
         
         FOCDeviceProgramEntity *deviceProgramEntity = [[FOCDeviceProgramEntity alloc] init];
         [deviceProgramEntity deserialiseDescriptors:_firstDescriptor secondDescriptor:_secondDescriptor];
-        deviceProgramEntity.programId = _currentProgram;
+        deviceProgramEntity.programId = [[NSNumber alloc] initWithInt:_currentProgram];
         
         // FIXME set program id
         
@@ -206,12 +207,14 @@
         [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
     }
     else {
-        NSLog(@"Finishing program sync!");
+        NSLog(@"Finishing program sync, writing to DB!");
         
         for (FOCDeviceProgramEntity *entity in _programArray) {
             NSLog(@"%@", [entity programDebugInfo]);
         }
         
+        FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
+        [delegate saveSyncedPrograms:_programArray];
         [self.delegate didFinishProgramSync:nil];
     }
 }

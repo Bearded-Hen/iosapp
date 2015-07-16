@@ -27,6 +27,36 @@ NSString *const PROG_ATTR_MAX_FREQ = @"PROG_ATTR_MAX_FREQ";
 NSString *const PROG_ATTR_FREQUENCY = @"PROG_ATTR_FREQUENCY";
 NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 
+
+- (id)initWithCoreDataModel:(CoreDataProgram *)model
+{
+    if (self = [super init]) {
+        _programId = model.programId;
+        _programMode = [FOCDeviceProgramEntity modeFromPersistedValue:model.programMode];
+        
+        _name = model.name;
+        _imageName = model.imageName;
+        
+        _valid = model.valid;
+        _sham = model.sham;
+        _bipolar = model.bipolar;
+        _randomCurrent = model.randomCurrent;
+        _randomFrequency = model.randomFrequency;
+        
+        _duration = model.duration;
+        _current = model.current;
+        _voltage = model.voltage;
+        _shamDuration = model.shamDuration;
+        _currentOffset = model.currentOffset;
+        _minFrequency = model.minFrequency;
+        _maxFrequency = model.maxFrequency;
+        
+        _frequency = model.frequency;
+        _dutyCycle = model.dutyCycle;
+    }
+    return self;
+}
+
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor
 {
     [self deserialiseFirstDescriptor:firstDescriptor];
@@ -112,7 +142,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     NSMutableString *info = [[NSMutableString alloc] init];
     
     [info appendString:[NSString stringWithFormat:@"Program Name '%@', ", _name]];
-    [info appendString:[NSString stringWithFormat:@"id='%hhu'", _programId]];
+    [info appendString:[NSString stringWithFormat:@"id='%@'", _programId]];
     return info;
 }
 
@@ -227,7 +257,49 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
         case DCS: return [[NSNumber alloc] initWithInt:1];
         case ACS: return [[NSNumber alloc] initWithInt:2];
         case RNS: return [[NSNumber alloc] initWithInt:3];
+        default: return 0;
     }
+}
+
++ (ProgramMode)modeFromPersistedValue:(NSNumber *)value
+{
+    switch (value.intValue) {
+        case 0: return PCS;
+        case 1: return DCS;
+        case 2: return ACS;
+        case 3: return RNS;
+        default: return DCS;
+    }
+}
+
+#pragma mark Core Data
+
+- (CoreDataProgram *)serialiseToCoreDataModel:(CoreDataProgram *)data
+{
+    
+    data.programId = _programId;
+    data.programMode = [FOCDeviceProgramEntity persistableValueFor:_programMode];
+    data.name = _name;
+    data.imageName = _imageName;
+    
+    data.valid = _valid;
+    data.sham = _sham;
+    data.bipolar = _bipolar;
+    data.randomCurrent = _randomCurrent;
+    data.randomFrequency = _randomFrequency;
+    
+    data.duration = _duration;
+    data.current = _current;
+    data.voltage = _voltage;
+    data.shamDuration = _shamDuration;
+    data.currentOffset = _currentOffset;
+    data.minFrequency = _minFrequency;
+    data.maxFrequency = _maxFrequency;
+    
+    data.frequency = _frequency;
+    data.dutyCycle = _dutyCycle;
+
+    return data;
 }
 
 @end

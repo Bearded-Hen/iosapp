@@ -9,6 +9,7 @@
 #import "FOCAppDelegate.h"
 #import "FOCDeviceProgramEntity.h"
 #import "FOCDefaultProgramProvider.h"
+#import "CoreDataProgram.h"
 
 @interface FOCAppDelegate ()
 
@@ -20,30 +21,17 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
-static NSString* kFocusProgramEntity = @"Program";
-
-static NSString* kAttrProgramId = @"programId";
-static NSString* kAttrName = @"name";
-static NSString* kAttrImageName = @"imageName";
-static NSString* kAttrProgramMode = @"programMode";
-static NSString* kAttrValid = @"valid";
-static NSString* kAttrSham = @"sham";
-static NSString* kAttrBipolar = @"bipolar";
-static NSString* kAttrRandomCurrent = @"randomCurrent";
-static NSString* kAttrRandomFrequency = @"randomFrequency";
-static NSString* kAttrDuration = @"duration";
-static NSString* kAttrCurrent = @"current";
-static NSString* kAttrVoltage = @"voltage";
-static NSString* kAttrShamDuration = @"shamDuration";
-static NSString* kAttrCurrentOffset = @"currentOffset";
-static NSString* kAttrMinFrequency = @"minFrequency";
-static NSString* kAttrMaxFrequency = @"maxFrequency";
-static NSString* kAttrFrequency = @"frequency";
-static NSString* kAttrDutyCycle = @"dutyCycle";
+static NSString* kFocusProgramEntity = @"CoreDataProgram";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     self.focusDeviceManager = [[FOCDeviceManager alloc] init];
+    _managedObjectContext = [self managedObjectContext];
+    
+    // if no programs in Core Data, create defaults.
+    
+    
+    
     
     // Override point for customization after application launch.
     return YES;
@@ -78,52 +66,53 @@ static NSString* kAttrDutyCycle = @"dutyCycle";
 
 #pragma mark - Core Data stack
 
-- (void)saveProgram
+- (void)saveSyncedPrograms:(NSArray *)syncedPrograms
 {
-    FOCDeviceProgramEntity *entity = [FOCDefaultProgramProvider gamer];
+    NSLog(@"Persisting %d saved programs.", [syncedPrograms count]);
     
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSManagedObject *program = [NSEntityDescription
-                                insertNewObjectForEntityForName:kFocusProgramEntity
-                                inManagedObjectContext:_managedObjectContext];
-    
-    NSNumber *programId = [[NSNumber alloc] initWithInt:entity.programId];
-    NSNumber *programMode = [FOCDeviceProgramEntity persistableValueFor:entity.programMode];
-    
-    [program setValue:programId forKey:kAttrProgramId];
-    [program setValue:entity.name forKey:kAttrName];
-    [program setValue:entity.imageName forKey:kAttrImageName];
-    [program setValue:programMode forKey:kAttrProgramMode];
-    
-    [program setValue:entity.valid forKey:kAttrValid];
-    [program setValue:entity.sham forKey:kAttrSham];
-    [program setValue:entity.bipolar forKey:kAttrBipolar];
-    [program setValue:entity.randomCurrent forKey:kAttrRandomCurrent];
-    [program setValue:entity.randomFrequency forKey:kAttrRandomFrequency];
-    
-    [program setValue:entity.duration forKey:kAttrDuration];
-    [program setValue:entity.current forKey:kAttrCurrent];
-    [program setValue:entity.voltage forKey:kAttrVoltage];
-    [program setValue:entity.shamDuration forKey:kAttrShamDuration];
-    [program setValue:entity.currentOffset forKey:kAttrCurrentOffset];
-    [program setValue:entity.minFrequency forKey:kAttrMinFrequency];
-    [program setValue:entity.maxFrequency forKey:kAttrMaxFrequency];
-    
-    [program setValue:entity.frequency forKey:kAttrFrequency];
-    [program setValue:entity.dutyCycle forKey:kAttrDutyCycle];
-    
-    NSError *error;
-    
-    if (![context save:&error]) {
-        NSLog(@"Failed to save: %@", [error localizedDescription]);
+    for (FOCDeviceProgramEntity *entity in syncedPrograms) {
+        
+        CoreDataProgram *data = [NSEntityDescription
+                                 insertNewObjectForEntityForName:kFocusProgramEntity
+                                 inManagedObjectContext:_managedObjectContext];
+        
+        data = [entity serialiseToCoreDataModel:data];
+        
+        NSError *error;
+        
+        if (![_managedObjectContext save:&error]) {
+            NSLog(@"Failed to save: %@", [error localizedDescription]);
+        }
     }
 }
 
-- (void)retrieveProgram
+- (NSArray *)retrieveFocusPrograms
 {
-    NSManagedObjectContext *context = [self managedObjectContext];
-
-    // TODO retrieve from core data
+    NSEntityDescription *entityDescription = [NSEntityDescription
+                                              entityForName:kFocusProgramEntity inManagedObjectContext:_managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    NSError *error;
+    NSMutableArray *programArray;
+    
+    NSArray *array = [_managedObjectContext executeFetchRequest:request error:&error];
+    
+    if (error != nil) {
+        NSLog(@"Failed to retrieve persisted programs %@", error);
+    }
+    else {
+        NSLog(@"Retrieved %d persisted programs, serialising...", [array count]);
+    }
+    
+    if (array != nil) {
+        for (CoreDataProgram *data in array) {
+            FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] initWithCoreDataModel:data];
+            
+            [programArray addObject:entity];
+        }
+    }
+    return programArray;
 }
 
 - (NSURL *)applicationDocumentsDirectory {

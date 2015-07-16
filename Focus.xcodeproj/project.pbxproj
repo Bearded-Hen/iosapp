@@ -29,6 +29,7 @@
 		F07113971B5680C900D0A7D1 /* FOCDisplayAttributeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113961B5680C900D0A7D1 /* FOCDisplayAttributeModel.m */; };
 		F071139A1B569C7700D0A7D1 /* FOCPaddedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113991B569C7700D0A7D1 /* FOCPaddedLabel.m */; };
 		F07113DD1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */; };
+		F07113E01B57A84000D0A7D1 /* CoreDataProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
 		F08E18891B3D691A00FA765C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18881B3D691A00FA765C /* main.m */; };
 		F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */; };
@@ -90,6 +91,8 @@
 		F07113981B569C7700D0A7D1 /* FOCPaddedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCPaddedLabel.h; sourceTree = "<group>"; };
 		F07113991B569C7700D0A7D1 /* FOCPaddedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCPaddedLabel.m; sourceTree = "<group>"; };
 		F07113DC1B56B85500D0A7D1 /* FocusProgram.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FocusProgram.xcdatamodel; sourceTree = "<group>"; };
+		F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataProgram.h; sourceTree = "<group>"; };
+		F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataProgram.m; sourceTree = "<group>"; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 			isa = PBXGroup;
 			children = (
 				F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */,
+				F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */,
+				F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */,
 				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
 				F088345D1B42E0090022400A /* ui */,
 				F088345E1B42E0210022400A /* controllers */,
@@ -399,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F07113E01B57A84000D0A7D1 /* CoreDataProgram.m in Sources */,
 				F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */,
 				F071133D1B4E88A500D0A7D1 /* FOCProgramSyncManager.m in Sources */,
 				F08E18921B3D691A00FA765C /* FOCDataViewController.m in Sources */,

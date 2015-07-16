@@ -25,6 +25,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (void)saveProgram;
+- (void)saveSyncedPrograms:(NSArray *)syncedPrograms;
+- (NSArray *)retrieveFocusPrograms;
 
 @end

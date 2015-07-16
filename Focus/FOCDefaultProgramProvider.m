@@ -16,6 +16,7 @@
     entity.name = @"Gamer";
     entity.imageName = @"program_gamer.png";
 
+    entity.programId = [[NSNumber alloc] initWithInt:-1];
     entity.programMode = DCS;
     entity.current = [[NSNumber alloc] initWithInt:1500];
     entity.duration = [[NSNumber alloc] initWithInt:600];
@@ -32,6 +33,7 @@
     entity.name = @"Enduro";
     entity.imageName = @"program_enduro.png";
     
+    entity.programId = [[NSNumber alloc] initWithInt:-1];
     entity.programMode = DCS;
     entity.current = [[NSNumber alloc] initWithInt:1700];
     entity.duration = [[NSNumber alloc] initWithInt:900];
@@ -48,6 +50,7 @@
     entity.name = @"Wave";
     entity.imageName = @"program_wave.png";
     
+    entity.programId = [[NSNumber alloc] initWithInt:-1];
     entity.programMode = ACS;
     entity.current = [[NSNumber alloc] initWithInt:1500];
     entity.duration = [[NSNumber alloc] initWithInt:1080];
@@ -68,6 +71,7 @@
     entity.name = @"Pulse";
     entity.imageName = @"program_pulse.png";
     
+    entity.programId = [[NSNumber alloc] initWithInt:-1];
     entity.programMode = PCS;
     entity.current = [[NSNumber alloc] initWithInt:1500];
     entity.duration = [[NSNumber alloc] initWithInt:600];
@@ -89,6 +93,7 @@
     entity.name = @"Noise";
     entity.imageName = @"program_noise.png";
     
+    entity.programId = [[NSNumber alloc] initWithInt:-1];
     entity.programMode = RNS;
     entity.current = [[NSNumber alloc] initWithInt:1600];
     entity.duration = [[NSNumber alloc] initWithInt:600];

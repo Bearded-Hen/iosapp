@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CoreDataProgram.h"
 
 /**
  * A POCO which represents the program data stored on the Focus device.
@@ -30,6 +31,8 @@
  * duty cycle
  * minFrequency
  * maxFrequency
+ *
+ * Additional meta attributes will also be present, such as the program ID.
  */
 @interface FOCDeviceProgramEntity : NSObject
 
@@ -55,16 +58,35 @@ typedef NS_ENUM(int, ProgramMode) {
     PCS
 };
 
+- (id)initWithCoreDataModel:(CoreDataProgram *)model;
+
 + (NSString *)readableLabelFor:(ProgramMode)mode;
+
+/**
+ * Serialises the program mode for Core Data.
+ */
 + (NSNumber *)persistableValueFor:(ProgramMode)mode;
 
+/**
+ * Deserialises the program mode from Core Data.
+ */
++ (ProgramMode)modeFromPersistedValue:(NSNumber *)value;
+
+/**
+ * Populates the model using data retrieved from the Focus device.
+ */
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor;
+
+/**
+ * Populates a core data model that can be persisted.
+ */
+- (CoreDataProgram *)serialiseToCoreDataModel:(CoreDataProgram *)data;
 
 - (NSDictionary *)editableAttributes;
 - (NSArray *)orderedEditKeys;
 - (NSString *)programDebugInfo;
 
-@property Byte programId;
+@property NSNumber *programId;
 @property NSString *name;
 @property NSString *imageName;
 @property ProgramMode programMode;
