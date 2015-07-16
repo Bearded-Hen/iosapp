@@ -139,6 +139,24 @@ static NSString* kStorePath = @"focus.sqlite";
             if (data.name != nil && ![data.name isEqualToString:@""]) {
                 FOCDeviceProgramEntity *entity = [[FOCDeviceProgramEntity alloc] initWithCoreDataModel:data];
                 
+                if ([entity.name isEqualToString:@"gamer"]) {
+                    entity.imageName = @"program_gamer.png";
+                }
+                else if ([entity.name isEqualToString:@"wave"]) {
+                    entity.imageName = @"program_wave.png";
+                }
+                else if ([entity.name isEqualToString:@"pulse"]) {
+                    entity.imageName = @"program_pulse.png";
+                }
+                else if ([entity.name isEqualToString:@"enduro"]) {
+                    entity.imageName = @"program_enduro.png";
+                }
+                else if ([entity.name isEqualToString:@"noise"]) {
+                    entity.imageName = @"program_noise.png";
+                }
+                
+                // FIXME should sort array
+                
                 [programArray addObject:entity];
                 NSLog(@"%@", [entity programDebugInfo]);
             }

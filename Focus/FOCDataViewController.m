@@ -45,7 +45,7 @@ static const float kFontSize = 11.0;
     [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
     [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
     
-    _programTitleLabel.text = [_program name];
+    _programTitleLabel.text = [[_program name] capitalizedString];
     _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
     _backgroundImageView.image = [UIImage imageNamed:_program.imageName];
     
