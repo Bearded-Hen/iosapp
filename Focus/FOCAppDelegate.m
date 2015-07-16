@@ -155,14 +155,12 @@ static NSString* kStorePath = @"focus.sqlite";
                     entity.imageName = @"program_noise.png";
                 }
                 
-                // FIXME should sort array
-                
                 [programArray addObject:entity];
                 NSLog(@"%@", [entity programDebugInfo]);
             }
         }
     }
-    return programArray;
+    return [programArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
 - (NSURL *)applicationDocumentsDirectory {

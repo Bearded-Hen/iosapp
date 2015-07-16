@@ -63,7 +63,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     [self deserialiseSecondDescriptor:secondDescriptor];
 }
 
-- (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor
+- (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor // FIXME deserialises empty values
 {
     int length = [firstDescriptor length];
     
@@ -302,4 +302,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return data;
 }
 
+- (NSComparisonResult)compare:(FOCDeviceProgramEntity *)otherObject {
+    return [self.name compare:otherObject.name];
+}
 @end

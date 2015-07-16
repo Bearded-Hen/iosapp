@@ -29,6 +29,7 @@ static const float kFontSize = 11.0;
 
 @property NSDictionary *editableAttributes;
 @property NSArray *orderedEditKeys;
+@property bool isHidden;
 
 @end
 
@@ -52,6 +53,7 @@ static const float kFontSize = 11.0;
     _orderedEditKeys = [_program orderedEditKeys];
     _editableAttributes = [_program editableAttributes];
     
+    [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
     [_collectionView reloadData];
 }
 
@@ -90,6 +92,12 @@ static const float kFontSize = 11.0;
         }
     }
     _bluetoothConnectionIcon.image = [UIImage imageNamed:imagePath];
+}
+
+- (void)didClickSettingsButton
+{
+    _isHidden = !_isHidden;
+    [_collectionView setHidden:_isHidden];
 }
 
 -(FOCDisplayAttributeModel *)displayAttributeModelForIndex:(NSIndexPath *)indexPath
