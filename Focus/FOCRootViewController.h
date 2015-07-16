@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FOCAppDelegate.h"
 
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, FOCDeviceStateDelegate>
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, FOCDeviceStateDelegate, FOCProgramSyncDelegate>
 
 @property (strong, nonatomic) UIPageViewController* pageViewController;
 

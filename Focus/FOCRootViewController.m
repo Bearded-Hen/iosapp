@@ -27,6 +27,8 @@
     [super viewDidLoad];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
+    delegate.syncDelegate = self;
+    
     _deviceManager = delegate.focusDeviceManager;
     _deviceManager.delegate = self;
     
@@ -87,6 +89,11 @@
     return (FOCDataViewController*) self.pageViewController.viewControllers[0];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark DeviceStateListener
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
@@ -94,9 +101,17 @@
     [[self currentViewController] notifyConnectionStateChanged:connectionState];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+#pragma mark ProgramSyncDelegate
+
+- (void)didChangeDataSet:(NSArray *)dataSet
 {
-    return UIStatusBarStyleLightContent;
+    [_modelController refresh];
+    
+    // FIXME always jumps to first controller, should go back to where the user was previously
+    FOCDataViewController* startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    
+    NSArray* viewControllers = @[ startingViewController ];
+    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 @end

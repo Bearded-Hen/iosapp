@@ -8,8 +8,8 @@
 
 #import "FOCModelController.h"
 #import "FOCDataViewController.h"
-
 #import "FOCDefaultProgramProvider.h"
+#import "FOCAppDelegate.h"
 
 /*
  A controller object that manages a simple model -- a collection of month names.
@@ -30,10 +30,16 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Create the data model.
-        _pageData = [FOCDefaultProgramProvider allDefaults];
+        [self refresh];
     }
     return self;
+}
+
+- (void)refresh
+{
+    FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
+    _pageData = [delegate retrieveFocusPrograms];
+    NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {

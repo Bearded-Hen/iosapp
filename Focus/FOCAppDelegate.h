@@ -11,15 +11,23 @@
 
 #import "FOCDeviceManager.h"
 
+@protocol FOCProgramSyncDelegate <NSObject>
+
+- (void)didChangeDataSet:(NSArray *)dataSet;
+
+@end
+
 /**
  * Contains a Device manager instance which allows the Focus Device to be interacted with
  * via its Bluetooth API.
  */
-@interface FOCAppDelegate : UIResponder <UIApplicationDelegate>
+@interface FOCAppDelegate : UIResponder <UIApplicationDelegate> {
+        __weak id<FOCProgramSyncDelegate> delegate_;
+}
 
 @property (strong, nonatomic) UIWindow *window;
-
 @property (strong, nonatomic) FOCDeviceManager *focusDeviceManager;
+@property (weak) id <FOCProgramSyncDelegate> syncDelegate;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
