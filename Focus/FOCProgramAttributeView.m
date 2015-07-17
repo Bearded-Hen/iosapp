@@ -66,7 +66,6 @@ static const float kFontSize = 11.0;
         
         [self addSubview:_keyLabel];
         [self addSubview:_valueLabel];
-        
     }
     return self;
 }

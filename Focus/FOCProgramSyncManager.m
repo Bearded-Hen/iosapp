@@ -85,18 +85,6 @@
 
 #pragma mark - deserialisation
 
-- (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId
-{
-    return [self constructCommandRequest:cmdId subCmdId:subCmdId progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
-}
-
-- (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
-{
-    const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE};
-    NSLog(@"{cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE);
-    return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
-}
-
 - (void)interpretCommandResponse:(CBCharacteristic *)characteristic
 {
     NSData *data = characteristic.value;

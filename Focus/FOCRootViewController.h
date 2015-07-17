@@ -9,8 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "FOCAppDelegate.h"
 
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, FOCDeviceStateDelegate, FOCProgramSyncDelegate>
+@class FOCDataViewController;
+
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCProgramSyncDelegate>
 
 @property (strong, nonatomic) UIPageViewController* pageViewController;
+
+- (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
+- (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController;
+- (void)refresh;
 
 @end

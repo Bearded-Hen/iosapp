@@ -163,7 +163,7 @@
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
                                         <rect key="frame" x="8" y="8" width="584" height="459"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <collectionViewLayout key="collectionViewLayout" id="o3s-fg-CCX" customClass="ALGReversedFlowLayout"/>
+                                        <collectionViewLayout key="collectionViewLayout" id="fVS-DG-1aN" customClass="ALGReversedFlowLayout"/>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProgramAttributeCell" id="U3D-ko-mI5">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -176,8 +176,8 @@
                                             </collectionViewCell>
                                         </cells>
                                         <connections>
-                                            <outlet property="dataSource" destination="hzS-jB-y9W" id="Ciy-Kg-X1y"/>
-                                            <outlet property="delegate" destination="hzS-jB-y9W" id="ur8-Lz-shr"/>
+                                            <outlet property="dataSource" destination="hzS-jB-y9W" id="smU-yg-eu3"/>
+                                            <outlet property="delegate" destination="hzS-jB-y9W" id="zdD-ey-CCJ"/>
                                         </connections>
                                     </collectionView>
                                 </subviews>

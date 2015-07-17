@@ -20,6 +20,9 @@
 - (NSString *)loggableServiceName:(CBService *)service;
 - (NSString *)loggableCharacteristicName:(CBCharacteristic *)characteristic;
 
+- (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId;
+- (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId;
+
 @property CBPeripheral *focusDevice;
 
 @end

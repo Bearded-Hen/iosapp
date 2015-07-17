@@ -14,7 +14,9 @@
 @interface FOCRootViewController ()
 
 @property (readonly, strong, nonatomic) FOCModelController* modelController;
+
 @property FOCDeviceManager *deviceManager;
+@property (readonly, strong, nonatomic) NSArray *pageData;
 
 @end
 
@@ -25,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self refresh];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
     delegate.syncDelegate = self;
@@ -94,6 +97,28 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)refresh
+{
+    FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
+    _pageData = [delegate retrieveFocusPrograms];
+    NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
+}
+
+- (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
+    
+    if (([self.pageData count] == 0) || (index >= [self.pageData count])) {
+        return nil;
+    }
+    
+    FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
+    dataViewController.program = self.pageData[index];
+    return dataViewController;
+}
+
+- (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController {
+    return [self.pageData indexOfObject:viewController.program];
+}
+
 #pragma mark DeviceStateListener
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
@@ -113,5 +138,33 @@
     NSArray* viewControllers = @[ startingViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
+
+#pragma mark - Page View Controller Data Source
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+    NSUInteger index = [self indexOfViewController:(FOCDataViewController *)viewController];
+    if ((index == 0) || (index == NSNotFound)) {
+        return nil;
+    }
+    
+    index--;
+    return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+    NSUInteger index = [self indexOfViewController:(FOCDataViewController *)viewController];
+    if (index == NSNotFound) {
+        return nil;
+    }
+    
+    index++;
+    if (index == [self.pageData count]) {
+        return nil;
+    }
+    return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
+}
+
 
 @end

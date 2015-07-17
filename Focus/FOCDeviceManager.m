@@ -230,7 +230,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 -(void)didFinishProgramSync:(NSError *)error
 {
-    NSLog(@"Finished program sync %@", error);
+    NSLog(@"Finished program sync (error=%@)", error);
     
     _requestManager = [[FOCProgramRequestManager alloc] initWithPeripheral:_focusDevice];
     _focusDevice.delegate = _requestManager;

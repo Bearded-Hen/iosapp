@@ -20,4 +20,16 @@
     [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
 }
 
+- (void)startProgram:(FOCDeviceProgramEntity *)program
+{
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG];
+    [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)stopProgram:(FOCDeviceProgramEntity *)program
+{
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG];
+    [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
 @end

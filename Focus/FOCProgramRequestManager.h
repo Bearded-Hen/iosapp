@@ -7,7 +7,7 @@
 //
 
 #import "FOCBasePeripheralManager.h"
-
+#import "FOCDeviceProgramEntity.h"
 
 @protocol ProgramRequestDelegate <NSObject>
 
@@ -21,5 +21,18 @@
 
 @property (weak) id <ProgramRequestDelegate> delegate;
 
-@end
+@property CBCharacteristic *controlCmdRequest;
+@property CBCharacteristic *controlCmdResponse;
+@property CBCharacteristic *dataBuffer;
 
+/**
+ * Attempt to start the specified program on the device.
+ */
+- (void)startProgram:(FOCDeviceProgramEntity *)program;
+
+/**
+ * Attempt to stop the specified program on the device.
+ */
+- (void)stopProgram:(FOCDeviceProgramEntity *)program;
+
+@end

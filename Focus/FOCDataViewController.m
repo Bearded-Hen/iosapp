@@ -283,8 +283,48 @@ static const float kAnimDuration = 0.3;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO item selected
-    NSLog(@"Selected program attribute at index %d", indexPath.item);
+    NSString *dataKey = _orderedEditKeys[indexPath.item];
+    NSLog(@"Selected program attribute %@", dataKey);
+    
+    if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
+
+    }
+    else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
+
+    }
+    else {
+
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
