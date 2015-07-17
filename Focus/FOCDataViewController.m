@@ -13,6 +13,7 @@
 #import "FOCPaddedLabel.h"
 #import "FOCColorMap.h"
 #import "FOCProgramAttributeView.h"
+#import "ActionSheetPicker.h"
 
 @interface FOCDataViewController ()
 
@@ -289,48 +290,111 @@ static const float kAnimDuration = 0.3;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *dataKey = _orderedEditKeys[indexPath.item]; // FIXME not called
-    NSLog(@"Selected program attribute %@", dataKey);
+    NSString *dataKey = _orderedEditKeys[indexPath.item];
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-
+        NSArray *options = [NSArray arrayWithObjects:@"Direct", @"Alternating", @"Random", @"Pulse", nil];
+        
+        [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options
+                                    initialSelection:0
+                                           doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                               // TODO
+                                           }
+                                         cancelBlock:nil
+                                              origin:_collectionView];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-
+        [self showBooleanPicker:nil currentState:_pageModel.program.sham.boolValue];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-
+        [self showBooleanPicker:nil currentState:_pageModel.program.bipolar.boolValue];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-
+        [self showBooleanPicker:nil currentState:_pageModel.program.randomCurrent.boolValue];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-
+        [self showBooleanPicker:nil currentState:_pageModel.program.randomFrequency.boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
-
+        
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
-
+        [self showCurrentPicker:nil title:@"Select Current"];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
-
+        [self showVoltagePicker];
     }
     else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-
+        [self showSecondPicker:nil];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
-
+        [self showCurrentPicker:nil title:@"Select Current Offset"];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
 
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
-
+        [self showPercentagePicker:nil];
     }
     else {
-
+        NSLog(@"Unknown attribute edit attempted");
     }
+}
+
+- (void)showSecondPicker:(ActionStringDoneBlock)doneBlock
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (int i=0; i<=50; i++) {
+        [options addObject:[NSString stringWithFormat:@"%d s", i]];
+    }
+    int index = 0; // FIXME index selection
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Sham Period" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showPercentagePicker:(ActionStringDoneBlock)doneBlock
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (int i=20; i<=80; i++) {
+        [options addObject:[NSString stringWithFormat:@"%d %%", i]];
+    }
+    int index = 0; // FIXME index selection
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title;
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (int i=1; i<=18; i++) {
+        [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float)i) / 10]];
+    }
+    int index = 0; // FIXME index selection
+    
+    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showVoltagePicker
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (int i=10; i<=60; i++) {
+        [options addObject:[NSString stringWithFormat:@"%d V", i]];
+    }
+    int index = _pageModel.program.voltage.intValue - 10;
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showBooleanPicker:(ActionStringDoneBlock)doneBlock currentState:(bool)currentState
+{
+    NSArray *options = [NSArray arrayWithObjects:@"On", @"Off", nil];
+    int index = currentState == true ? 0 : 1;
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
