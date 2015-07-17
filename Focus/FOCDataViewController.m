@@ -30,6 +30,7 @@ static const float kAnimDuration = 0.3;
 
 @property NSDictionary *editableAttributes;
 @property NSArray *orderedEditKeys;
+@property FocusConnectionState lastKnownState;
 
 @end
 
@@ -55,10 +56,12 @@ static const float kAnimDuration = 0.3;
     [_collectionView reloadData];
     
     _collectionView.hidden = _pageModel.settingsHidden;
+    [self notifyConnectionStateChanged:_lastKnownState];
 }
 
 -(void)notifyConnectionStateChanged:(FocusConnectionState)state
 {
+    _lastKnownState = state;
     NSString *imagePath;
     
     switch (state) {

@@ -25,7 +25,7 @@
     [super viewDidLoad];
     _pageData = [[NSMutableArray alloc] init];
     
-    [self refresh];
+    [self reloadData];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
     delegate.syncDelegate = self;
@@ -33,8 +33,6 @@
     _deviceManager = delegate.focusDeviceManager;
     _deviceManager.delegate = self;
     
-    // Do any additional setup after loading the view, typically from a nib.
-    // Configure the page view controller and add it as a child view controller.
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.delegate = self;
 
@@ -47,35 +45,12 @@
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
 
-    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-    CGRect pageViewRect = self.view.bounds;
-    self.pageViewController.view.frame = pageViewRect;
+    self.pageViewController.view.frame = self.view.bounds;
 
     [self.pageViewController didMoveToParentViewController:self];
-
-    // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
 }
 
-#pragma mark - UIPageViewController delegate methods
-
-- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
-{
-    // Set the spine position to "min" and the page view controller's view controllers array to contain just one view controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the doubleSided property to YES, so set it to NO here.
-    FOCDataViewController* currentViewController = [self currentViewController];
-    NSArray* viewControllers = @[ currentViewController ];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-    
-    self.pageViewController.doubleSided = NO;
-    return UIPageViewControllerSpineLocationMin;
-}
-
-- (void)pageViewController:(UIPageViewController *)pvc didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-    if (completed) {
-        [[self currentViewController] notifyConnectionStateChanged:_deviceManager.connectionState];
-    }
-}
 
 - (FOCDataViewController *)currentViewController
 {
@@ -87,7 +62,7 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)refresh
+- (void)reloadData
 {
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
     [_pageData removeAllObjects];
@@ -107,6 +82,8 @@
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
     dataViewController.pageModel = _pageData[index];
+    [dataViewController notifyConnectionStateChanged:_deviceManager.connectionState];
+    
     return dataViewController;
 }
 
@@ -125,13 +102,47 @@
 
 - (void)didChangeDataSet:(NSArray *)dataSet
 {
-    [self refresh];
+    [self reloadData];
     
     // FIXME always jumps to first controller, should go back to where the user was previously
     FOCDataViewController* startingViewController = [self viewControllerAtIndex:0 storyboard:self.storyboard];
     
     NSArray* viewControllers = @[ startingViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+#pragma mark - FOCUiPageChangeDelegate
+
+-(void)didAlterPageState:(FOCUiPageModel *)pageModel
+{
+    FOCDeviceProgramEntity *currentProgram = pageModel.program;
+    FOCDeviceProgramEntity *alteredProgram;
+    
+    for (int i=0; i<[_pageData count]; i++) {
+        FOCUiPageModel *model = _pageData[i];
+        alteredProgram = model.program;
+        
+        bool idMatch = currentProgram.programId.intValue == alteredProgram.programId.intValue;
+        bool nameMatch = [currentProgram.name isEqualToString:alteredProgram.name];
+        
+        if (idMatch && nameMatch) {
+            _pageData[i] = pageModel;
+            break;
+        }
+    }
+}
+
+#pragma mark - UIPageViewController delegate methods
+
+- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    FOCDataViewController* currentViewController = [self currentViewController];
+    NSArray* viewControllers = @[ currentViewController ];
+    
+    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    
+    self.pageViewController.doubleSided = NO;
+    return UIPageViewControllerSpineLocationMin;
 }
 
 #pragma mark - Page View Controller Data Source
@@ -159,25 +170,6 @@
         return nil;
     }
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
-}
-
-#pragma mark - FOCUiPageChangeDelegate
-
--(void)didAlterPageState:(FOCUiPageModel *)pageModel
-{
-    FOCUiPageModel *currentModel;
-    
-    for (int i=0; i<[_pageData count]; i++) {
-        currentModel = _pageData[i];
-        
-        bool idMatch = currentModel.program.programId.intValue == pageModel.program.programId.intValue;
-        bool nameMatch = [currentModel.program.name isEqualToString:pageModel.program.name];
-        
-        if (idMatch && nameMatch) {
-            _pageData[i] = pageModel;
-            break;
-        }
-    }
 }
 
 @end

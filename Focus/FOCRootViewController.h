@@ -19,6 +19,6 @@
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
 - (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController;
-- (void)refresh;
+- (void)reloadData;
 
 @end
