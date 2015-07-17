@@ -8,12 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+#import "FOCUiPageModel.h"
 #import "FOCDeviceProgramEntity.h"
 #import "FOCDeviceStateDelegate.h"
 
-@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@protocol FOCUiPageChangeDelegate <NSObject>
 
-@property (strong, nonatomic) FOCDeviceProgramEntity *program;
+- (void)didAlterPageState:(FOCUiPageModel *)pageModel;
+
+@end
+
+@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
+    
+    __weak id<FOCUiPageChangeDelegate> delegate_;
+}
+
+@property (weak) id <FOCUiPageChangeDelegate> delegate;
+@property (strong, nonatomic) FOCUiPageModel *pageModel;
 
 @property (weak, nonatomic) IBOutlet UILabel *programTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *programControlContainer;

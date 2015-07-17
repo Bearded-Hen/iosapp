@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "FOCAppDelegate.h"
+#import "FOCDataViewController.h"
 
-@class FOCDataViewController;
+@class FOCUiPageModel;
 
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCProgramSyncDelegate>
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCProgramSyncDelegate, FOCUiPageChangeDelegate> {
+}
 
 @property (strong, nonatomic) UIPageViewController* pageViewController;
 

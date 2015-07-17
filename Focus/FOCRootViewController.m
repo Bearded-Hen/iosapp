@@ -13,20 +13,18 @@
 
 @interface FOCRootViewController ()
 
-@property (readonly, strong, nonatomic) FOCModelController* modelController;
-
 @property FOCDeviceManager *deviceManager;
-@property (readonly, strong, nonatomic) NSArray *pageData;
+@property (strong, nonatomic) NSMutableArray *pageData;
 
 @end
 
 @implementation FOCRootViewController
 
-@synthesize modelController = _modelController;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _pageData = [[NSMutableArray alloc] init];
+    
     [self refresh];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -40,11 +38,11 @@
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.delegate = self;
 
-    FOCDataViewController* startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    FOCDataViewController* startingViewController = [self viewControllerAtIndex:0 storyboard:self.storyboard];
     NSArray* viewControllers = @[ startingViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 
-    self.pageViewController.dataSource = self.modelController;
+    self.pageViewController.dataSource = self;
 
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
@@ -72,14 +70,6 @@
     return UIPageViewControllerSpineLocationMin;
 }
 
-- (FOCModelController*)modelController
-{
-    if (!_modelController) {
-        _modelController = [[FOCModelController alloc] init];
-    }
-    return _modelController;
-}
-
 - (void)pageViewController:(UIPageViewController *)pvc didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
     if (completed) {
@@ -100,23 +90,28 @@
 - (void)refresh
 {
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
-    _pageData = [delegate retrieveFocusPrograms];
+    [_pageData removeAllObjects];
+    
+    for (FOCDeviceProgramEntity *program in [delegate retrieveFocusPrograms]) {
+        [_pageData addObject:[[FOCUiPageModel alloc] initWithProgram:program]];
+    }
+    
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
     
-    if (([self.pageData count] == 0) || (index >= [self.pageData count])) {
+    if (([_pageData count] == 0) || (index >= [_pageData count])) {
         return nil;
     }
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
-    dataViewController.program = self.pageData[index];
+    dataViewController.pageModel = _pageData[index];
     return dataViewController;
 }
 
 - (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController {
-    return [self.pageData indexOfObject:viewController.program];
+    return [_pageData indexOfObject:viewController.pageModel];
 }
 
 #pragma mark DeviceStateListener
@@ -130,10 +125,10 @@
 
 - (void)didChangeDataSet:(NSArray *)dataSet
 {
-    [_modelController refresh];
+    [self refresh];
     
     // FIXME always jumps to first controller, should go back to where the user was previously
-    FOCDataViewController* startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    FOCDataViewController* startingViewController = [self viewControllerAtIndex:0 storyboard:self.storyboard];
     
     NSArray* viewControllers = @[ startingViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
@@ -166,5 +161,23 @@
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
+#pragma mark - FOCUiPageChangeDelegate
+
+-(void)didAlterPageState:(FOCUiPageModel *)pageModel
+{
+    FOCUiPageModel *currentModel;
+    
+    for (int i=0; i<[_pageData count]; i++) {
+        currentModel = _pageData[i];
+        
+        bool idMatch = currentModel.program.programId.intValue == pageModel.program.programId.intValue;
+        bool nameMatch = [currentModel.program.name isEqualToString:pageModel.program.name];
+        
+        if (idMatch && nameMatch) {
+            _pageData[i] = pageModel;
+            break;
+        }
+    }
+}
 
 @end

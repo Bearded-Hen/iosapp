@@ -30,7 +30,6 @@ static const float kAnimDuration = 0.3;
 
 @property NSDictionary *editableAttributes;
 @property NSArray *orderedEditKeys;
-@property bool isHidden;
 
 @end
 
@@ -45,15 +44,17 @@ static const float kAnimDuration = 0.3;
     [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
     [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
     
-    _programTitleLabel.text = [[_program name] capitalizedString];
+    _programTitleLabel.text = [[_pageModel.program name] capitalizedString];
     _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
-    _backgroundImageView.image = [UIImage imageNamed:_program.imageName];
+    _backgroundImageView.image = [UIImage imageNamed:_pageModel.program.imageName];
     
-    _orderedEditKeys = [_program orderedEditKeys];
-    _editableAttributes = [_program editableAttributes];
+    _orderedEditKeys = [_pageModel.program orderedEditKeys];
+    _editableAttributes = [_pageModel.program editableAttributes];
     
     [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
     [_collectionView reloadData];
+    
+    _collectionView.hidden = _pageModel.settingsHidden;
 }
 
 -(void)notifyConnectionStateChanged:(FocusConnectionState)state
@@ -95,9 +96,9 @@ static const float kAnimDuration = 0.3;
 
 - (void)didClickSettingsButton
 {
-    _isHidden = !_isHidden;
+    _pageModel.settingsHidden = !_pageModel.settingsHidden;
     
-    if (_isHidden) {
+    if (_pageModel.settingsHidden) {
         [UIView animateWithDuration:kAnimDuration animations:^{
             _collectionView.alpha = 0;
         } completion: ^(BOOL finished) {
@@ -111,6 +112,7 @@ static const float kAnimDuration = 0.3;
             _collectionView.alpha = 1;
         }];
     }
+    [_delegate didAlterPageState:_pageModel];
 }
 
 -(FOCDisplayAttributeModel *)displayAttributeModelForIndex:(NSIndexPath *)indexPath
@@ -283,7 +285,7 @@ static const float kAnimDuration = 0.3;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *dataKey = _orderedEditKeys[indexPath.item];
+    NSString *dataKey = _orderedEditKeys[indexPath.item]; // FIXME not called
     NSLog(@"Selected program attribute %@", dataKey);
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
