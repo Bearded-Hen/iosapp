@@ -282,6 +282,7 @@ static const float kAnimDuration = 0.3;
     
     [view updateModel:model];
     [cell addSubview:view];
+    
     return cell;
 }
 
@@ -330,12 +331,6 @@ static const float kAnimDuration = 0.3;
     else {
 
     }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // TODO item deselected
-    NSLog(@"Deselected program attribute at index %d", indexPath.item);
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

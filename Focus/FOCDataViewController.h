@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnProgramSettings;
 @property (weak, nonatomic) IBOutlet UIImageView *bluetoothConnectionIcon;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
 -(void)notifyConnectionStateChanged:(FocusConnectionState)state;
 

@@ -25,8 +25,8 @@ static const float kFontSize = 11.0;
 @property UIColor *colorLightDefault;
 @property UIColor *colorLightPressed;
 
-@property UIButton *keyLabel;
-@property UIButton *valueLabel;
+@property FOCPaddedLabel *keyLabel;
+@property FOCPaddedLabel *valueLabel;
 
 @end
 
@@ -47,23 +47,13 @@ static const float kFontSize = 11.0;
         CGRect keyFrame = CGRectMake(0, 0, valueStart, height);
         CGRect valueFrame = CGRectMake(valueStart, 0, width - valueStart, height);
         
-        _keyLabel = [[UIButton alloc] initWithFrame:keyFrame];
-        _valueLabel = [[UIButton alloc] initWithFrame:valueFrame];
+        _keyLabel = [[FOCPaddedLabel alloc] initWithFrame:keyFrame];
+        _valueLabel = [[FOCPaddedLabel alloc] initWithFrame:valueFrame];
         
-        [_keyLabel.titleLabel setFont:[UIFont systemFontOfSize:kFontSize]];
-        [_valueLabel.titleLabel setFont:[UIFont systemFontOfSize:kFontSize]];
-        
+        _keyLabel.font = [UIFont systemFontOfSize:kFontSize];
+        _valueLabel.font = [UIFont systemFontOfSize:kFontSize];
+
         [self setViewColorState:false];
-        
-        [_keyLabel addTarget:self action:@selector(didTouchDown:)
-           forControlEvents:UIControlEventTouchDown];
-        
-        [_keyLabel addTarget:self action:@selector(didTouchUpInside:)
-           forControlEvents: UIControlEventTouchUpInside];
-        
-        [_keyLabel addTarget:self action:@selector(didTouchUpOutside:)
-            forControlEvents: UIControlEventTouchUpOutside];
-        
         [self addSubview:_keyLabel];
         [self addSubview:_valueLabel];
     }
@@ -87,16 +77,28 @@ static const float kFontSize = 11.0;
 
 - (void)setViewColorState:(bool) pressed
 {
-    [_valueLabel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_keyLabel setTitleColor:pressed ? _colorLightPressed : _colorLightDefault forState:UIControlStateNormal] ;
+    _valueLabel.textColor = [UIColor blackColor];;
+    _keyLabel.textColor = pressed ? _colorLightPressed : _colorLightDefault;
     _keyLabel.backgroundColor = pressed ? _colorDarkPressed : _colorDarkDefault;
     _valueLabel.backgroundColor = pressed ? _colorLightPressed : _colorLightDefault;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self setViewColorState:true];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self setViewColorState:false];
+}
+
 - (void)updateModel:(FOCDisplayAttributeModel *) model
 {
-    [_keyLabel setTitle:model.attrLabel forState:UIControlStateNormal];
-    [_valueLabel setTitle:model.attrValue forState:UIControlStateNormal];
+    _keyLabel.text = model.attrLabel;
+    _valueLabel.text = model.attrValue;
 }
 
 @end
