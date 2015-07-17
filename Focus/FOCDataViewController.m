@@ -24,6 +24,7 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 
 static const int kVerticalEdgeInset = 20;
 static const int kHorizontalEdgeInset = 10;
+static const float kAnimDuration = 0.3;
 
 @interface FOCDataViewController ()
 
@@ -95,7 +96,21 @@ static const int kHorizontalEdgeInset = 10;
 - (void)didClickSettingsButton
 {
     _isHidden = !_isHidden;
-    [_collectionView setHidden:_isHidden];
+    
+    if (_isHidden) {
+        [UIView animateWithDuration:kAnimDuration animations:^{
+            _collectionView.alpha = 0;
+        } completion: ^(BOOL finished) {
+            _collectionView.hidden = finished;
+        }];
+    }
+    else {
+        _collectionView.alpha = 0;
+        _collectionView.hidden = NO;
+        [UIView animateWithDuration:kAnimDuration animations:^{
+            _collectionView.alpha = 1;
+        }];
+    }
 }
 
 -(FOCDisplayAttributeModel *)displayAttributeModelForIndex:(NSIndexPath *)indexPath

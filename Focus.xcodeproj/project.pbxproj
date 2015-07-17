@@ -99,6 +99,7 @@
 		F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramAttributeView.m; sourceTree = "<group>"; };
 		F07113E71B580FE900D0A7D1 /* ALGReversedFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALGReversedFlowLayout.h; sourceTree = "<group>"; };
 		F07113E81B580FE900D0A7D1 /* ALGReversedFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALGReversedFlowLayout.m; sourceTree = "<group>"; };
+		F07113EA1B58F72700D0A7D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F08834611B42E1310022400A /* FOCDeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceManager.h; sourceTree = "<group>"; };
 		F08834621B42E1310022400A /* FOCDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceManager.m; sourceTree = "<group>"; };
 		F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCDeviceStateDelegate.h; sourceTree = "<group>"; };
@@ -229,6 +230,7 @@
 		F08E187A1B3D691A00FA765C = {
 			isa = PBXGroup;
 			children = (
+				F07113EA1B58F72700D0A7D1 /* QuartzCore.framework */,
 				F08E18B81B3D857A00FA765C /* Foundation.framework */,
 				F08E18B41B3D856600FA765C /* CoreFoundation.framework */,
 				F08E18B51B3D856600FA765C /* CoreGraphics.framework */,
