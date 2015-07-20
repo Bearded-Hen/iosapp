@@ -183,24 +183,25 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     [attributes setObject:_shamDuration forKey:PROG_ATTR_SHAM_DURATION];
     [attributes setObject:_voltage forKey:PROG_ATTR_VOLTAGE];
     
-    // optional attributes
+    // optional attributes, shown depending on the Program mode.
     
-    if (_bipolar != nil) {
+    if (_bipolar != nil && _programMode != DCS) { // not editable for DCS
         [attributes setObject:_bipolar forKey:PROG_ATTR_BIPOLAR];
     }
-    if (_randomCurrent != nil) {
+    if (_randomCurrent != nil && _programMode == RNS) { // only editable for RNS
         [attributes setObject:_randomCurrent forKey:PROG_ATTR_RAND_CURR];
     }
-    if (_randomFrequency != nil) {
+    if (_randomFrequency != nil && _programMode == RNS) { // only editable for RNS
         [attributes setObject:_randomFrequency forKey:PROG_ATTR_RAND_FREQ];
     }
-    if (_currentOffset != nil) {
+    if (_currentOffset != nil && _programMode != DCS) { // not editable for DCS
         [attributes setObject:_currentOffset forKey:PROG_ATTR_CURR_OFFSET];
     }
-    if (_frequency != nil) {
+    if (_frequency != nil && _programMode != DCS) { // not editable for DCS
         [attributes setObject:_frequency forKey:PROG_ATTR_FREQUENCY];
     }
-    if (_dutyCycle != nil) {
+     // not editable for ACS/DCS
+    if (_dutyCycle != nil && (_programMode != ACS && _programMode != DCS)) {
         [attributes setObject:_dutyCycle forKey:PROG_ATTR_DUTY_CYCLE];
     }
     
@@ -214,29 +215,29 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     [editKeys addObject:PROG_ATTR_SHAM_DURATION];
     [editKeys addObject:PROG_ATTR_VOLTAGE];
     
-    if (_bipolar != nil) {
+    if (_bipolar != nil && _programMode != DCS) {
         [editKeys addObject:PROG_ATTR_BIPOLAR];
     }
     
     [editKeys addObject:PROG_ATTR_SHAM];
     
-    if (_randomFrequency != nil) {
+    if (_randomFrequency != nil && _programMode == RNS) {
         [editKeys addObject:PROG_ATTR_RAND_FREQ];
     }
-    if (_randomCurrent != nil) {
+    if (_randomCurrent != nil && _programMode == RNS) {
         [editKeys addObject:PROG_ATTR_RAND_CURR];
     }
     
-    if (_currentOffset != nil) {
+    if (_currentOffset != nil && _programMode != DCS) {
         [editKeys addObject:PROG_ATTR_CURR_OFFSET];
     }
-    if (_dutyCycle != nil) {
+    if (_dutyCycle != nil && (_programMode != ACS && _programMode != DCS)) {
         [editKeys addObject:PROG_ATTR_DUTY_CYCLE];
     }
     
     [editKeys addObject:PROG_ATTR_DURATION];
     
-    if (_frequency != nil) {
+    if (_frequency != nil && _programMode != DCS) {
         [editKeys addObject:PROG_ATTR_FREQUENCY];
     }
     [editKeys addObject:PROG_ATTR_MODE];

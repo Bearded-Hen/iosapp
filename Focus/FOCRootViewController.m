@@ -63,7 +63,6 @@
     }
 }
 
-
 - (FOCDataViewController *)currentViewController
 {
     return ([_pageData count] == 0) ? nil : (FOCDataViewController*) self.pageViewController.viewControllers[0];

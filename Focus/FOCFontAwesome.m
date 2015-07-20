@@ -11,7 +11,7 @@
 @implementation FOCFontAwesome
 
 NSString *const FONT_AWESOME = @"FontAwesome";
-const float DEFAULT_ICON_SIZE = 32.0;
+const float DEFAULT_ICON_SIZE = 28.0;
 
 static NSDictionary *faMap;
 
