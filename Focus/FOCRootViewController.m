@@ -48,7 +48,25 @@
     self.pageViewController.view.frame = self.view.bounds;
 
     [self.pageViewController didMoveToParentViewController:self];
+    [self setupPagingGestureRecognisers];
+}
+
+- (void)setupPagingGestureRecognisers
+{
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    UIGestureRecognizer* tapRecognizer = nil;
+    
+    for (UIGestureRecognizer* recognizer in self.pageViewController.gestureRecognizers) {
+        if ([recognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+            tapRecognizer = recognizer;
+            break;
+        }
+    }
+    
+    if (tapRecognizer) {
+        [self.view removeGestureRecognizer:tapRecognizer];
+        [self.pageViewController.view removeGestureRecognizer:tapRecognizer];
+    }
 }
 
 
