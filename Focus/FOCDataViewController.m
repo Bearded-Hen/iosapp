@@ -14,6 +14,7 @@
 #import "FOCColorMap.h"
 #import "FOCProgramAttributeView.h"
 #import "ActionSheetPicker.h"
+#import "ActionSheetPickerTimeDelegate.h"
 
 @interface FOCDataViewController ()
 
@@ -340,7 +341,7 @@ static const float kAnimDuration = 0.3;
         [self showCurrentPicker:nil title:@"Select Current Offset"];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-
+        [self showTimePicker]; // FIXME
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
         [self showPercentagePicker:nil];
@@ -404,6 +405,25 @@ static const float kAnimDuration = 0.3;
     int index = currentState == true ? 0 : 1;
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showFrequencyPicker
+{
+    // TODO show frequency picker
+}
+
+- (void)showTimePicker
+{
+    ActionSheetPickerTimeDelegate *delg = [[ActionSheetPickerTimeDelegate alloc] init];
+    
+    NSNumber *yass1 = @0;
+    NSNumber *yass2 = @0;
+    
+    NSArray *initialSelections = @[yass1, yass2];
+    
+    [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:NO origin:_collectionView
+                               initialSelections:initialSelections];
+    
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
