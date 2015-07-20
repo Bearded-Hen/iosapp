@@ -54,25 +54,19 @@
 - (void)setupPagingGestureRecognisers
 {
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
-    UIGestureRecognizer* tapRecognizer = nil;
     
     for (UIGestureRecognizer* recognizer in self.pageViewController.gestureRecognizers) {
         if ([recognizer isKindOfClass:[UITapGestureRecognizer class]]) {
-            tapRecognizer = recognizer;
-            break;
+            [self.view removeGestureRecognizer:recognizer];
+            [self.pageViewController.view removeGestureRecognizer:recognizer];
         }
-    }
-    
-    if (tapRecognizer) {
-        [self.view removeGestureRecognizer:tapRecognizer];
-        [self.pageViewController.view removeGestureRecognizer:tapRecognizer];
     }
 }
 
 
 - (FOCDataViewController *)currentViewController
 {
-    return (FOCDataViewController*) self.pageViewController.viewControllers[0];
+    return ([_pageData count] == 0) ? nil : (FOCDataViewController*) self.pageViewController.viewControllers[0];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -82,6 +76,13 @@
 
 - (void)reloadData
 {
+    FOCDataViewController *currentController = [self currentViewController];
+    FOCDeviceProgramEntity *currentModel;
+    
+    if (currentController != nil) {
+        currentModel = [self currentViewController].pageModel.program;
+    }
+    
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
     [_pageData removeAllObjects];
     
@@ -89,7 +90,25 @@
         [_pageData addObject:[[FOCUiPageModel alloc] initWithProgram:program]];
     }
     
+    int index = 0; // default to first if no previous controller
+    
+    for (int i=0; i<=[_pageData count] && currentModel != nil; i++) {
+        FOCDeviceProgramEntity *newModel = ((FOCUiPageModel *)_pageData[i]).program;
+        
+        if ([newModel.name isEqualToString:currentModel.name]
+            && newModel.programId.intValue == currentModel.programId.intValue) {
+            
+            index = i;
+            break;
+        }
+    }
+    
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
+    
+    FOCDataViewController* startingViewController = [self viewControllerAtIndex:index storyboard:self.storyboard];
+    
+    NSArray* viewControllers = @[ startingViewController ];
+    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
@@ -121,12 +140,6 @@
 - (void)didChangeDataSet:(NSArray *)dataSet
 {
     [self reloadData];
-    
-    // FIXME always jumps to first controller, should go back to where the user was previously
-    FOCDataViewController* startingViewController = [self viewControllerAtIndex:0 storyboard:self.storyboard];
-    
-    NSArray* viewControllers = @[ startingViewController ];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 #pragma mark - FOCUiPageChangeDelegate
