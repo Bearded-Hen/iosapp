@@ -32,6 +32,7 @@
 @property (weak) id <FOCDeviceStateDelegate> delegate;
 
 @property FocusConnectionState connectionState;
+@property NSString *connectionText;
 
 /**
  * If the Focus device is not connected, attempt to connect it again, and handle any bluetooth

@@ -14,23 +14,11 @@
  *
  * The following attributes are ALWAYS PRESENT:
  *
- * program mode
- * duration
- * current
- * sham
- * sham period
- * voltage
+ * program mode, duration, current, sham, sham period, voltage
  *
  * The following attributes are OPTIONALLY PRESENT:
  *
- * bipolar
- * randomCurrent
- * randomFrequency
- * currentOffset
- * frequency
- * duty cycle
- * minFrequency
- * maxFrequency
+ * bipolar, randomCurrent, randomFrequency, currentOffset, frequency, duty cycle, minFrequency, maxFrequency
  *
  * Additional meta attributes will also be present, such as the program ID.
  */

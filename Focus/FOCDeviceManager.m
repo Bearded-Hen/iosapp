@@ -107,8 +107,11 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     }
     
     NSLog(@"Focus connection state changed to '%@'", stateName);
-    self.connectionState = state;
-    [self.delegate didChangeConnectionState:self.connectionState];
+    
+    _connectionState = state;
+    _connectionText = stateName;
+    [_delegate didChangeConnectionState:_connectionState];
+    [_delegate didChangeConnectionText:_connectionText];
 }
 
 /**
@@ -218,6 +221,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         
         FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
         [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+        [_delegate didChangeConnectionText:@"Syncing Device"];
     }
     else {
         NSLog(@"Focus device is not paired. Prompting user.");

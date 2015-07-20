@@ -27,7 +27,6 @@ NSString *const PROG_ATTR_MAX_FREQ = @"PROG_ATTR_MAX_FREQ";
 NSString *const PROG_ATTR_FREQUENCY = @"PROG_ATTR_FREQUENCY";
 NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 
-
 - (id)initWithCoreDataModel:(CoreDataProgram *)model
 {
     if (self = [super init]) {

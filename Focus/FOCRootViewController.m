@@ -118,7 +118,9 @@
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
     dataViewController.pageModel = _pageData[index];
+
     [dataViewController notifyConnectionStateChanged:_deviceManager.connectionState];
+    [dataViewController notifyConnectionTextChanged:_deviceManager.connectionText];
     
     return dataViewController;
 }
@@ -132,6 +134,11 @@
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
 {
     [[self currentViewController] notifyConnectionStateChanged:connectionState];
+}
+
+- (void)didChangeConnectionText:(NSString *)connectionText
+{
+    [[self currentViewController] notifyConnectionTextChanged:connectionText];
 }
 
 #pragma mark ProgramSyncDelegate

@@ -20,7 +20,8 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
     UNKNOWN
 };
 
-@required
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState;
+
+- (void)didChangeConnectionText: (NSString *)connectionText;
 
 @end
