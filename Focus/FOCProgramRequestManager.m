@@ -37,8 +37,6 @@
     if (FOC_CMD_MANAGE_PROGRAMS == cmdId) {
         if (FOC_STATUS_CMD_SUCCESS) {
             NSLog(@"Program request success"); // TODO device manager callback
-            
-            
         }
         else if (FOC_STATUS_CMD_FAILURE) { // TODO check whether failure is ok for stopping program
             NSLog(@"Program request failure");
@@ -80,6 +78,19 @@
 {
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG];
     [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)startNotificationListeners:(CBPeripheral *)focusDevice
+{
+    [focusDevice setNotifyValue:true forCharacteristic:_cm.actualCurrent];
+    [focusDevice setNotifyValue:true forCharacteristic:_cm.activeModeDuration];
+    [focusDevice setNotifyValue:true forCharacteristic:_cm.activeModeRemainingTime];
+}
+
+#pragma mark CBPeripheralDelegate
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    NSLog(@"Received notification for characteristic %@", [self loggableCharacteristicName:characteristic]);
 }
 
 @end

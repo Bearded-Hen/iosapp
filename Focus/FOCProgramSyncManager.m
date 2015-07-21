@@ -12,10 +12,6 @@
 
 @interface FOCProgramSyncManager ()
 
-@property CBCharacteristic *controlCmdRequest;
-@property CBCharacteristic *controlCmdResponse;
-@property CBCharacteristic *dataBuffer;
-
 @property Byte lastSubCmd;
 @property Byte programCount;
 @property Byte currentProgram;
@@ -37,19 +33,17 @@
     return self;
 }
 
-- (void)startProgramSync:(CBCharacteristic *)controlCmdRequest controlCmdResponse:(CBCharacteristic *)controlCmdResponse dataBuffer:(CBCharacteristic *)dataBuffer
+- (void)startProgramSync:(FOCCharacteristicDiscoveryManager *)cm
 {
-    _controlCmdRequest = controlCmdRequest;
-    _controlCmdResponse = controlCmdResponse;
-    _dataBuffer = dataBuffer;
+    _cm = cm;
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS];
     
-    [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
     
     _lastSubCmd = FOC_SUBCMD_MAX_PROGRAMS;
     
-    NSLog(@"Writing %@", [self loggableCharacteristicName:_controlCmdRequest]);
+    NSLog(@"Writing %@", [self loggableCharacteristicName:_cm.controlCmdRequest]);
 }
 
 - (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
@@ -75,7 +69,7 @@
     
     if (error == nil) {
         if ([FOC_CONTROL_CMD_REQUEST isEqualToString:characteristic.UUID.UUIDString]) {
-            [peripheral readValueForCharacteristic:_controlCmdResponse]; // read the response buffer
+            [peripheral readValueForCharacteristic:_cm.controlCmdResponse]; // read the response buffer
         }
         else {
             NSLog(@"Program Sync Manager failed to handle update to %@", [self loggableCharacteristicName:characteristic]);
@@ -199,7 +193,7 @@
         
         _lastSubCmd = FOC_SUBCMD_PROG_STATUS;
         
-        [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+        [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
     }
     else {
         NSLog(@"Finishing program sync, writing to DB!");
@@ -223,7 +217,7 @@
 
     _lastSubCmd = FOC_SUBCMD_READ_PROG;
     
-    [self.focusDevice writeValue:data forCharacteristic:_controlCmdRequest type:CBCharacteristicWriteWithResponse];
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
 }
 
 /**
@@ -231,7 +225,7 @@
  */
 -(void)readProgramDescriptorBuffer
 {
-    [self.focusDevice readValueForCharacteristic:_dataBuffer];
+    [self.focusDevice readValueForCharacteristic:_cm.dataBuffer];
 }
 
 

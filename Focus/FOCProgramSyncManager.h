@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FOCBasePeripheralManager.h"
+#import "FOCCharacteristicDiscoveryManager.h"
 
 @protocol ProgramSyncDelegate <NSObject>
 
@@ -35,7 +36,8 @@
 }
 
 @property (weak) id <ProgramSyncDelegate> delegate;
+@property (readonly) FOCCharacteristicDiscoveryManager *cm;
 
-- (void)startProgramSync:(CBCharacteristic *)controlCmdRequest controlCmdResponse:(CBCharacteristic *)controlCmdResponse dataBuffer:(CBCharacteristic *)dataBuffer;
+- (void)startProgramSync:(FOCCharacteristicDiscoveryManager *)cm;
 
 @end

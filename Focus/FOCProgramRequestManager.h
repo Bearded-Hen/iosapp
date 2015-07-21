@@ -33,4 +33,9 @@
  */
 - (void)stopActiveProgram;
 
+/**
+ * Starts listening for notifications from the Focus device
+ */
+- (void)startNotificationListeners:(CBPeripheral *)focusDevice;
+
 @end

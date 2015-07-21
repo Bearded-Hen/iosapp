@@ -249,7 +249,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         _focusDevice.delegate = _syncManager;
         
         FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
-        [_syncManager startProgramSync:cm.controlCmdRequest controlCmdResponse:cm.controlCmdResponse dataBuffer:cm.dataBuffer];
+        [_syncManager startProgramSync:cm];
         [_delegate didChangeConnectionText:@"Syncing Device"];
     }
     else {
@@ -270,6 +270,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
     _requestManager.delegate = self;
     _requestManager.cm = _characteristicManager;
+    [_requestManager startNotificationListeners:_focusDevice];
 }
 
 #pragma mark - ProgramRequestDelegate
