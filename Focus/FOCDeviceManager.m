@@ -250,7 +250,9 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         
         FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
         [_syncManager startProgramSync:cm];
-        [_delegate didChangeConnectionText:@"Syncing Device"];
+        
+        _connectionText = @"Syncing Device";
+        [_delegate didChangeConnectionText:_connectionText];
     }
     else {
         NSLog(@"Focus device is not paired. Prompting user.");
@@ -264,6 +266,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 -(void)didFinishProgramSync:(NSError *)error
 {
     NSLog(@"Finished program sync, error=%@", error);
+    [self updateConnectionState:CONNECTED];
     
     _requestManager = [[FOCProgramRequestManager alloc] initWithPeripheral:_focusDevice];
     _focusDevice.delegate = _requestManager;
@@ -275,10 +278,14 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 #pragma mark - ProgramRequestDelegate
 
-- (void)didFinishProgramRequest:(NSError *)error
+- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing error:(NSError *)error
 {
-    NSLog(@"Program request finished");
-    // TODO program request logic
+    if (error == nil) {
+        [_delegate didAlterProgramState:program playing:playing];
+    }
+    else {
+        NSLog(@"Program state alteration unsuccessful");
+    }
 }
 
 - (void)didReceiveCurrentNotification:(int)current

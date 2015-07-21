@@ -15,6 +15,7 @@
 
 @property FOCDeviceManager *deviceManager;
 @property (strong, nonatomic) NSMutableArray *pageData;
+@property int pageIndex;
 
 @end
 
@@ -103,14 +104,19 @@
     }
     
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
-    
-    FOCDataViewController* startingViewController = [self viewControllerAtIndex:index storyboard:self.storyboard];
+    [self refreshDisplayedController];
+}
+
+- (void)refreshDisplayedController
+{
+    FOCDataViewController* startingViewController = [self viewControllerAtIndex:_pageIndex storyboard:self.storyboard];
     
     NSArray* viewControllers = @[ startingViewController ];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
+    _pageIndex = index;
     
     if (([_pageData count] == 0) || (index >= [_pageData count])) {
         return nil;
@@ -118,10 +124,7 @@
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
     dataViewController.pageModel = _pageData[index];
-    dataViewController.delegate = self;
-
-    [dataViewController notifyConnectionStateChanged:_deviceManager.connectionState];
-    [dataViewController notifyConnectionTextChanged:_deviceManager.connectionText];
+    _delegate = self;
     
     return dataViewController;
 }
@@ -130,16 +133,27 @@
     return [_pageData indexOfObject:viewController.pageModel];
 }
 
-#pragma mark DeviceStateListener
+#pragma mark DeviceStateDelegate
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
 {
-    [[self currentViewController] notifyConnectionStateChanged:connectionState];
+    for (FOCUiPageModel *model in _pageData) {
+        model.connectionState = connectionState;
+    }
+    [self refreshDisplayedController];
 }
 
 - (void)didChangeConnectionText:(NSString *)connectionText
 {
-    [[self currentViewController] notifyConnectionTextChanged:connectionText];
+    for (FOCUiPageModel *model in _pageData) {
+        model.connectionText = connectionText;
+    }
+    [self refreshDisplayedController];
+}
+
+- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing
+{
+    NSLog(@"");
 }
 
 #pragma mark ProgramSyncDelegate

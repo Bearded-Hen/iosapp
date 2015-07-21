@@ -36,7 +36,4 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
--(void)notifyConnectionStateChanged:(FocusConnectionState)state;
--(void)notifyConnectionTextChanged:(NSString *)connectionText;
-
 @end

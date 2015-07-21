@@ -12,20 +12,23 @@
 
 @protocol ProgramRequestDelegate <NSObject>
 
-- (void)didFinishProgramRequest:(NSError *) error;
+/**
+ * Called when a program either starts playing or is stopped on the Focus device.
+ */
+- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing error:(NSError *)error;
 
 /**
- * Called when the Focus device updates its current value via a notification
+ * Called when the Focus device updates its current value via a notification.
  */
 - (void)didReceiveCurrentNotification:(int)current;
 
 /**
- * Called when the Focus device updates the duration value of a program via a notification
+ * Called when the Focus device updates the duration value of a program via a notification.
  */
 - (void)didReceiveDurationNotification:(int)duration;
 
 /**
- * Called when the Focus device updates the remaining time of a program via a notification
+ * Called when the Focus device updates the remaining time of a program via a notification.
  */
 - (void)didReceiveRemainingTimeNotification:(int)remainingTime;
 
@@ -37,6 +40,7 @@
 
 @property (weak) id <ProgramRequestDelegate> delegate;
 @property FOCCharacteristicDiscoveryManager *cm;
+@property FOCDeviceProgramEntity *activeProgram;
 
 /**
  * Attempt to start the specified program on the device.

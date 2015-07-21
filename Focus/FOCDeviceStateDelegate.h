@@ -6,8 +6,11 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
+#import "FOCDeviceProgramEntity.h"
+
 /**
  * Defines callbacks that will be fired when the Focus device state changes.
+ * Responders should update the UI as necessary.
  */
 @protocol FOCDeviceStateDelegate <NSObject>
 
@@ -20,8 +23,21 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
     UNKNOWN
 };
 
+/**
+ * Called when the connection state of the Focus device to the app changes, allowing the UI
+ * to response.
+ */
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState;
 
+/**
+ * Called when the connection text that should be displayed by the UI changes due to
+ * updates on the Focus device state
+ */
 - (void)didChangeConnectionText: (NSString *)connectionText;
+
+/**
+ * Called when the play state of a program changes on the device.
+ */
+- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing;
 
 @end

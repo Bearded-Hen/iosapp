@@ -9,16 +9,23 @@
 #import <UIKit/UIKit.h>
 #import "FOCAppDelegate.h"
 #import "FOCDataViewController.h"
+#import "FOCDeviceStateDelegate.h"
 
 @class FOCUiPageModel;
 
+/**
+ * Controls all the pages in the ViewPager, and what data they should display.
+ * Responds to callbacks from the Focus Device manager and updates the UI appropriately.
+ */
 @interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCProgramSyncDelegate, FOCUiPageChangeDelegate> {
+    
+    __weak id<FOCUiPageChangeDelegate> delegate_;
 }
 
+@property (weak) id <FOCUiPageChangeDelegate> delegate;
 @property (strong, nonatomic) UIPageViewController* pageViewController;
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
 - (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController;
-- (void)reloadData;
 
 @end

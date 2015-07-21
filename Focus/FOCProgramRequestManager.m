@@ -8,9 +8,14 @@
 
 #import "FOCProgramRequestManager.h"
 
+static const int kTimeoutSeconds = 3;
+
 @interface FOCProgramRequestManager ()
 
-@property FOCDeviceProgramEntity *startProgram;
+@property bool requestProgramStart;
+@property bool requestProgramStop;
+@property bool hasSentStartRequest;
+@property long lastNotificationInterval;
 
 @end
 
@@ -24,17 +29,21 @@
     if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
         [self deserialiseCommandResponse:characteristic]; // read response buffer data
     }
-    else if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
-        int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-        [_delegate didReceiveCurrentNotification:current];
-    }
-    else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
-        int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-        [_delegate didReceiveDurationNotification:duration];
-    }
-    else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
-        int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-        [_delegate didReceiveRemainingTimeNotification:remainingTime];
+    else {
+        _lastNotificationInterval = [[[NSDate alloc] init] timeIntervalSince1970];;
+        
+        if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
+            int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveCurrentNotification:current];
+        }
+        else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
+            int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveDurationNotification:duration];
+        }
+        else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
+            int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveRemainingTimeNotification:remainingTime];
+        }
     }
 }
 
@@ -47,32 +56,63 @@
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
     if (FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-        if (FOC_STATUS_CMD_SUCCESS == status) {
-            NSLog(@"Program request success"); // TODO device manager callback
+        
+        if (_requestProgramStop) {
+            [self handleStopResponse:status];
         }
-        else if (FOC_STATUS_CMD_FAILURE == status) { // TODO check whether failure is ok for stopping program
-            NSLog(@"Program request failure");
-        }
-        else if (FOC_STATUS_CMD_UNSUPPORTED == status) {
-            NSLog(@"Program request UNSUPPORTED");
+        else if (_requestProgramStart) {
+            [self handleStartResponse:status];
         }
         
-        if (_startProgram != nil) { // start requested program
-            NSLog(@"Requesting program start");
-            
-            Byte programId = _startProgram.programId.intValue;
-            _startProgram = nil;
-            
-            NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
-            [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
-        }
+        
         else {
-            NSLog(@"FINISHED"); // TODO device manager callback
+            NSLog(@"Unknown command response sent to Program Request Manager");
         }
     }
     else {
         NSLog(@"Unrecognised command sent to program request manager");
     }
+}
+
+- (void)handleStopResponse:(Byte)status
+{
+    NSError *error = (FOC_STATUS_CMD_SUCCESS == status) ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
+    [_delegate didAlterProgramState:self.activeProgram playing:false error:error];
+}
+
+- (void)handleStartResponse:(Byte)status
+{
+    if (_hasSentStartRequest) {
+        NSError *error = (FOC_STATUS_CMD_SUCCESS == status) ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
+        
+        [_delegate didAlterProgramState:_activeProgram playing:true error:error];
+    }
+    else { // failure doesn't matter if no program was playing in the first place
+        if (FOC_STATUS_CMD_SUCCESS == status || FOC_STATUS_CMD_FAILURE) {
+            [self sendProgramStartRequest];
+        }
+        else {
+            NSLog(@"Unsupported operation attempting to start program");
+        }
+    }
+}
+
+- (void)sendProgramStartRequest
+{
+    NSLog(@"Requesting program start");
+    Byte programId = _activeProgram.programId.intValue;
+    _hasSentStartRequest = true;
+    
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)sendProgramStopRequest
+{
+    NSLog(@"Requesting program stop");
+    
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG];
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
 }
 
 - (void)interpretCommandResponse:(NSError *)error
@@ -83,14 +123,24 @@
 
 - (void)startProgram:(FOCDeviceProgramEntity *)program
 {
-    _startProgram = program;
-    [self stopActiveProgram];
+    _activeProgram = program;
+    _requestProgramStart = true;
+    
+    long diff = [[[NSDate alloc] init ] timeIntervalSince1970] - _lastNotificationInterval;
+    
+    if (diff > kTimeoutSeconds) { // if no notifications in 3s, program is stopped or disconnected
+        [self stopActiveProgram];
+    }
+    else {
+        [self sendProgramStartRequest];
+    }
 }
 
 - (void)stopActiveProgram
 {
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG];
-    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+    _activeProgram = nil;
+    _requestProgramStop = true;
+    [self sendProgramStartRequest];
 }
 
 - (void)startNotificationListeners:(CBPeripheral *)focusDevice

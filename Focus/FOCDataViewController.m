@@ -32,8 +32,6 @@ static const float kAnimDuration = 0.3;
 
 @property NSDictionary *editableAttributes;
 @property NSArray *orderedEditKeys;
-@property FocusConnectionState lastKnownState;
-@property NSString *lastKnownText;
 
 @end
 
@@ -59,57 +57,11 @@ static const float kAnimDuration = 0.3;
     _orderedEditKeys = [_pageModel.program orderedEditKeys];
     _editableAttributes = [_pageModel.program editableAttributes];
     
-    
     [_collectionView reloadData];
-    
     _collectionView.hidden = _pageModel.settingsHidden;
-    [self notifyConnectionStateChanged:_lastKnownState];
-    [self notifyConnectionTextChanged:_lastKnownText];
-}
-
--(void)notifyConnectionStateChanged:(FocusConnectionState)state
-{
-    _lastKnownState = state;
     
-    NSString *imagePath;
-    
-    switch (state) {
-        case CONNECTED: {
-            imagePath = kBluetoothConnected;
-            break;
-        }
-        case CONNECTING: {
-            imagePath = kBluetoothDisconnected;
-            break;
-        }
-        case SCANNING: {
-            imagePath = kBluetoothDisconnected;
-            break;
-        }
-        case DISCONNECTED: {
-            imagePath = kBluetoothDisconnected;
-            break;
-        }
-        case DISABLED: {
-            imagePath = kBluetoothDisabled;
-            break;
-        }
-        case UNKNOWN: {
-            imagePath = kBluetoothDisconnected;
-            break;
-        }
-        default: {
-            imagePath = kBluetoothConnected;
-            break;
-        }
-    }
-    _bluetoothConnectionIcon.image = [UIImage imageNamed:imagePath];
-}
-
--(void)notifyConnectionTextChanged:(NSString *)connectionText
-{
-    _lastKnownText = connectionText;
-    _statusLabel.text = _lastKnownText;
+    [self setBluetoothImage:_pageModel.connectionState];
+    [self setConnectionText:_pageModel.connectionText];
 }
 
 - (void)didClickSettingsButton
@@ -147,6 +99,50 @@ static const float kAnimDuration = 0.3;
     model.attrValue = [self valueForAttrKey:dataKey];
 
     return model;
+}
+
+#pragma mark DeviceStateDelegate
+
+-(void)setBluetoothImage:(FocusConnectionState)state
+{
+    NSString *imagePath;
+    
+    switch (state) {
+        case CONNECTED: {
+            imagePath = kBluetoothConnected;
+            break;
+        }
+        case CONNECTING: {
+            imagePath = kBluetoothDisconnected;
+            break;
+        }
+        case SCANNING: {
+            imagePath = kBluetoothDisconnected;
+            break;
+        }
+        case DISCONNECTED: {
+            imagePath = kBluetoothDisconnected;
+            break;
+        }
+        case DISABLED: {
+            imagePath = kBluetoothDisabled;
+            break;
+        }
+        case UNKNOWN: {
+            imagePath = kBluetoothDisconnected;
+            break;
+        }
+        default: {
+            imagePath = kBluetoothConnected;
+            break;
+        }
+    }
+    _bluetoothConnectionIcon.image = [UIImage imageNamed:imagePath];
+}
+
+-(void)setConnectionText:(NSString *)connectionText
+{
+    _statusLabel.text = connectionText;
 }
 
 /**
