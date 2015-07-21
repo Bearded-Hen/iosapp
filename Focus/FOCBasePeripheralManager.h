@@ -17,11 +17,41 @@
 
 - (id)initWithPeripheral:(CBPeripheral *) focusDevice;
 
+/**
+ * Returns a human-friendly name for a peripheral service.
+ */
 - (NSString *)loggableServiceName:(CBService *)service;
+
+/**
+ * Returns a human-friendly name for a peripheral characteristic.
+ */
 - (NSString *)loggableCharacteristicName:(CBCharacteristic *)characteristic;
 
+/**
+ * Constructs a command request byte array.
+ */
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId;
+
+/**
+ * Constructs a command request byte array.
+ */
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId;
+
+/**
+ * Called when an error occurred reading the command response
+ */
+- (void)interpretCommandResponse:(NSError *)error;
+
+/**
+ * Called when the command response is interpreted
+ */
+- (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic;
+
+/**
+ * Deserialises a command response byte array into its useful parts, and calls
+ * [self interpretCommandResponse]
+ */
+- (void)deserialiseCommandResponse:(CBCharacteristic *)characteristic;
 
 @property CBPeripheral *focusDevice;
 

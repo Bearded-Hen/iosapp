@@ -48,6 +48,10 @@ static const float kAnimDuration = 0.3;
     [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
     [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
     
+    [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_btnPlayProgram addTarget:self action:@selector(didClickChangePlayStateButton) forControlEvents:UIControlEventTouchUpInside];
+    
     _programTitleLabel.text = [[_pageModel.program name] capitalizedString];
     _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
     _backgroundImageView.image = [UIImage imageNamed:_pageModel.program.imageName];
@@ -55,7 +59,7 @@ static const float kAnimDuration = 0.3;
     _orderedEditKeys = [_pageModel.program orderedEditKeys];
     _editableAttributes = [_pageModel.program editableAttributes];
     
-    [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
+    
     [_collectionView reloadData];
     
     _collectionView.hidden = _pageModel.settingsHidden;
@@ -127,6 +131,11 @@ static const float kAnimDuration = 0.3;
         }];
     }
     [_delegate didAlterPageState:_pageModel];
+}
+
+- (void)didClickChangePlayStateButton
+{
+    [_delegate didRequestProgramPlay:_pageModel];
 }
 
 -(FOCDisplayAttributeModel *)displayAttributeModelForIndex:(NSIndexPath *)indexPath
@@ -326,7 +335,7 @@ static const float kAnimDuration = 0.3;
         [self showBooleanPicker:nil currentState:_pageModel.program.randomFrequency.boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
-        
+        [self showTimePicker]; // FIXME
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         [self showCurrentPicker:nil title:@"Select Current"];
@@ -341,7 +350,7 @@ static const float kAnimDuration = 0.3;
         [self showCurrentPicker:nil title:@"Select Current Offset"];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-        [self showTimePicker]; // FIXME
+        [self showFrequencyPicker];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
         [self showPercentagePicker:nil];
@@ -409,7 +418,21 @@ static const float kAnimDuration = 0.3;
 
 - (void)showFrequencyPicker
 {
-    // TODO show frequency picker
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (float f=1; f<=9; f++) {
+        [options addObject:[NSString stringWithFormat:@"%.1f Hz", f/10]];
+    }
+    for (int i=1; i<=29; i++) {
+        [options addObject:[NSString stringWithFormat:@"%d Hz", i]];
+    }
+    for (int i=30; i<=300; i+=10) {
+        [options addObject:[NSString stringWithFormat:@"%d Hz", i]];
+    }
+    
+    int index = 0; // FIXME initial selection
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
 }
 
 - (void)showTimePicker
@@ -423,7 +446,6 @@ static const float kAnimDuration = 0.3;
     
     [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:NO origin:_collectionView
                                initialSelections:initialSelections];
-    
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

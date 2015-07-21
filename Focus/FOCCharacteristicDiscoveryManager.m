@@ -48,6 +48,18 @@
             else if ([characteristic.UUID.UUIDString isEqualToString:FOC_DATA_BUFFER]) {
                 _dataBuffer = characteristic;
             }
+            else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTUAL_CURRENT]) {
+                _actualCurrent = characteristic;
+            }
+            else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_DURATION]) {
+                _activeModeDuration = characteristic;
+            }
+            else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_REMAINING_TIME]) {
+                _activeModeRemainingTime = characteristic;
+            }
+            else {
+                NSLog(@"Characteristic manager discovered unknown characteristic");
+            }
         }
     }
     

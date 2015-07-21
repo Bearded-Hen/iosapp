@@ -31,4 +31,9 @@
 @property (readonly) CBCharacteristic *controlCmdRequest;
 @property (readonly) CBCharacteristic *dataBuffer;
 
+// notifications
+@property (readonly) CBCharacteristic *actualCurrent;
+@property (readonly) CBCharacteristic *activeModeDuration;
+@property (readonly) CBCharacteristic *activeModeRemainingTime;
+
 @end

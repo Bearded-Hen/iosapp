@@ -20,17 +20,15 @@
 @import QuartzCore;
 
 /**
- * Manages bluetooth communication between the iOS and Focus devices. A delegate is available which
- * allows consumers of the Api to receive callbacks when the Device connection state changes.
- *
- * 
+ * Manages bluetooth communication between the iOS and Focus devices. A delegate is available
+ * which allows consumers of the Api to receive callbacks when the Device connection state 
+ * changes.
  */
 @interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, CharacteristicDiscoveryDelegate, ProgramSyncDelegate, ProgramRequestDelegate, BluetoothPairingDelegate, UIAlertViewDelegate> {
     __weak id<FOCDeviceStateDelegate> delegate_;
 }
 
 @property (weak) id <FOCDeviceStateDelegate> delegate;
-
 @property FocusConnectionState connectionState;
 @property NSString *connectionText;
 
@@ -44,5 +42,15 @@
  * Close the BLE connection.
  */
 - (void)closeConnection;
+
+/**
+ * Start playing the given program
+ */
+- (void)playProgram:(FOCDeviceProgramEntity *)program;
+
+/**
+ * Stop the active program (if any)
+ */
+- (void)stopActiveProgram;
 
 @end

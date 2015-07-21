@@ -118,6 +118,7 @@
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
     dataViewController.pageModel = _pageData[index];
+    dataViewController.delegate = self;
 
     [dataViewController notifyConnectionStateChanged:_deviceManager.connectionState];
     [dataViewController notifyConnectionTextChanged:_deviceManager.connectionText];
@@ -167,6 +168,15 @@
             break;
         }
     }
+}
+
+- (void)didRequestProgramPlay:(FOCUiPageModel *)pageModel
+{
+    // TODO store play state etc & pass to UI
+    
+    [_deviceManager playProgram:pageModel.program];
+    
+    
 }
 
 #pragma mark - UIPageViewController delegate methods

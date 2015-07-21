@@ -58,7 +58,7 @@
     
     if (error == nil) {
         if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
-            [self interpretCommandResponse:characteristic]; // read response buffer data
+            [self deserialiseCommandResponse:characteristic]; // read response buffer data
         }
         else if ([FOC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
             [self interpretDataBuffer:characteristic];
@@ -85,8 +85,7 @@
 
 #pragma mark - deserialisation
 
-- (void)interpretCommandResponse:(CBCharacteristic *)characteristic
-{
+- (void)deserialiseCommandResponse:(CBCharacteristic *)characteristic {
     NSData *data = characteristic.value;
     
     if (data != nil) {
@@ -95,56 +94,64 @@
         Byte *bd = (Byte*)malloc(length);
         memcpy(bd, [data bytes], length);
         
-        Byte cmdId = bd[0];
-        Byte status = bd[1];
-        
         const unsigned char data[] = {bd[2], bd[3], bd[4], bd[5]};
         free(bd);
         
-        if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-            // Handles Program sync callbacks.
-            
-            if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
-                _programCount = data[0];
-                
-                NSLog(@"========================================");
-                NSLog(@"*****Beginning sync of %d programs*****", _programCount);
-                
-                // Only begin syncing process if there remain unsynced programs
-                if (_currentProgram <= _programCount) {
-                    [self checkCurrentProgramEnabled];
-                }
-            }
-            else if (FOC_SUBCMD_PROG_STATUS == _lastSubCmd) {
-                int progStatus = data[0];
-                
-                if (FOC_PROG_STATUS_VALID == progStatus) {
-                    [self writeProgramDescriptor:FOC_PROG_DESC_FIRST];
-                }
-                else {
-                    NSLog(@"Program %d status is not valid, skipping", _currentProgram);
-                    _currentProgram++;
-                    [self checkCurrentProgramEnabled];
-                }
-            }
-            else if (FOC_SUBCMD_READ_PROG == _lastSubCmd) {
-                [self readProgramDescriptorBuffer];
-            }
-        }
-        else if (status == FOC_STATUS_CMD_FAILURE) {
-            NSLog(@"Command resulted in failure for Command %hhu with characteristic %@", cmdId, [self loggableCharacteristicName:characteristic]);
-        }
-        else if (status == FOC_STATUS_CMD_UNSUPPORTED) {
-            NSLog(@"Command %hhu unsupported for characteristic %@", cmdId, [self loggableCharacteristicName:characteristic]);
-        }
-        else {
-            NSLog(@"Failed to handle control command response");
-        }
+        [self interpretCommandResponse:bd[0] status:bd[1] data:data characteristic:characteristic];
     }
     else {
         [self.delegate didFinishProgramSync:
          [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil]];
     }
+}
+    
+- (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
+{
+    if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) {
+        // Handles Program sync callbacks.
+        
+        if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
+            _programCount = data[0];
+            
+            NSLog(@"========================================");
+            NSLog(@"*****Beginning sync of %d programs*****", _programCount);
+            
+            // Only begin syncing process if there remain unsynced programs
+            if (_currentProgram <= _programCount) {
+                [self checkCurrentProgramEnabled];
+            }
+        }
+        else if (FOC_SUBCMD_PROG_STATUS == _lastSubCmd) {
+            int progStatus = data[0];
+            
+            if (FOC_PROG_STATUS_VALID == progStatus) {
+                [self writeProgramDescriptor:FOC_PROG_DESC_FIRST];
+            }
+            else {
+                NSLog(@"Program %d status is not valid, skipping", _currentProgram);
+                _currentProgram++;
+                [self checkCurrentProgramEnabled];
+            }
+        }
+        else if (FOC_SUBCMD_READ_PROG == _lastSubCmd) {
+            [self readProgramDescriptorBuffer];
+        }
+    }
+    else if (status == FOC_STATUS_CMD_FAILURE) {
+        NSLog(@"Command resulted in failure for Command %hhu with characteristic %@", cmdId, [self loggableCharacteristicName:characteristic]);
+    }
+    else if (status == FOC_STATUS_CMD_UNSUPPORTED) {
+        NSLog(@"Command %hhu unsupported for characteristic %@", cmdId, [self loggableCharacteristicName:characteristic]);
+    }
+    else {
+        NSLog(@"Failed to handle control command response");
+    }
+}
+
+- (void)interpretCommandResponse:(NSError *)error
+{
+    [_delegate didFinishProgramSync:
+    [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil]];
 }
 
 -(void)interpretDataBuffer:(CBCharacteristic *)characteristic

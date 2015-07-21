@@ -127,6 +127,8 @@
     return name;
 }
 
+#pragma mark - Serialisation/deserialisation
+
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId
 {
     return [self constructCommandRequest:cmdId subCmdId:subCmdId progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
@@ -137,6 +139,36 @@
     const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE};
     NSLog(@"{cmdId=%hhu, subCmdId=%hhu, progId=%hhu, progDescId=%hhu, lastByte=%hhu}", cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE);
     return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
+}
+
+- (void)deserialiseCommandResponse:(CBCharacteristic *)characteristic {
+    NSData *data = characteristic.value;
+    
+    if (data != nil) {
+        int length = [data length];
+        
+        Byte *bd = (Byte*)malloc(length);
+        memcpy(bd, [data bytes], length);
+        
+        const unsigned char data[] = {bd[2], bd[3], bd[4], bd[5]};
+        free(bd);
+        
+        [self interpretCommandResponse:bd[0] status:bd[1] data:data characteristic:characteristic];
+    }
+    else {
+        [self interpretCommandResponse:
+         [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil]];
+    }
+}
+
+- (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
+{
+    
+}
+
+- (void)interpretCommandResponse:(NSError *)error
+{
+    
 }
 
 @end

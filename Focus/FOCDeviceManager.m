@@ -36,6 +36,8 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     return self;
 }
 
+#pragma mark - internal API methods
+
 - (void)refreshDeviceState
 {
     if (_focusDevice == nil || _focusDevice.state != CBPeripheralStateConnected) {
@@ -54,6 +56,33 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
     [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
 }
+
+- (void)playProgram:(FOCDeviceProgramEntity *)program
+{
+    if (_focusDevice.delegate == _requestManager) {
+        [_requestManager startProgram:program];
+    }
+    else {
+        [self displayNotReadyAlert];
+    }
+}
+
+- (void)stopActiveProgram
+{
+    if (_focusDevice.delegate == _requestManager) {
+        [_requestManager stopActiveProgram];
+    }
+    else {
+        [self displayNotReadyAlert];
+    }
+}
+
+- (void)displayNotReadyAlert
+{
+    [self displayUserErrMessage:@"Focus not ready" message:@"The device isn't ready for commands yet. Please check if it is connected and powered on."];
+}
+
+#pragma mark - implementation
 
 - (void)connectFocusDevice
 {
@@ -234,11 +263,13 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 -(void)didFinishProgramSync:(NSError *)error
 {
-    NSLog(@"Finished program sync (error=%@)", error);
+    NSLog(@"Finished program sync, error=%@", error);
     
     _requestManager = [[FOCProgramRequestManager alloc] initWithPeripheral:_focusDevice];
     _focusDevice.delegate = _requestManager;
+
     _requestManager.delegate = self;
+    _requestManager.cm = _characteristicManager;
 }
 
 #pragma mark - ProgramRequestDelegate
