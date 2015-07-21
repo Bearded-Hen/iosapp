@@ -245,38 +245,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return editKeys;
 }
 
-+ (NSString *)readableLabelFor:(ProgramMode)mode
-{
-    switch (mode) {
-        case PCS: return @"tPCS";
-        case DCS: return @"tDCS";
-        case ACS: return @"tACS";
-        case RNS: return @"tRNS";
-    }
-}
-
-+ (NSNumber *)persistableValueFor:(ProgramMode)mode
-{
-    switch (mode) {
-        case PCS: return [[NSNumber alloc] initWithInt:0];
-        case DCS: return [[NSNumber alloc] initWithInt:1];
-        case ACS: return [[NSNumber alloc] initWithInt:2];
-        case RNS: return [[NSNumber alloc] initWithInt:3];
-        default: return 0;
-    }
-}
-
-+ (ProgramMode)modeFromPersistedValue:(NSNumber *)value
-{
-    switch (value.intValue) {
-        case 0: return PCS;
-        case 1: return DCS;
-        case 2: return ACS;
-        case 3: return RNS;
-        default: return DCS;
-    }
-}
-
 #pragma mark Core Data
 
 - (CoreDataProgram *)serialiseToCoreDataModel:(CoreDataProgram *)data
@@ -310,4 +278,77 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 - (NSComparisonResult)compare:(FOCDeviceProgramEntity *)otherObject {
     return [self.name compare:otherObject.name];
 }
+
+#pragma mark Device data serialisation
+
+
++ (NSString *)readableLabelFor:(ProgramMode)mode
+{
+    switch (mode) {
+        case PCS: return @"tPCS";
+        case DCS: return @"tDCS";
+        case ACS: return @"tACS";
+        case RNS: return @"tRNS";
+    }
+}
+
++ (NSNumber *)persistableValueFor:(ProgramMode)mode
+{
+    switch (mode) {
+        case PCS: return [[NSNumber alloc] initWithInt:0];
+        case DCS: return [[NSNumber alloc] initWithInt:1];
+        case ACS: return [[NSNumber alloc] initWithInt:2];
+        case RNS: return [[NSNumber alloc] initWithInt:3];
+        default: return 0;
+    }
+}
+
++ (ProgramMode)modeFromPersistedValue:(NSNumber *)value
+{
+    switch (value.intValue) {
+        case 0: return PCS;
+        case 1: return DCS;
+        case 2: return ACS;
+        case 3: return RNS;
+        default: return DCS;
+    }
+}
+
++ (Byte)byteFromInt:(int)value
+{
+    return (Byte) value & 0xff;
+}
+
+//private static void putBoolean(byte[] data, boolean value, int index) {
+//
+//    data[index] = (byte) (value ? 0x01 : 0x00);
+//}
+//
+//private static void putString(byte[] data, String value, int start, int end) {
+//
+//    for (int i = start; i <= end; i++) {
+//
+//        if (i < value.length() + start) {
+//            data[i] = (byte) (value.charAt(i - start));
+//        }
+//        else {
+//            data[i] = 0x00;
+//        }
+//    }
+//}
+//
+//private static void putLong(byte[] data, long value, int start) {
+//
+//    data[start + 3] = (byte) ((value >> 24) & 0xff);
+//    data[start + 2] = (byte) ((value >> 16) & 0xff);
+//    data[start + 1] = (byte) ((value >> 8) & 0xff);
+//    data[start] = (byte) (value & 0xff);
+//}
+//
+//private static void putInteger(byte[] data, int value, int start) {
+//
+//    data[start + 1] = (byte) ((value >> 8) & 0xff);
+//    data[start] = (byte) (value & 0xff);
+//}
+
 @end

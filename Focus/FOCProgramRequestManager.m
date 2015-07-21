@@ -82,75 +82,52 @@ static const int kTimeoutSeconds = 3;
 
 - (void)handleStopResponse:(Byte)status
 {
-    NSError *error = (FOC_STATUS_CMD_SUCCESS == status) ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
-    [_delegate didAlterProgramState:self.activeProgram playing:false error:error];
+    bool playing = !(FOC_STATUS_CMD_SUCCESS == status);
+    _requestProgramStop = false;
+    
+    NSError *error = !playing ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
+    [_delegate didAlterProgramState:self.activeProgram playing:playing error:error];
 }
 
 - (void)handleStartResponse:(Byte)status
 {
-    if (_hasSentStartRequest) {
-        NSError *error = (FOC_STATUS_CMD_SUCCESS == status) ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
+    bool playing = (FOC_STATUS_CMD_SUCCESS == status);
+    _requestProgramStart = false;
+    
+    NSError *error = playing ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
         
-        [_delegate didAlterProgramState:_activeProgram playing:true error:error];
-    }
-    else { // failure doesn't matter if no program was playing in the first place
-        if (FOC_STATUS_CMD_SUCCESS == status || FOC_STATUS_CMD_FAILURE) {
-            [self sendProgramStartRequest];
-        }
-        else {
-            NSLog(@"Unsupported operation attempting to start program");
-        }
-    }
-}
-
-- (void)sendProgramStartRequest
-{
-    NSLog(@"Requesting program start");
-    Byte programId = _activeProgram.programId.intValue;
-    _hasSentStartRequest = true;
-    
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
-    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
-}
-
-- (void)sendProgramStopRequest
-{
-    NSLog(@"Requesting program stop");
-    
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG];
-    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+    [_delegate didAlterProgramState:_activeProgram playing:playing error:error];
 }
 
 - (void)interpretCommandResponse:(NSError *)error
 {
-    // FIXME handle error
     NSLog(@"Command response error %@", error);
 }
 
 - (void)startProgram:(FOCDeviceProgramEntity *)program
 {
+    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
+    NSLog(@"Requesting play for program %d", programId);
+    
     _activeProgram = program;
     _requestProgramStart = true;
     
-    long diff = [[[NSDate alloc] init ] timeIntervalSince1970] - _lastNotificationInterval;
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
     
-    if (_lastNotificationInterval == 0) {
-        diff = 0;
-    }
-    
-    if (diff > kTimeoutSeconds) { // if no notifications in 3s, program is stopped or disconnected
-        [self stopActiveProgram];
-    }
-    else {
-        [self sendProgramStartRequest];
-    }
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
 }
 
 - (void)stopActiveProgram
 {
+    NSLog(@"Requesting program stop");
+    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
+    
     _activeProgram = nil;
     _requestProgramStop = true;
-    [self sendProgramStopRequest];
+    
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
+    
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
 }
 
 - (void)startNotificationListeners:(CBPeripheral *)focusDevice

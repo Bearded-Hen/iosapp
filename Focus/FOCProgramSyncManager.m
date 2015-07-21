@@ -164,8 +164,6 @@
         [deviceProgramEntity deserialiseDescriptors:_firstDescriptor secondDescriptor:_secondDescriptor];
         deviceProgramEntity.programId = [[NSNumber alloc] initWithInt:_currentProgram];
         
-        // FIXME set program id
-        
         [_programArray addObject:deviceProgramEntity];
         
         NSLog(@"*****Finished sync for program '%@'*****", deviceProgramEntity.name);

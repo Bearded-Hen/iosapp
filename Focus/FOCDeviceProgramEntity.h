@@ -109,4 +109,9 @@ typedef NS_ENUM(int, ProgramMode) {
  */
 + (NSNumber *)getLongFromBytes:(NSData *)data;
 
+/**
+ * Serialises an int to a byte
+ */
++ (Byte)byteFromInt:(int)value;
+
 @end
