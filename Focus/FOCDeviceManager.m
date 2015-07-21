@@ -281,6 +281,21 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     // TODO program request logic
 }
 
+- (void)didReceiveCurrentNotification:(int)current
+{
+    // TODO handle new value
+}
+
+- (void)didReceiveDurationNotification:(int)duration
+{
+    // TODO handle new value
+}
+
+- (void)didReceiveRemainingTimeNotification:(int)remainingTime
+{
+    // TODO handle new value
+}
+
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

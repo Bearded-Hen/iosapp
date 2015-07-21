@@ -24,6 +24,18 @@
     if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
         [self deserialiseCommandResponse:characteristic]; // read response buffer data
     }
+    else if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
+        int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+        [_delegate didReceiveCurrentNotification:current];
+    }
+    else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
+        int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+        [_delegate didReceiveDurationNotification:duration];
+    }
+    else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
+        int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+        [_delegate didReceiveRemainingTimeNotification:remainingTime];
+    }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
@@ -35,13 +47,13 @@
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
     if (FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-        if (FOC_STATUS_CMD_SUCCESS) {
+        if (FOC_STATUS_CMD_SUCCESS == status) {
             NSLog(@"Program request success"); // TODO device manager callback
         }
-        else if (FOC_STATUS_CMD_FAILURE) { // TODO check whether failure is ok for stopping program
+        else if (FOC_STATUS_CMD_FAILURE == status) { // TODO check whether failure is ok for stopping program
             NSLog(@"Program request failure");
         }
-        else if (FOC_STATUS_CMD_UNSUPPORTED) {
+        else if (FOC_STATUS_CMD_UNSUPPORTED == status) {
             NSLog(@"Program request UNSUPPORTED");
         }
         
@@ -66,6 +78,7 @@
 - (void)interpretCommandResponse:(NSError *)error
 {
     // FIXME handle error
+    NSLog(@"Command response error %@", error);
 }
 
 - (void)startProgram:(FOCDeviceProgramEntity *)program
@@ -90,7 +103,8 @@
 #pragma mark CBPeripheralDelegate
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"Received notification for characteristic %@", [self loggableCharacteristicName:characteristic]);
+    NSLog(@"Updated notification listen state to %hhd for characteristic %@",
+          characteristic.isNotifying, [self loggableCharacteristicName:characteristic]);
 }
 
 @end

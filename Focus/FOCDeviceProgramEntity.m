@@ -101,10 +101,10 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
     NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
     
-    _duration = [self getIntegerFromBytes:durationData];
-    _shamDuration = [self getIntegerFromBytes:shamDurationData];
-    _current = [self getIntegerFromBytes:currentData];
-    _currentOffset = [self getIntegerFromBytes:currentOffset];
+    _duration = [FOCDeviceProgramEntity getIntegerFromBytes:durationData];
+    _shamDuration = [FOCDeviceProgramEntity getIntegerFromBytes:shamDurationData];
+    _current = [FOCDeviceProgramEntity getIntegerFromBytes:currentData];
+    _currentOffset = [FOCDeviceProgramEntity getIntegerFromBytes:currentOffset];
     
     free(descriptor);
 }
@@ -130,8 +130,8 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     NSData *frequencyData = [secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
     NSData *dutyData = [secondDescriptor subdataWithRange:NSMakeRange(6, 4)];
     
-    _frequency = [self getLongFromBytes:frequencyData];
-    _dutyCycle = [self getLongFromBytes:dutyData];
+    _frequency = [FOCDeviceProgramEntity getLongFromBytes:frequencyData];
+    _dutyCycle = [FOCDeviceProgramEntity getLongFromBytes:dutyData];
     
     free(descriptor);
 }
@@ -145,7 +145,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return info;
 }
 
-- (NSNumber *)getIntegerFromBytes:(NSData *)data
++ (NSNumber *)getIntegerFromBytes:(NSData *)data
 {
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);
@@ -155,7 +155,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return [[NSNumber alloc] initWithInt:n];
 }
 
-- (NSNumber *)getLongFromBytes:(NSData *)data
++ (NSNumber *)getLongFromBytes:(NSData *)data
 {
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);

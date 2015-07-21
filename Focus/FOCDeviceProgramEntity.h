@@ -99,4 +99,14 @@ typedef NS_ENUM(int, ProgramMode) {
 @property NSNumber *frequency;
 @property NSNumber *dutyCycle;
 
+/**
+ * Deserialises a byte array from the Focus device to a int
+ */
++ (NSNumber *)getIntegerFromBytes:(NSData *)data;
+
+/**
+ * Deserialises a byte array from the Focus device to a long
+ */
++ (NSNumber *)getLongFromBytes:(NSData *)data;
+
 @end

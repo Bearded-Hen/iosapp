@@ -14,6 +14,21 @@
 
 - (void)didFinishProgramRequest:(NSError *) error;
 
+/**
+ * Called when the Focus device updates its current value via a notification
+ */
+- (void)didReceiveCurrentNotification:(int)current;
+
+/**
+ * Called when the Focus device updates the duration value of a program via a notification
+ */
+- (void)didReceiveDurationNotification:(int)duration;
+
+/**
+ * Called when the Focus device updates the remaining time of a program via a notification
+ */
+- (void)didReceiveRemainingTimeNotification:(int)remainingTime;
+
 @end
 
 @interface FOCProgramRequestManager : FOCBasePeripheralManager {
