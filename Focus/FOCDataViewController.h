@@ -15,7 +15,7 @@
 @protocol FOCUiPageChangeDelegate <NSObject>
 
 - (void)didAlterPageState:(FOCUiPageModel *)pageModel;
-- (void)didRequestProgramPlay:(FOCUiPageModel *)pageModel;
+- (void)didRequestProgramStateChange:(FOCUiPageModel *)pageModel play:(bool)play;
 
 @end
 

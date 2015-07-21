@@ -43,7 +43,9 @@ static const float kAnimDuration = 0.3;
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
     [_btnProgramSettings.titleLabel setFont:[FOCFontAwesome font]];
     
-    [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:@"fa-play"] forState:UIControlStateNormal];
+    NSString *faCode = _pageModel.isPlaying ? @"fa-stop" :  @"fa-play";
+    
+    [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:faCode] forState:UIControlStateNormal];
     [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
     
     [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
@@ -87,7 +89,7 @@ static const float kAnimDuration = 0.3;
 
 - (void)didClickChangePlayStateButton
 {
-    [_delegate didRequestProgramPlay:_pageModel];
+    [_delegate didRequestProgramStateChange:_pageModel play:!_pageModel.isPlaying];
 }
 
 -(FOCDisplayAttributeModel *)displayAttributeModelForIndex:(NSIndexPath *)indexPath
@@ -133,7 +135,7 @@ static const float kAnimDuration = 0.3;
             break;
         }
         default: {
-            imagePath = kBluetoothConnected;
+            imagePath = kBluetoothDisconnected;
             break;
         }
     }

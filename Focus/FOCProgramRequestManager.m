@@ -21,6 +21,14 @@ static const int kTimeoutSeconds = 3;
 
 @implementation FOCProgramRequestManager
 
+- (id)initWithPeripheral:(CBPeripheral *)focusDevice
+{
+    if (self = [super initWithPeripheral:focusDevice]) {
+        _lastNotificationInterval = 0;
+    }
+    return self;
+}
+
 - (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
 {
     [super peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
@@ -63,8 +71,6 @@ static const int kTimeoutSeconds = 3;
         else if (_requestProgramStart) {
             [self handleStartResponse:status];
         }
-        
-        
         else {
             NSLog(@"Unknown command response sent to Program Request Manager");
         }
@@ -128,6 +134,10 @@ static const int kTimeoutSeconds = 3;
     
     long diff = [[[NSDate alloc] init ] timeIntervalSince1970] - _lastNotificationInterval;
     
+    if (_lastNotificationInterval == 0) {
+        diff = 0;
+    }
+    
     if (diff > kTimeoutSeconds) { // if no notifications in 3s, program is stopped or disconnected
         [self stopActiveProgram];
     }
@@ -140,7 +150,7 @@ static const int kTimeoutSeconds = 3;
 {
     _activeProgram = nil;
     _requestProgramStop = true;
-    [self sendProgramStartRequest];
+    [self sendProgramStopRequest];
 }
 
 - (void)startNotificationListeners:(CBPeripheral *)focusDevice

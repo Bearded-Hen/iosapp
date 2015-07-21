@@ -51,6 +51,6 @@
 /**
  * Stop the active program (if any)
  */
-- (void)stopActiveProgram;
+- (void)stopProgram:(FOCDeviceProgramEntity *)program;
 
 @end

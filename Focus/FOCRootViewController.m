@@ -124,7 +124,7 @@
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
     dataViewController.pageModel = _pageData[index];
-    _delegate = self;
+    dataViewController.delegate = self;
     
     return dataViewController;
 }
@@ -153,7 +153,10 @@
 
 - (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing
 {
-    NSLog(@"");
+    for (FOCUiPageModel *model in _pageData) {
+        model.isPlaying = playing;
+    }
+    [self refreshDisplayedController];
 }
 
 #pragma mark ProgramSyncDelegate
@@ -184,13 +187,14 @@
     }
 }
 
-- (void)didRequestProgramPlay:(FOCUiPageModel *)pageModel
+- (void)didRequestProgramStateChange:(FOCUiPageModel *)pageModel play:(bool)play
 {
-    // TODO store play state etc & pass to UI
-    
-    [_deviceManager playProgram:pageModel.program];
-    
-    
+    if (play) {
+        [_deviceManager playProgram:pageModel.program];
+    }
+    else {
+        [_deviceManager stopProgram:pageModel.program];
+    }
 }
 
 #pragma mark - UIPageViewController delegate methods

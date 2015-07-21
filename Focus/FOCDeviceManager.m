@@ -67,7 +67,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     }
 }
 
-- (void)stopActiveProgram
+- (void)stopProgram:(FOCDeviceProgramEntity *)program
 {
     if (_focusDevice.delegate == _requestManager) {
         [_requestManager stopActiveProgram];
