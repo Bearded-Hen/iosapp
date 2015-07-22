@@ -98,14 +98,15 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     // serialise duration/current data
     NSData *durationData = [firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
     NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
+    NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
     NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
     
     int nCurrent;
-    [[firstDescriptor subdataWithRange:NSMakeRange(16, 2)] getBytes:&nCurrent length:sizeof(nCurrent)];
+    [currentData getBytes:&nCurrent length:sizeof(nCurrent)];
     
     _duration = [FOCDeviceProgramEntity getIntegerFromBytes:durationData];
     _shamDuration = [FOCDeviceProgramEntity getIntegerFromBytes:shamDurationData];
-    _current = [[NSNumber alloc] initWithInt:nCurrent];
+    _current = [FOCDeviceProgramEntity getIntegerFromBytes:currentData];
     _currentOffset = [FOCDeviceProgramEntity getIntegerFromBytes:currentOffset];
     
     NSLog(@"Deserialised first descriptor %@", firstDescriptor);
@@ -156,7 +157,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);
     
-    int n = (bytes[1] & 0xff << 8) + (bytes[0] & 0xff);
+    int n = (bytes[1] << 8) + bytes[0];
     free(bytes);
     return [[NSNumber alloc] initWithInt:n];
 }
@@ -166,10 +167,10 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     Byte *bytes = (Byte*)malloc(data.length);
     memcpy(bytes, data.bytes, data.length);
     
-    long n =    ((long) (bytes[3] & 0xff) << 24) +
-                ((long) (bytes[2] & 0xff) << 16) +
-                ((long) (bytes[1] & 0xff) << 8) +
-                ((long) (bytes[0] & 0xff));
+    long n =    (((long) bytes[3]) << 24) +
+                (((long) bytes[2]) << 16) +
+                (((long) bytes[1]) << 8) +
+                ((long) bytes[0]);
     free(bytes);
     return [[NSNumber alloc] initWithLong:n];
 }
