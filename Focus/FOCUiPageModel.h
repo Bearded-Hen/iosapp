@@ -10,6 +10,7 @@
 
 #import "FOCDeviceProgramEntity.h"
 #import "FOCDeviceStateDelegate.h"
+#import "FOCNotificationModel.h"
 
 /**
  * Contains all the state for how a single program should be displayed in the ViewPager.
@@ -23,5 +24,6 @@
 @property FOCDeviceProgramEntity *program;
 @property FocusConnectionState connectionState;
 @property NSString *connectionText;
+@property FOCNotificationModel *notificationModel;
 
 @end

@@ -53,7 +53,6 @@ static const float kAnimDuration = 0.3;
     [_btnPlayProgram addTarget:self action:@selector(didClickChangePlayStateButton) forControlEvents:UIControlEventTouchUpInside];
     
     _programTitleLabel.text = [[_pageModel.program name] capitalizedString];
-    _backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
     _backgroundImageView.image = [UIImage imageNamed:_pageModel.program.imageName];
     
     _orderedEditKeys = [_pageModel.program orderedEditKeys];

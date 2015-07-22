@@ -8,6 +8,7 @@
 
 #import "FOCDeviceManager.h"
 #import "FocusConstants.h"
+#import "FOCNotificationModel.h"
 
 @interface FOCDeviceManager ()
 
@@ -19,6 +20,7 @@
 @property FOCProgramSyncManager *syncManager;
 @property FOCProgramRequestManager *requestManager;
 
+@property FOCNotificationModel *notificationModel;
 @property BOOL isDevicePaired;
 
 @end
@@ -32,6 +34,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
+        _notificationModel = [[FOCNotificationModel alloc] init];
     }
     return self;
 }
@@ -290,17 +293,20 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 - (void)didReceiveCurrentNotification:(int)current
 {
-    // TODO handle new value
+    _notificationModel.current = current;
+    // TODO handle new value (pass to root view controller)
 }
 
 - (void)didReceiveDurationNotification:(int)duration
 {
-    // TODO handle new value
+    _notificationModel.duration = duration;
+    // TODO handle new value (pass to root view controller)
 }
 
 - (void)didReceiveRemainingTimeNotification:(int)remainingTime
 {
-    // TODO handle new value
+    _notificationModel.remainingTime = remainingTime;
+    // TODO handle new value (pass to root view controller)
 }
 
 #pragma mark - UIAlertViewDelegate

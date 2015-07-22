@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CD171ED5012F72236E08F676 /* libPods-Focus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E351264E7925E223EB98A98 /* libPods-Focus.a */; };
 		F03EB1871B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1861B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m */; };
+		F03EB18A1B5EAD350034BA08 /* FOCNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */; };
 		F071131F1B4C232A00D0A7D1 /* FocusConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F071131E1B4C232A00D0A7D1 /* FocusConstants.m */; };
 		F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113311B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m */; };
 		F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113371B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m */; };
@@ -67,6 +68,8 @@
 		A6F7831D71596F3BB83C3AEA /* Pods-Focus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.release.xcconfig"; sourceTree = "<group>"; };
 		F03EB1851B5D51060034BA08 /* ActionSheetPickerTimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionSheetPickerTimeDelegate.h; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/ActionSheetPickerTimeDelegate.h"; sourceTree = "<group>"; };
 		F03EB1861B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ActionSheetPickerTimeDelegate.m; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/ActionSheetPickerTimeDelegate.m"; sourceTree = "<group>"; };
+		F03EB1881B5EAD350034BA08 /* FOCNotificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCNotificationModel.h; sourceTree = "<group>"; };
+		F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCNotificationModel.m; sourceTree = "<group>"; };
 		F071131D1B4C232A00D0A7D1 /* FocusConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusConstants.h; sourceTree = "<group>"; };
 		F071131E1B4C232A00D0A7D1 /* FocusConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusConstants.m; sourceTree = "<group>"; };
 		F07113301B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCCharacteristicDiscoveryManager.h; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 				F07113961B5680C900D0A7D1 /* FOCDisplayAttributeModel.m */,
 				F07113EC1B5908F500D0A7D1 /* FOCUiPageModel.h */,
 				F07113ED1B5908F500D0A7D1 /* FOCUiPageModel.m */,
+				F03EB1881B5EAD350034BA08 /* FOCNotificationModel.h */,
+				F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -501,6 +506,7 @@
 				F07113F11B591E0E00D0A7D1 /* FOCPaddedLabel.m in Sources */,
 				F07113601B55543200D0A7D1 /* FOCDefaultProgramProvider.m in Sources */,
 				F08E18891B3D691A00FA765C /* main.m in Sources */,
+				F03EB18A1B5EAD350034BA08 /* FOCNotificationModel.m in Sources */,
 				F07113461B5405B400D0A7D1 /* FOCFontAwesome.m in Sources */,
 				F07113DD1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld in Sources */,
 				F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */,
