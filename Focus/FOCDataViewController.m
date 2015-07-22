@@ -316,29 +316,33 @@ static const float kAnimDuration = 0.3;
             
         } currentState:program.randomFrequency.boolValue];
     }
-    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
-        [self showTimePicker]; // FIXME
+    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) { // FIXME
+        [self showTimePicker];
     }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) { // FIXME
         [self showCurrentPicker:nil title:@"Select Current" current:((NSNumber *)program.current).intValue];
     }
-    else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) { // FIXME
         [self showVoltagePicker:nil voltage:program.voltage.intValue];
     }
-    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-        [self showSecondPicker:nil shamDuration:program.shamDuration.intValue];
+    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) { // FIXME
+        [self showSecondPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            int newShamDuration = [FOCShamDurationAttributeSetting valueForIncrementIndex:selectedIndex];
+            
+        } shamDuration:program.shamDuration.intValue];
     }
-    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) { // FIXME
         [self showCurrentPicker:nil title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         [self showFrequencyPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            long value = [FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex];
+            long newFreq = [FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex];
             
         } frequency:((NSNumber *)program.frequency).longValue];
     }
-    else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
+    else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) { // FIXME
         [self showDutyCyclePicker:nil dutyCycle:program.dutyCycle.intValue];
     }
     else {
