@@ -322,10 +322,14 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) { // FIXME
         [self showCurrentPicker:nil title:@"Select Current" current:((NSNumber *)program.current).intValue];
     }
-    else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) { // FIXME
-        [self showVoltagePicker:nil voltage:program.voltage.intValue];
+    else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
+        [self showVoltagePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            int newVoltage = [FOCVoltageAttributeSetting valueForIncrementIndex:selectedIndex];
+            
+        } voltage:program.voltage.intValue];
     }
-    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) { // FIXME
+    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
         [self showSecondPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
             int newShamDuration = [FOCShamDurationAttributeSetting valueForIncrementIndex:selectedIndex];
@@ -379,7 +383,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCVoltageAttributeSetting labelsForAttribute];
     int index = [FOCVoltageAttributeSetting indexForValue:voltage];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
 - (void)showFrequencyPicker:(ActionStringDoneBlock)doneBlock frequency:(long)frequency
