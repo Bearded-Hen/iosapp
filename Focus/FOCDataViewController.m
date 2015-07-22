@@ -18,6 +18,9 @@
 
 #import "FOCModeAttributeSetting.h"
 #import "FOCBoolAttributeSetting.h"
+#import "FOCShamDurationAttributeSetting.h"
+#import "FOCDutyCycleAttributeSetting.h"
+#import "FOCVoltageAttributeSetting.h"
 
 @interface FOCDataViewController ()
 
@@ -306,9 +309,10 @@ static const float kAnimDuration = 0.3;
 {
     NSString *dataKey = _orderedEditKeys[indexPath.item];
     FOCDeviceProgramEntity *program = _pageModel.program;
+    // FIXME blocks should do something
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-        [self showModePicker:nil currentMode:program.programMode];
+        [self showModePicker:nil mode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
         [self showBooleanPicker:nil currentState:program.sham.boolValue];
@@ -329,10 +333,10 @@ static const float kAnimDuration = 0.3;
         [self showCurrentPicker:nil title:@"Select Current"];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
-        [self showVoltagePicker];
+        [self showVoltagePicker:nil voltage:program.voltage.intValue];
     }
     else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-        [self showSecondPicker:nil];
+        [self showSecondPicker:nil shamDuration:program.shamDuration.intValue];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
         [self showCurrentPicker:nil title:@"Select Current Offset"];
@@ -341,44 +345,48 @@ static const float kAnimDuration = 0.3;
         [self showFrequencyPicker];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
-        [self showPercentagePicker:nil];
+        [self showDutyCyclePicker:nil dutyCycle:program.dutyCycle.intValue];
     }
     else {
         NSLog(@"Unknown attribute edit attempted");
     }
 }
 
-- (void)showModePicker:(ActionStringDoneBlock)doneBlock currentMode:(ProgramMode)currentMode
+- (void)showModePicker:(ActionStringDoneBlock)doneBlock mode:(ProgramMode)mode
 {
     NSArray *options = [FOCModeAttributeSetting labelsForAttribute];
-    int index = [FOCModeAttributeSetting indexForValue:currentMode];
+    int index = [FOCModeAttributeSetting indexForValue:mode];
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
-- (void)showSecondPicker:(ActionStringDoneBlock)doneBlock
+- (void)showBooleanPicker:(ActionStringDoneBlock)doneBlock currentState:(bool)currentState
 {
-    NSMutableArray *options = [[NSMutableArray alloc] init];
+    NSArray *options = [FOCBoolAttributeSetting labelsForAttribute];
+    int index = [FOCBoolAttributeSetting indexForValue:currentState];
     
-    for (int i=0; i<=50; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d s", i]];
-    }
-    int index = 0; // FIXME index selection
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+- (void)showSecondPicker:(ActionStringDoneBlock)doneBlock shamDuration:(int)shamDuration
+{
+    NSArray *options = [FOCShamDurationAttributeSetting labelsForAttribute];
+    int index = [FOCShamDurationAttributeSetting indexForValue:shamDuration];
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Sham Period" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
-- (void)showPercentagePicker:(ActionStringDoneBlock)doneBlock
+- (void)showVoltagePicker:(ActionStringDoneBlock)doneBlock voltage:(int)voltage
 {
-    NSMutableArray *options = [[NSMutableArray alloc] init];
+    NSArray *options = [FOCVoltageAttributeSetting labelsForAttribute];
+    int index = [FOCVoltageAttributeSetting indexForValue:voltage];
     
-    for (int i=20; i<=80; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d %%", i]];
-    }
-    int index = 0; // FIXME index selection
-    
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
 }
+
+
+// FIXME below pickers
+
 
 - (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title;
 {
@@ -390,26 +398,6 @@ static const float kAnimDuration = 0.3;
     int index = 0; // FIXME index selection
     
     [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
-}
-
-- (void)showVoltagePicker
-{
-    NSMutableArray *options = [[NSMutableArray alloc] init];
-    
-    for (int i=10; i<=60; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d V", i]];
-    }
-    int index = _pageModel.program.voltage.intValue - 10;
-    
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
-}
-
-- (void)showBooleanPicker:(ActionStringDoneBlock)doneBlock currentState:(bool)currentState
-{
-    NSArray *options = [FOCBoolAttributeSetting labelsForAttribute];
-    int index = [FOCBoolAttributeSetting indexForValue:currentState];
-    
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
 - (void)showFrequencyPicker
@@ -442,6 +430,15 @@ static const float kAnimDuration = 0.3;
     
     [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:NO origin:_collectionView
                                initialSelections:initialSelections];
+}
+
+// FIXME requires formatting
+- (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
+{
+    NSArray *options = [FOCDutyCycleAttributeSetting labelsForAttribute];
+    int index = 0; // FIXME index selection
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
