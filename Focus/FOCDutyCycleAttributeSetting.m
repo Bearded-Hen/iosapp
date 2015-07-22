@@ -28,11 +28,6 @@ static const int kMaxDutyCycle = 80;
     return -1; // FIXME
 }
 
-+ (NSString *)labelForValue:(int)value
-{
-    return nil; // FIXME
-}
-
 + (int)valueForIncrementIndex:(int)index
 {
     return -1; // FIXME

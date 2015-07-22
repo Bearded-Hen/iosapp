@@ -12,7 +12,7 @@
 
 + (NSString *)labelForValue:(int)value
 {
-    return nil;
+    return [self labelsForAttribute][[self indexForValue:value]];
 }
 
 + (int)indexForValue:(int)value

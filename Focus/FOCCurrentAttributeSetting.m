@@ -8,6 +8,31 @@
 
 #import "FOCCurrentAttributeSetting.h"
 
+static const int kMinCurrent = 1;
+static const int kMaxCurrent = 18;
+static const int kCurrentScalar = 10;
+
 @implementation FOCCurrentAttributeSetting
+
++ (NSArray *)labelsForAttribute
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for (int i=kMinCurrent; i<=kMaxCurrent; i++) {
+        [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float)i) / kCurrentScalar]];
+    }
+    
+    return [options copy];
+}
+
++ (int)indexForValue:(int)value
+{
+    return value - 1;
+}
+
++ (int)valueForIncrementIndex:(int)index
+{
+    return index + 1;
+}
 
 @end

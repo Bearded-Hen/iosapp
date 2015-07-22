@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#import "FOCBaseAttributeSetting.h"
+#import "FOCIntAttributeSetting.h"
 
-@interface FOCCurrentAttributeSetting : FOCBaseAttributeSetting
+@interface FOCCurrentAttributeSetting : FOCIntAttributeSetting
 
 @end

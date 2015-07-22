@@ -28,11 +28,6 @@ static const int kMaxVoltage = 60;
     return value - kMinVoltage;
 }
 
-+ (NSString *)labelForValue:(int)value
-{
-    return [self labelsForAttribute][[self indexForValue:value]];
-}
-
 + (int)valueForIncrementIndex:(int)index
 {
     return index + kMinVoltage;

@@ -17,6 +17,7 @@
 		F03EB1A11B5FAFBA0034BA08 /* FOCDutyCycleAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1A01B5FAFBA0034BA08 /* FOCDutyCycleAttributeSetting.m */; };
 		F03EB1A41B5FB1C50034BA08 /* FOCVoltageAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1A31B5FB1C50034BA08 /* FOCVoltageAttributeSetting.m */; };
 		F03EB1A71B5FB1E70034BA08 /* FOCIntAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1A61B5FB1E70034BA08 /* FOCIntAttributeSetting.m */; };
+		F03EB1AA1B5FB50B0034BA08 /* FOCCurrentAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1A91B5FB50B0034BA08 /* FOCCurrentAttributeSetting.m */; };
 		F071131F1B4C232A00D0A7D1 /* FocusConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = F071131E1B4C232A00D0A7D1 /* FocusConstants.m */; };
 		F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113311B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m */; };
 		F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113371B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m */; };
@@ -91,6 +92,8 @@
 		F03EB1A31B5FB1C50034BA08 /* FOCVoltageAttributeSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCVoltageAttributeSetting.m; sourceTree = "<group>"; };
 		F03EB1A51B5FB1E70034BA08 /* FOCIntAttributeSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCIntAttributeSetting.h; sourceTree = "<group>"; };
 		F03EB1A61B5FB1E70034BA08 /* FOCIntAttributeSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCIntAttributeSetting.m; sourceTree = "<group>"; };
+		F03EB1A81B5FB50B0034BA08 /* FOCCurrentAttributeSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCCurrentAttributeSetting.h; sourceTree = "<group>"; };
+		F03EB1A91B5FB50B0034BA08 /* FOCCurrentAttributeSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCCurrentAttributeSetting.m; sourceTree = "<group>"; };
 		F071131D1B4C232A00D0A7D1 /* FocusConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusConstants.h; sourceTree = "<group>"; };
 		F071131E1B4C232A00D0A7D1 /* FocusConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusConstants.m; sourceTree = "<group>"; };
 		F07113301B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCCharacteristicDiscoveryManager.h; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				F03EB1A01B5FAFBA0034BA08 /* FOCDutyCycleAttributeSetting.m */,
 				F03EB1A21B5FB1C50034BA08 /* FOCVoltageAttributeSetting.h */,
 				F03EB1A31B5FB1C50034BA08 /* FOCVoltageAttributeSetting.m */,
+				F03EB1A81B5FB50B0034BA08 /* FOCCurrentAttributeSetting.h */,
+				F03EB1A91B5FB50B0034BA08 /* FOCCurrentAttributeSetting.m */,
 			);
 			name = attributes;
 			sourceTree = "<group>";
@@ -573,6 +578,7 @@
 				F03EB19E1B5FAE320034BA08 /* FOCShamDurationAttributeSetting.m in Sources */,
 				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113EE1B5908F500D0A7D1 /* FOCUiPageModel.m in Sources */,
+				F03EB1AA1B5FB50B0034BA08 /* FOCCurrentAttributeSetting.m in Sources */,
 				F07113E91B580FE900D0A7D1 /* ALGReversedFlowLayout.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
 				F07113941B56774E00D0A7D1 /* FOCProgramModeWrapper.m in Sources */,

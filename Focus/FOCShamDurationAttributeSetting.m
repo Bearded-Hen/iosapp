@@ -28,11 +28,6 @@ static const int kMaxShamDuration = 50;
     return value;
 }
 
-+ (NSString *)labelForValue:(int)value
-{
-    return [self labelsForAttribute][value];
-}
-
 + (int)valueForIncrementIndex:(int)index
 {
     return index;

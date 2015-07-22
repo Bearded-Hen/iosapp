@@ -21,6 +21,7 @@
 #import "FOCShamDurationAttributeSetting.h"
 #import "FOCDutyCycleAttributeSetting.h"
 #import "FOCVoltageAttributeSetting.h"
+#import "FOCCurrentAttributeSetting.h"
 
 @interface FOCDataViewController ()
 
@@ -227,7 +228,7 @@ static const float kAnimDuration = 0.3;
         return [self readableCurrentString:value];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
-        return [self readableVoltageString:value];
+        return [FOCVoltageAttributeSetting labelForValue:((NSNumber *)value).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         return [self readableFrequencyString:value];
@@ -239,42 +240,6 @@ static const float kAnimDuration = 0.3;
         return @"";
     }
     return nil;
-}
-
-- (NSString *)readableTimeString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    int seconds = number.intValue % 60;
-    int mins = (number.intValue - seconds) / 60;
-    return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
-}
-
-- (NSString *)readableVoltageString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    return [NSString stringWithFormat:@"%dV", number.intValue];
-}
-
-- (NSString *)readableFrequencyString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    float freq = number.intValue;
-    freq /= 1000; // convert from amps to mA
-    return [NSString stringWithFormat:@"%dHz", (int)freq];
-}
-
-- (NSString *)readablePercentageString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    return [NSString stringWithFormat:@"%ld%%", number.longValue];
-}
-
-- (NSString *)readableCurrentString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    float current = number.intValue;
-    current /= 1000; // convert from amps to mA
-    return [NSString stringWithFormat:@"%.1fmA", current];
 }
 
 #pragma mark - UICollectionView Datasource
@@ -330,7 +295,7 @@ static const float kAnimDuration = 0.3;
         [self showTimePicker]; // FIXME
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
-        [self showCurrentPicker:nil title:@"Select Current"];
+        [self showCurrentPicker:nil title:@"Select Current" current:((NSNumber *)program.current).intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         [self showVoltagePicker:nil voltage:program.voltage.intValue];
@@ -339,7 +304,7 @@ static const float kAnimDuration = 0.3;
         [self showSecondPicker:nil shamDuration:program.shamDuration.intValue];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
-        [self showCurrentPicker:nil title:@"Select Current Offset"];
+        [self showCurrentPicker:nil title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         [self showFrequencyPicker];
@@ -388,24 +353,12 @@ static const float kAnimDuration = 0.3;
 // FIXME below pickers
 
 
-- (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title;
-{
-    NSMutableArray *options = [[NSMutableArray alloc] init];
-    
-    for (int i=1; i<=18; i++) {
-        [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float)i) / 10]];
-    }
-    int index = 0; // FIXME index selection
-    
-    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
-}
-
 - (void)showFrequencyPicker
 {
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
-    for (float f=1; f<=9; f++) {
-        [options addObject:[NSString stringWithFormat:@"%.1f Hz", f/10]];
+    for (int i=1; i<=9; i++) {
+        [options addObject:[NSString stringWithFormat:@"%.1f Hz", (float)i / 10]];
     }
     for (int i=1; i<=29; i++) {
         [options addObject:[NSString stringWithFormat:@"%d Hz", i]];
@@ -433,6 +386,15 @@ static const float kAnimDuration = 0.3;
 }
 
 // FIXME requires formatting
+
+- (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title current:(int)current;
+{
+    NSArray *options = [FOCCurrentAttributeSetting labelsForAttribute];
+    int index = [FOCCurrentAttributeSetting indexForValue:current];
+    
+    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
 - (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
 {
     NSArray *options = [FOCDutyCycleAttributeSetting labelsForAttribute];
@@ -440,6 +402,38 @@ static const float kAnimDuration = 0.3;
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
+
+
+- (NSString *)readableTimeString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    int seconds = number.intValue % 60;
+    int mins = (number.intValue - seconds) / 60;
+    return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
+}
+
+- (NSString *)readableFrequencyString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    float freq = number.intValue;
+    freq /= 1000; // convert from amps to mA
+    return [NSString stringWithFormat:@"%dHz", (int)freq];
+}
+
+- (NSString *)readablePercentageString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    return [NSString stringWithFormat:@"%ld%%", number.longValue];
+}
+
+- (NSString *)readableCurrentString:(id)value
+{
+    NSNumber *number = (NSNumber *) value;
+    float current = number.intValue;
+    current /= 1000; // convert from amps to mA
+    return [NSString stringWithFormat:@"%.1fmA", current];
+}
+
 
 #pragma mark – UICollectionViewDelegateFlowLayout
 
