@@ -1,5 +1,5 @@
 //
-//  FOCCurrentAttributeSetting.h
+//  FOCCurrentOffsetAttributeSetting.h
 //  Focus
 //
 //  Created by Jamie Lynch on 22/07/2015.
@@ -8,6 +8,6 @@
 
 #import "FOCBaseCurrentAttributeSetting.h"
 
-@interface FOCCurrentAttributeSetting : FOCBaseCurrentAttributeSetting
+@interface FOCCurrentOffsetAttributeSetting : FOCBaseCurrentAttributeSetting
 
 @end

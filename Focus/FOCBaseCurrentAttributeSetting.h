@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#import "FOCBaseCurrentAttributeSetting.h"
+#import "FOCIntAttributeSetting.h"
 
-@interface FOCCurrentAttributeSetting : FOCBaseCurrentAttributeSetting
+@interface FOCBaseCurrentAttributeSetting : FOCIntAttributeSetting
+
++ (int)maxCurrent;
 
 @end

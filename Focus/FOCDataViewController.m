@@ -22,6 +22,7 @@
 #import "FOCDutyCycleAttributeSetting.h"
 #import "FOCVoltageAttributeSetting.h"
 #import "FOCCurrentAttributeSetting.h"
+#import "FOCCurrentOffsetAttributeSetting.h"
 #import "FOCFrequencyAttributeSetting.h"
 
 @interface FOCDataViewController ()
@@ -223,10 +224,11 @@ static const float kAnimDuration = 0.3;
         
         return [self readableTimeString:value];
     }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey] ||
-             [PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
-        
+    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         return [FOCCurrentAttributeSetting labelForValue:((NSNumber *) value).intValue];
+    }
+    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
+        return [FOCCurrentOffsetAttributeSetting labelForValue:((NSNumber *) value).intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         return [FOCVoltageAttributeSetting labelForValue:((NSNumber *)value).intValue];
@@ -342,9 +344,9 @@ static const float kAnimDuration = 0.3;
         } shamDuration:program.shamDuration.intValue];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) { // FIXME
-        [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+        [self showCurrentOffsetPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newCurrentOffset = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
+            int newCurrentOffset = [FOCCurrentOffsetAttributeSetting valueForIncrementIndex:selectedIndex];
             NSLog(@"");
             
         } title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
@@ -420,8 +422,6 @@ static const float kAnimDuration = 0.3;
     [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:true origin:_collectionView initialSelections:initialSelections];
 }
 
-// FIXME requires formatting
-
 - (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title current:(int)current;
 {
     NSArray *options = [FOCCurrentAttributeSetting labelsForAttribute];
@@ -429,6 +429,16 @@ static const float kAnimDuration = 0.3;
     
     [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
+
+- (void)showCurrentOffsetPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title current:(int)current;
+{
+    NSArray *options = [FOCCurrentOffsetAttributeSetting labelsForAttribute];
+    int index = [FOCCurrentOffsetAttributeSetting indexForValue:current];
+    
+    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
+// FIXME requires formatting
 
 - (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
 {
@@ -460,8 +470,7 @@ static const float kAnimDuration = 0.3;
     return CGSizeMake(availableSpace / 2, 44);
 }
 
-- (UIEdgeInsets)collectionView:
-(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+- (UIEdgeInsets)collectionView: (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(kVerticalEdgeInset, kHorizontalEdgeInset, kVerticalEdgeInset, kHorizontalEdgeInset);
 }
