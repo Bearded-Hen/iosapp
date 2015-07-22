@@ -22,6 +22,7 @@
 #import "FOCDutyCycleAttributeSetting.h"
 #import "FOCVoltageAttributeSetting.h"
 #import "FOCCurrentAttributeSetting.h"
+#import "FOCFrequencyAttributeSetting.h"
 
 @interface FOCDataViewController ()
 
@@ -225,13 +226,13 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey] ||
              [PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
         
-        return [self readableCurrentString:value];
+        return [FOCCurrentAttributeSetting labelForValue:((NSNumber *) value).intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         return [FOCVoltageAttributeSetting labelForValue:((NSNumber *)value).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-        return [self readableFrequencyString:value];
+        return [FOCFrequencyAttributeSetting labelForValue:((NSNumber *) value).longValue];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
         return [self readablePercentageString:value];
@@ -274,22 +275,46 @@ static const float kAnimDuration = 0.3;
 {
     NSString *dataKey = _orderedEditKeys[indexPath.item];
     FOCDeviceProgramEntity *program = _pageModel.program;
-    // FIXME blocks should do something
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-        [self showModePicker:nil mode:program.programMode];
+        [self showModePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            ProgramMode newMode = [FOCModeAttributeSetting valueForIncrementIndex:selectedIndex];
+            // TODO attempt update to program mode
+            
+        } mode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:program.sham.boolValue];
+        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+
+            bool newSham = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
+            // TODO update model
+            
+        } currentState:program.sham.boolValue];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:program.bipolar.boolValue];
+        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            bool newBipolar = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
+            // TODO update model
+            
+        } currentState:program.bipolar.boolValue];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:program.randomCurrent.boolValue];
+        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            bool newRandCurr = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
+            // TODO update model
+            
+        } currentState:program.randomCurrent.boolValue];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:program.randomFrequency.boolValue];
+        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            bool newRandFreq = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
+            // TODO update model
+            
+        } currentState:program.randomFrequency.boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker]; // FIXME
@@ -307,7 +332,11 @@ static const float kAnimDuration = 0.3;
         [self showCurrentPicker:nil title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
-        [self showFrequencyPicker];
+        [self showFrequencyPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            long value = [FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex];
+            
+        } frequency:((NSNumber *)program.frequency).longValue];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
         [self showDutyCyclePicker:nil dutyCycle:program.dutyCycle.intValue];
@@ -349,28 +378,17 @@ static const float kAnimDuration = 0.3;
     [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
 }
 
+- (void)showFrequencyPicker:(ActionStringDoneBlock)doneBlock frequency:(long)frequency
+{
+    NSArray *options = [FOCFrequencyAttributeSetting labelsForAttribute];
+    int index = [FOCFrequencyAttributeSetting indexForValue:frequency];
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+}
+
 
 // FIXME below pickers
 
-
-- (void)showFrequencyPicker
-{
-    NSMutableArray *options = [[NSMutableArray alloc] init];
-    
-    for (int i=1; i<=9; i++) {
-        [options addObject:[NSString stringWithFormat:@"%.1f Hz", (float)i / 10]];
-    }
-    for (int i=1; i<=29; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d Hz", i]];
-    }
-    for (int i=30; i<=300; i+=10) {
-        [options addObject:[NSString stringWithFormat:@"%d Hz", i]];
-    }
-    
-    int index = 0; // FIXME initial selection
-    
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
-}
 
 - (void)showTimePicker
 {
@@ -381,8 +399,7 @@ static const float kAnimDuration = 0.3;
     
     NSArray *initialSelections = @[yass1, yass2];
     
-    [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:NO origin:_collectionView
-                               initialSelections:initialSelections];
+    [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:true origin:_collectionView initialSelections:initialSelections];
 }
 
 // FIXME requires formatting
@@ -403,7 +420,6 @@ static const float kAnimDuration = 0.3;
     [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
-
 - (NSString *)readableTimeString:(id)value
 {
     NSNumber *number = (NSNumber *) value;
@@ -412,28 +428,11 @@ static const float kAnimDuration = 0.3;
     return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
 }
 
-- (NSString *)readableFrequencyString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    float freq = number.intValue;
-    freq /= 1000; // convert from amps to mA
-    return [NSString stringWithFormat:@"%dHz", (int)freq];
-}
-
 - (NSString *)readablePercentageString:(id)value
 {
     NSNumber *number = (NSNumber *) value;
     return [NSString stringWithFormat:@"%ld%%", number.longValue];
 }
-
-- (NSString *)readableCurrentString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    float current = number.intValue;
-    current /= 1000; // convert from amps to mA
-    return [NSString stringWithFormat:@"%.1fmA", current];
-}
-
 
 #pragma mark – UICollectionViewDelegateFlowLayout
 

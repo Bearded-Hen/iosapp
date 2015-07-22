@@ -296,22 +296,18 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 {
     _notificationModel.current = current;
     [self handleNotificationText];
-    
-    
-    
-    // TODO handle new value (pass to root view controller)
 }
 
 - (void)didReceiveDurationNotification:(int)duration
 {
     _notificationModel.duration = duration;
-    // TODO handle new value (pass to root view controller)
+    [self handleNotificationText];
 }
 
 - (void)didReceiveRemainingTimeNotification:(int)remainingTime
 {
     _notificationModel.remainingTime = remainingTime;
-    // TODO handle new value (pass to root view controller)
+    [self handleNotificationText];
 }
 
 - (void)handleNotificationText

@@ -23,14 +23,20 @@ static const int kMaxDutyCycle = 80;
     return [options copy];
 }
 
-+ (int)indexForValue:(int)value
++ (int)indexForValue:(long)value
 {
     return -1; // FIXME
 }
 
-+ (int)valueForIncrementIndex:(int)index
++ (long)valueForIncrementIndex:(int)index
 {
     return -1; // FIXME
+}
+
++ (NSString *)labelForValue:(long)value
+{
+    // FIXME
+    return nil;
 }
 
 @end

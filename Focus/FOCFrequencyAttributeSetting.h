@@ -1,5 +1,5 @@
 //
-//  FOCDutyCycleAttributeSetting.h
+//  FOCFrequencyAttributeSetting.h
 //  Focus
 //
 //  Created by Jamie Lynch on 22/07/2015.
@@ -8,6 +8,6 @@
 
 #import "FOCLongAttributeSetting.h"
 
-@interface FOCDutyCycleAttributeSetting : FOCLongAttributeSetting
+@interface FOCFrequencyAttributeSetting : FOCLongAttributeSetting
 
 @end

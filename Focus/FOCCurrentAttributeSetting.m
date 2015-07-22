@@ -19,7 +19,7 @@ static const int kCurrentScalar = 10;
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
     for (int i=kMinCurrent; i<=kMaxCurrent; i++) {
-        [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float)i) / kCurrentScalar]];
+        [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float) i) / kCurrentScalar]];
     }
     
     return [options copy];
@@ -27,12 +27,18 @@ static const int kCurrentScalar = 10;
 
 + (int)indexForValue:(int)value
 {
-    return value - 1;
+    return -1;
 }
 
 + (int)valueForIncrementIndex:(int)index
 {
-    return index + 1;
+    return -1;
+}
+
++ (NSString *)labelForValue:(int)value
+{
+    // FIXME
+    return nil;
 }
 
 @end

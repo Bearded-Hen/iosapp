@@ -98,13 +98,17 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     // serialise duration/current data
     NSData *durationData = [firstDescriptor subdataWithRange:NSMakeRange(11, 2)];
     NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
-    NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
     NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
+    
+    int nCurrent;
+    [[firstDescriptor subdataWithRange:NSMakeRange(16, 2)] getBytes:&nCurrent length:sizeof(nCurrent)];
     
     _duration = [FOCDeviceProgramEntity getIntegerFromBytes:durationData];
     _shamDuration = [FOCDeviceProgramEntity getIntegerFromBytes:shamDurationData];
-    _current = [FOCDeviceProgramEntity getIntegerFromBytes:currentData];
+    _current = [[NSNumber alloc] initWithInt:nCurrent];
     _currentOffset = [FOCDeviceProgramEntity getIntegerFromBytes:currentOffset];
+    
+    NSLog(@"Deserialised first descriptor %@", firstDescriptor);
     
     free(descriptor);
 }
@@ -132,6 +136,8 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     
     _frequency = [FOCDeviceProgramEntity getLongFromBytes:frequencyData];
     _dutyCycle = [FOCDeviceProgramEntity getLongFromBytes:dutyData];
+    
+    NSLog(@"Deserialised second descriptor %@", secondDescriptor);
     
     free(descriptor);
 }
