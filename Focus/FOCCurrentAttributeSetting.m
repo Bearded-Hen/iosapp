@@ -8,9 +8,11 @@
 
 #import "FOCCurrentAttributeSetting.h"
 
-static const int kMinCurrent = 1;
-static const int kMaxCurrent = 18;
-static const int kCurrentScalar = 10;
+static const int kMinCurrent = 100;
+static const int kMaxCurrent = 1800;
+static const int kIncrement = 100;
+
+static const int kCurrentScalar = 1000;
 
 @implementation FOCCurrentAttributeSetting
 
@@ -18,27 +20,45 @@ static const int kCurrentScalar = 10;
 {
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
-    for (int i=kMinCurrent; i<=kMaxCurrent; i++) {
+    for (int i=kMinCurrent; i<=kMaxCurrent; i+=kIncrement) {
         [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float) i) / kCurrentScalar]];
     }
-    
     return [options copy];
+}
+
++ (NSArray *)rawUnscaledValues
+{
+    NSMutableArray *rawValues = [[NSMutableArray alloc] init];
+    
+    for (int i=kMinCurrent; i<=kMaxCurrent; i+=kIncrement) {
+        [rawValues addObject:[[NSNumber alloc] initWithInt:i]];
+    }
+    return rawValues;
 }
 
 + (int)indexForValue:(int)value
 {
+    NSArray *rawValues = [self rawUnscaledValues];
+    
+    for (int i=0; i<[rawValues count]; i++) {
+        NSNumber *number = rawValues[i];
+        
+        if (number.intValue == value) {
+            return i;
+        }
+    }
     return -1;
 }
 
 + (int)valueForIncrementIndex:(int)index
 {
-    return -1;
+    return ((NSNumber *)[self rawUnscaledValues][index]).intValue;
 }
 
 + (NSString *)labelForValue:(int)value
 {
-    // FIXME
-    return nil;
+    int index = [self indexForValue:value];
+    return index != -1 ? [self labelsForAttribute][index] : nil;
 }
 
 @end

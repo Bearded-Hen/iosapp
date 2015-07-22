@@ -323,7 +323,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 
 + (Byte)byteFromInt:(int)value
 {
-    return (Byte) value & 0xff;
+    return (Byte) value;
 }
 
 //private static void putBoolean(byte[] data, boolean value, int index) {

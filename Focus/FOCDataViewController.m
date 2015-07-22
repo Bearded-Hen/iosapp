@@ -320,7 +320,12 @@ static const float kAnimDuration = 0.3;
         [self showTimePicker];
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) { // FIXME
-        [self showCurrentPicker:nil title:@"Select Current" current:((NSNumber *)program.current).intValue];
+        [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            int newCurrent = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
+            NSLog(@"");
+        }
+        title:@"Select Current" current:((NSNumber *)program.current).intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         [self showVoltagePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
@@ -337,7 +342,12 @@ static const float kAnimDuration = 0.3;
         } shamDuration:program.shamDuration.intValue];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) { // FIXME
-        [self showCurrentPicker:nil title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
+        [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            int newCurrentOffset = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
+            NSLog(@"");
+            
+        } title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         [self showFrequencyPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
