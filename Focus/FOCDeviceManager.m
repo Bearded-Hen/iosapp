@@ -82,7 +82,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 - (void)displayNotReadyAlert
 {
-    [self displayUserErrMessage:@"Focus not ready" message:@"The device isn't ready for commands yet. Please check if it is connected and powered on."];
+    [self displayUserErrMessage:@"Focus not ready" message:@"The device isn't ready yet. Please check it is connected and powered on."];
 }
 
 #pragma mark - implementation
@@ -287,6 +287,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         [_delegate didAlterProgramState:program playing:playing];
     }
     else {
+        [self displayUserErrMessage:@"Program Request Failed" message:@"Please check that the electrodes are connected to the device."];
         NSLog(@"Program state alteration unsuccessful");
     }
 }
@@ -294,6 +295,10 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 - (void)didReceiveCurrentNotification:(int)current
 {
     _notificationModel.current = current;
+    [self handleNotificationText];
+    
+    
+    
     // TODO handle new value (pass to root view controller)
 }
 
@@ -307,6 +312,15 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 {
     _notificationModel.remainingTime = remainingTime;
     // TODO handle new value (pass to root view controller)
+}
+
+- (void)handleNotificationText
+{
+    // TODO check if program playing beforehand
+    
+    NSString *text = [NSString stringWithFormat:@"%02d:%02d - %d", _notificationModel.duration / 60, _notificationModel.duration % 60, _notificationModel.current]; // FIXME format current
+    
+    [_delegate didChangeConnectionText:text];
 }
 
 #pragma mark - UIAlertViewDelegate

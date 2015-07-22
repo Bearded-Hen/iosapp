@@ -62,7 +62,7 @@ static const float kAnimDuration = 0.3;
     _collectionView.hidden = _pageModel.settingsHidden;
     
     [self setBluetoothImage:_pageModel.connectionState];
-    [self setConnectionText:_pageModel.connectionText];
+    [self updateConnectionText:_pageModel.connectionText];
 }
 
 - (void)didClickSettingsButton
@@ -141,7 +141,7 @@ static const float kAnimDuration = 0.3;
     _bluetoothConnectionIcon.image = [UIImage imageNamed:imagePath];
 }
 
--(void)setConnectionText:(NSString *)connectionText
+- (void)updateConnectionText:(NSString *)connectionText
 {
     _statusLabel.text = connectionText;
 }

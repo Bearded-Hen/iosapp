@@ -7,6 +7,7 @@
 //
 
 #import "FOCDeviceProgramEntity.h"
+#import "FOCNotificationModel.h"
 
 /**
  * Defines callbacks that will be fired when the Focus device state changes.

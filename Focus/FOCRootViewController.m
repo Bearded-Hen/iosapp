@@ -145,10 +145,7 @@
 
 - (void)didChangeConnectionText:(NSString *)connectionText
 {
-    for (FOCUiPageModel *model in _pageData) {
-        model.connectionText = connectionText;
-    }
-    [self refreshDisplayedController];
+    [[self currentViewController] updateConnectionText:connectionText];
 }
 
 - (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing
