@@ -16,6 +16,9 @@
 #import "ActionSheetPicker.h"
 #import "ActionSheetPickerTimeDelegate.h"
 
+#import "FOCModeAttributeSetting.h"
+#import "FOCBoolAttributeSetting.h"
+
 @interface FOCDataViewController ()
 
 @end
@@ -208,7 +211,7 @@ static const float kAnimDuration = 0.3;
              [PROG_ATTR_RAND_CURR isEqualToString:dataKey] ||
              [PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
         
-        return [self readableBoolString:value];
+        return [FOCBoolAttributeSetting labelForValue:((NSNumber *) value).boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey] ||
              [PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
@@ -233,12 +236,6 @@ static const float kAnimDuration = 0.3;
         return @"";
     }
     return nil;
-}
-
-- (NSString *)readableBoolString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    return number.boolValue ? @"ON" : @"OFF";
 }
 
 - (NSString *)readableTimeString:(id)value
@@ -304,32 +301,26 @@ static const float kAnimDuration = 0.3;
 }
 
 #pragma mark - UICollectionViewDelegate
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *dataKey = _orderedEditKeys[indexPath.item];
+    FOCDeviceProgramEntity *program = _pageModel.program;
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
-        NSArray *options = [NSArray arrayWithObjects:@"Direct", @"Alternating", @"Random", @"Pulse", nil];
-        
-        [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options
-                                    initialSelection:0
-                                           doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-                                               // TODO
-                                           }
-                                         cancelBlock:nil
-                                              origin:_collectionView];
+        [self showModePicker:nil currentMode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:_pageModel.program.sham.boolValue];
+        [self showBooleanPicker:nil currentState:program.sham.boolValue];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:_pageModel.program.bipolar.boolValue];
+        [self showBooleanPicker:nil currentState:program.bipolar.boolValue];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:_pageModel.program.randomCurrent.boolValue];
+        [self showBooleanPicker:nil currentState:program.randomCurrent.boolValue];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-        [self showBooleanPicker:nil currentState:_pageModel.program.randomFrequency.boolValue];
+        [self showBooleanPicker:nil currentState:program.randomFrequency.boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker]; // FIXME
@@ -355,6 +346,14 @@ static const float kAnimDuration = 0.3;
     else {
         NSLog(@"Unknown attribute edit attempted");
     }
+}
+
+- (void)showModePicker:(ActionStringDoneBlock)doneBlock currentMode:(ProgramMode)currentMode
+{
+    NSArray *options = [FOCModeAttributeSetting labelsForAttribute];
+    int index = [FOCModeAttributeSetting indexForValue:currentMode];
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
 - (void)showSecondPicker:(ActionStringDoneBlock)doneBlock
@@ -407,8 +406,8 @@ static const float kAnimDuration = 0.3;
 
 - (void)showBooleanPicker:(ActionStringDoneBlock)doneBlock currentState:(bool)currentState
 {
-    NSArray *options = [NSArray arrayWithObjects:@"On", @"Off", nil];
-    int index = currentState == true ? 0 : 1;
+    NSArray *options = [FOCBoolAttributeSetting labelsForAttribute];
+    int index = [FOCBoolAttributeSetting indexForValue:currentState];
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
