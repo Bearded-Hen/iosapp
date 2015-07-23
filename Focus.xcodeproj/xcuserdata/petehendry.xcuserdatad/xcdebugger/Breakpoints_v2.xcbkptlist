@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "459249408.408519"
+            timestampString = "459345797.37072"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
             landmarkName = "-didDiscoverBluetoothPairState:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "459249408.408519"
+            timestampString = "459344154.239465"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "459249408.408519"
+            timestampString = "459345797.37072"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "-displayUserErrMessage:message:"
             landmarkType = "5">
          </BreakpointContent>

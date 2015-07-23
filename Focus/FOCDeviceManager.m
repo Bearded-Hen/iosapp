@@ -10,6 +10,9 @@
 #import "FocusConstants.h"
 #import "FOCNotificationModel.h"
 
+static const int kProgramCheckInterval = 2.0;
+static const double kProgramTimeoutMs = 1000;
+
 @interface FOCDeviceManager ()
 
 @property CBCentralManager* cbCentralManager;
@@ -21,7 +24,9 @@
 @property FOCProgramRequestManager *requestManager;
 
 @property FOCNotificationModel *notificationModel;
-@property BOOL isDevicePaired;
+@property bool isDevicePaired;
+@property bool isPlayingProgram;
+@property double lastNotificationMs;
 
 @end
 
@@ -30,13 +35,45 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 @implementation FOCDeviceManager
 
--(id)init {
+- (id)init {
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
+        
         _notificationModel = [[FOCNotificationModel alloc] init];
+        _lastNotificationMs = 0;
+        
+        [NSTimer scheduledTimerWithTimeInterval:kProgramCheckInterval target:self selector:@selector(checkProgramPlayState) userInfo:nil repeats:true];
     }
     return self;
+}
+
+/**
+ * Check whether a program is playing or not every N seconds
+ */
+- (void)checkProgramPlayState
+{
+    double ms = [NSDate timeIntervalSinceReferenceDate] * 1000;
+    double diff = ms - _lastNotificationMs;
+    
+    if (diff > kProgramTimeoutMs) {
+        if (_isPlayingProgram) {
+            NSLog(@"Heuristic determined that the Focus device stopped playing a program independently of the app");
+            
+            _isPlayingProgram = false;
+            [_delegate programStateChanged:_isPlayingProgram];
+            [self updateConnectionState:_connectionState];
+        }
+    }
+    else if (diff <= kProgramTimeoutMs) {
+        if (!_isPlayingProgram) {
+            NSLog(@"Heuristic determined that the Focus device started playing a program independently of the app");
+            
+            _isPlayingProgram = true;
+            [_delegate programStateChanged:_isPlayingProgram];
+            [self updateConnectionState:_connectionState];
+        }
+    }
 }
 
 #pragma mark - internal API methods
@@ -283,8 +320,11 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 - (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing error:(NSError *)error
 {
+    _isPlayingProgram = playing;
+    
     if (error == nil) {
-        [_delegate didAlterProgramState:program playing:playing];
+        [_delegate programStateChanged:playing];
+        [self updateConnectionState:_connectionState];
     }
     else {
         [self displayUserErrMessage:@"Program Request Failed" message:@"Please check that the electrodes are connected to the device."];
@@ -310,13 +350,14 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
     [self handleNotificationText];
 }
 
-- (void)handleNotificationText
+- (void)handleNotificationText // FIXME format current properly
 {
-    // TODO check if program playing beforehand
+    _lastNotificationMs = [NSDate timeIntervalSinceReferenceDate] * 1000;
     
-    NSString *text = [NSString stringWithFormat:@"%02d:%02d - %d", _notificationModel.duration / 60, _notificationModel.duration % 60, _notificationModel.current]; // FIXME format current
-    
-    [_delegate didChangeConnectionText:text];
+    if (_isPlayingProgram) {
+        NSString *text = [NSString stringWithFormat:@"%02d:%02d - %d", _notificationModel.duration / 60, _notificationModel.duration % 60, _notificationModel.current];
+        [_delegate didChangeConnectionText:text];
+    }
 }
 
 #pragma mark - UIAlertViewDelegate

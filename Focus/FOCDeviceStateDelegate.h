@@ -39,6 +39,6 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
 /**
  * Called when the play state of a program changes on the device.
  */
-- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing;
+- (void)programStateChanged:(bool)playing;
 
 @end

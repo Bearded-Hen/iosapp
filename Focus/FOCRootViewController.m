@@ -148,7 +148,7 @@
     [[self currentViewController] updateConnectionText:connectionText];
 }
 
-- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing
+- (void)programStateChanged:(bool)playing
 {
     for (FOCUiPageModel *model in _pageData) {
         model.isPlaying = playing;

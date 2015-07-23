@@ -8,58 +8,15 @@
 
 #import "FOCProgramRequestManager.h"
 
-static const int kTimeoutSeconds = 3;
-
 @interface FOCProgramRequestManager ()
 
 @property bool requestProgramStart;
 @property bool requestProgramStop;
 @property bool hasSentStartRequest;
-@property long lastNotificationInterval;
 
 @end
 
 @implementation FOCProgramRequestManager
-
-- (id)initWithPeripheral:(CBPeripheral *)focusDevice
-{
-    if (self = [super initWithPeripheral:focusDevice]) {
-        _lastNotificationInterval = 0;
-    }
-    return self;
-}
-
-- (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
-{
-    [super peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
-    
-    // need to interpret
-    if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
-        [self deserialiseCommandResponse:characteristic]; // read response buffer data
-    }
-    else {
-        _lastNotificationInterval = [[[NSDate alloc] init] timeIntervalSince1970];;
-        
-        if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
-            int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-            [_delegate didReceiveCurrentNotification:current];
-        }
-        else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
-            int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-            [_delegate didReceiveDurationNotification:duration];
-        }
-        else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
-            int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
-            [_delegate didReceiveRemainingTimeNotification:remainingTime];
-        }
-    }
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
-{
-    [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
-    [self.focusDevice readValueForCharacteristic:_cm.controlCmdResponse]; // read to check success
-}
 
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
@@ -111,6 +68,7 @@ static const int kTimeoutSeconds = 3;
     
     _activeProgram = program;
     _requestProgramStart = true;
+    _requestProgramStop = false;
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
     
@@ -123,6 +81,7 @@ static const int kTimeoutSeconds = 3;
     Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
     
     _activeProgram = nil;
+    _requestProgramStart = false;
     _requestProgramStop = true;
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
@@ -138,10 +97,41 @@ static const int kTimeoutSeconds = 3;
 }
 
 #pragma mark CBPeripheralDelegate
+
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     NSLog(@"Updated notification listen state to %hhd for characteristic %@",
           characteristic.isNotifying, [self loggableCharacteristicName:characteristic]);
+}
+
+- (void)peripheral:(CBPeripheral*)peripheral didUpdateValueForCharacteristic:(CBCharacteristic*)characteristic error:(NSError*)error
+{
+    [super peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
+    
+    // need to interpret
+    if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
+        [self deserialiseCommandResponse:characteristic]; // read response buffer data
+    }
+    else {
+        if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
+            int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveCurrentNotification:current];
+        }
+        else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
+            int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveDurationNotification:duration];
+        }
+        else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
+            int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
+            [_delegate didReceiveRemainingTimeNotification:remainingTime];
+        }
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
+    [self.focusDevice readValueForCharacteristic:_cm.controlCmdResponse]; // read to check success
 }
 
 @end
