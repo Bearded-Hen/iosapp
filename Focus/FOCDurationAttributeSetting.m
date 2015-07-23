@@ -34,4 +34,37 @@ static const int kIncrement = 1;
     return [minutes copy];
 }
 
++ (int)indexForSeconds:(int)duration
+{
+    return duration % 60;
+}
+
++ (int)indexForMinutes:(int)duration
+{
+    int minutes = (duration - (duration %60)) / 60;
+    return minutes - 5;
+}
+
++ (NSString *)secondLabelForDuration:(int)duration
+{
+    return [self labelsForSeconds][[self indexForSeconds:duration]];
+}
+
++ (NSString *)minuteLabelForDuration:(int)duration
+{
+    return [self labelsForMinutes][[self indexForMinutes:duration]];
+}
+
++ (int)durationForIndices:(int)minutes seconds:(int)seconds
+{
+    return ((minutes + 5) * 60) + seconds;
+}
+
++ (NSString *)timeLabelForView:(int)duration
+{
+    int seconds = duration % 60;
+    int mins = (duration - seconds) / 60;
+    return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
+}
+
 @end

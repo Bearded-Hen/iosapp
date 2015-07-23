@@ -24,6 +24,7 @@
 #import "FOCCurrentAttributeSetting.h"
 #import "FOCCurrentOffsetAttributeSetting.h"
 #import "FOCFrequencyAttributeSetting.h"
+#import "FOCDurationAttributeSetting.h"
 
 @interface FOCDataViewController ()
 
@@ -222,7 +223,7 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey] ||
              [PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
         
-        return [self readableTimeString:value];
+        return [FOCDurationAttributeSetting timeLabelForView:((NSNumber *)value).intValue];
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         return [FOCCurrentAttributeSetting labelForValue:((NSNumber *) value).intValue];
@@ -318,8 +319,12 @@ static const float kAnimDuration = 0.3;
             
         } currentState:program.randomFrequency.boolValue];
     }
-    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) { // FIXME
-        [self showTimePicker];
+    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
+        [self showTimePicker:^(int minuteIndex, int secondIndex) {
+            
+            NSLog(@""); // TODO update model
+            
+        } duration:program.duration.intValue];
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) { // FIXME
         [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
@@ -327,7 +332,7 @@ static const float kAnimDuration = 0.3;
             int newCurrent = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
             NSLog(@"");
         }
-        title:@"Select Current" current:((NSNumber *)program.current).intValue];
+        title:@"Select Current" current:program.current.intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         [self showVoltagePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
@@ -410,14 +415,15 @@ static const float kAnimDuration = 0.3;
 // FIXME below pickers
 
 
-- (void)showTimePicker
+- (void)showTimePicker:(TimeDurationDoneBlock)doneBlock duration:(int)duration
 {
-    ActionSheetPickerTimeDelegate *delg = [[ActionSheetPickerTimeDelegate alloc] init];
+    NSNumber *secondsIndex = [[NSNumber alloc] initWithInt:[FOCDurationAttributeSetting indexForSeconds:duration]];
     
-    NSNumber *yass1 = @0;
-    NSNumber *yass2 = @0;
+    NSNumber *minutesIndex = [[NSNumber alloc] initWithInt:[FOCDurationAttributeSetting indexForMinutes:duration]];
     
-    NSArray *initialSelections = @[yass1, yass2];
+    ActionSheetPickerTimeDelegate *delg = [[ActionSheetPickerTimeDelegate alloc] initWithIndices:minutesIndex.intValue secondIndex:secondsIndex.intValue doneBlock:doneBlock];
+    
+    NSArray *initialSelections = [[NSArray alloc] initWithObjects:minutesIndex, secondsIndex, nil];
     
     [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:true origin:_collectionView initialSelections:initialSelections];
 }
@@ -446,14 +452,6 @@ static const float kAnimDuration = 0.3;
     int index = 0; // FIXME index selection
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
-}
-
-- (NSString *)readableTimeString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    int seconds = number.intValue % 60;
-    int mins = (number.intValue - seconds) / 60;
-    return [NSString stringWithFormat:@"%02d:%02d", mins, seconds];
 }
 
 - (NSString *)readablePercentageString:(id)value
