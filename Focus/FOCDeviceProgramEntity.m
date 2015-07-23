@@ -147,8 +147,27 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 {
     NSMutableString *info = [[NSMutableString alloc] init];
     
-    [info appendString:[NSString stringWithFormat:@"Program Name '%@', ", _name]];
-    [info appendString:[NSString stringWithFormat:@"id='%@'", _programId]];
+    [info appendString:[NSString stringWithFormat:@"\n***Program Name '%@'***\n", _name]];
+    [info appendString:[NSString stringWithFormat:@"id='%@'\n", _programId]];
+    [info appendString:[NSString stringWithFormat:@"mode='%d'\n", _programMode]];
+    
+    [info appendString:[NSString stringWithFormat:@"valid='%d'\n", _valid.boolValue]];
+    [info appendString:[NSString stringWithFormat:@"sham='%d'\n", _sham.boolValue]];
+    [info appendString:[NSString stringWithFormat:@"bipolar='%d'\n", _bipolar.boolValue]];
+    [info appendString:[NSString stringWithFormat:@"randCurr='%d'\n", _randomCurrent.boolValue]];
+    [info appendString:[NSString stringWithFormat:@"randFreq='%d'\n", _randomFrequency.boolValue]];
+    
+    [info appendString:[NSString stringWithFormat:@"duration='%d'\n", _duration.intValue]];
+    [info appendString:[NSString stringWithFormat:@"current='%d'\n", _current.intValue]];
+    [info appendString:[NSString stringWithFormat:@"voltage='%d'\n", _voltage.intValue]];
+    [info appendString:[NSString stringWithFormat:@"shamDuration='%d'\n", _shamDuration.intValue]];
+    [info appendString:[NSString stringWithFormat:@"currOffset='%d'\n", _currentOffset.intValue]];
+    [info appendString:[NSString stringWithFormat:@"minFreq='%d'\n", _minFrequency.intValue]];
+    [info appendString:[NSString stringWithFormat:@"maxFreq='%d'\n", _maxFrequency.intValue]];
+    
+    [info appendString:[NSString stringWithFormat:@"freq='%ld'\n", _frequency.longValue]];
+    [info appendString:[NSString stringWithFormat:@"dutyCycle='%ld'\n", _dutyCycle.longValue]];
+    
     return info;
 }
 

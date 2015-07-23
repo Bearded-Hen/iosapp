@@ -15,7 +15,7 @@
 /**
  * Called when a program either starts playing or is stopped on the Focus device.
  */
-- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing error:(NSError *)error;
+- (void)didAlterProgramState:(bool)playing error:(NSError *)error;
 
 /**
  * Called when the Focus device updates its current value via a notification.

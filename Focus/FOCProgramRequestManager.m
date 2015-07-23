@@ -43,7 +43,7 @@
     _requestProgramStop = false;
     
     NSError *error = !playing ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
-    [_delegate didAlterProgramState:self.activeProgram playing:playing error:error];
+    [_delegate didAlterProgramState:playing error:error];
 }
 
 - (void)handleStartResponse:(Byte)status
@@ -53,7 +53,8 @@
     
     NSError *error = playing ? nil : [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil];
         
-    [_delegate didAlterProgramState:_activeProgram playing:playing error:error];
+    [_delegate didAlterProgramState:playing error:error];
+    NSLog(@"Received start response, playing=%d", playing);
 }
 
 - (void)interpretCommandResponse:(NSError *)error

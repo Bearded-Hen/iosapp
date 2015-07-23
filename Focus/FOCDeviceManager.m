@@ -10,7 +10,7 @@
 #import "FocusConstants.h"
 #import "FOCNotificationModel.h"
 
-static const int kProgramCheckInterval = 2.0;
+static const int kProgramCheckInterval = 0.5;
 static const double kProgramTimeoutMs = 1000;
 
 @interface FOCDeviceManager ()
@@ -61,8 +61,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
             NSLog(@"Heuristic determined that the Focus device stopped playing a program independently of the app");
             
             _isPlayingProgram = false;
-            [_delegate programStateChanged:_isPlayingProgram];
-            [self updateConnectionState:_connectionState];
+            [self didAlterProgramState:_isPlayingProgram error:nil];
         }
     }
     else if (diff <= kProgramTimeoutMs) {
@@ -70,8 +69,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
             NSLog(@"Heuristic determined that the Focus device started playing a program independently of the app");
             
             _isPlayingProgram = true;
-            [_delegate programStateChanged:_isPlayingProgram];
-            [self updateConnectionState:_connectionState];
+            [self didAlterProgramState:_isPlayingProgram error:nil];
         }
     }
 }
@@ -318,7 +316,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 #pragma mark - ProgramRequestDelegate
 
-- (void)didAlterProgramState:(FOCDeviceProgramEntity *)program playing:(bool)playing error:(NSError *)error
+- (void)didAlterProgramState:(bool)playing error:(NSError *)error
 {
     _isPlayingProgram = playing;
     

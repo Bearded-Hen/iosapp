@@ -197,7 +197,9 @@
         NSLog(@"Finishing program sync, writing to DB!");
         
         for (FOCDeviceProgramEntity *entity in _programArray) {
-            NSLog(@"%@", [entity programDebugInfo]);
+            if (entity.name != nil && ![entity.name isEqualToString:@""]) {
+                NSLog(@"%@", [entity programDebugInfo]);
+            }
         }
         
         FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
