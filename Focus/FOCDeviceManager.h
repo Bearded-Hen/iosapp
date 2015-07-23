@@ -53,4 +53,9 @@
  */
 - (void)stopProgram:(FOCDeviceProgramEntity *)program;
 
+/**
+ * Attempt to write an edited program to the device.
+ */
+- (void)writeProgram:(FOCDeviceProgramEntity *)program;
+
 @end

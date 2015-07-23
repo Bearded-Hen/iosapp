@@ -66,6 +66,16 @@ typedef NS_ENUM(int, ProgramMode) {
 - (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor;
 
 /**
+ * Serialises the program data into the format of the first descriptor on the Focus device.
+ */
+- (NSData *)serialiseFirstDescriptor;
+
+/**
+ * Serialises the program data into the format of the second descriptor on the Focus device.
+ */
+- (NSData *)serialiseSecondDescriptor;
+
+/**
  * Populates a core data model that can be persisted.
  */
 - (CoreDataProgram *)serialiseToCoreDataModel:(CoreDataProgram *)data;

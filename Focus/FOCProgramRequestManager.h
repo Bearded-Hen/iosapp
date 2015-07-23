@@ -40,7 +40,6 @@
 
 @property (weak) id <ProgramRequestDelegate> delegate;
 @property FOCCharacteristicDiscoveryManager *cm;
-@property FOCDeviceProgramEntity *activeProgram;
 
 /**
  * Attempt to start the specified program on the device.
@@ -51,6 +50,11 @@
  * Attempt to stop the active program (if any) on the device.
  */
 - (void)stopActiveProgram;
+
+/**
+ * Attempt to write the program to the device.
+ */
+- (void)writeProgram:(FOCDeviceProgramEntity *)program;
 
 /**
  * Starts listening for notifications from the Focus device

@@ -198,7 +198,7 @@
 
 - (void)didRequestProgramEdit:(FOCDeviceProgramEntity *)program
 {
-    NSLog(@"Received program edit request"); // FIXME edit! (check if ready for commands in device manager)
+    [_deviceManager writeProgram:program];
 }
 
 #pragma mark - UIPageViewController delegate methods

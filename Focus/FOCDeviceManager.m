@@ -102,7 +102,7 @@ static const double kIgnoreInterval = 6000;
 
 - (void)playProgram:(FOCDeviceProgramEntity *)program
 {
-    if (_focusDevice.delegate == _requestManager) {
+    if ([self isReadyForRequests]) {
         [_requestManager startProgram:program];
     }
     else {
@@ -112,12 +112,27 @@ static const double kIgnoreInterval = 6000;
 
 - (void)stopProgram:(FOCDeviceProgramEntity *)program
 {
-    if (_focusDevice.delegate == _requestManager) {
+    if ([self isReadyForRequests]) {
         [_requestManager stopActiveProgram];
     }
     else {
         [self displayNotReadyAlert];
     }
+}
+
+- (void)writeProgram:(FOCDeviceProgramEntity *)program
+{
+    if ([self isReadyForRequests]) {
+        [_requestManager writeProgram:program];
+    }
+    else {
+        [self displayNotReadyAlert];
+    }
+}
+
+- (bool)isReadyForRequests
+{
+    return _focusDevice.delegate == _requestManager && _connectionState == CONNECTED;
 }
 
 - (void)displayNotReadyAlert
@@ -354,7 +369,7 @@ static const double kIgnoreInterval = 6000;
     [self handleNotificationText];
 }
 
-- (void)handleNotificationText // FIXME format current properly
+- (void)handleNotificationText
 {
     _lastNotificationMs = [NSDate timeIntervalSinceReferenceDate] * 1000;
     

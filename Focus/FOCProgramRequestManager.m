@@ -64,11 +64,10 @@
 
 - (void)startProgram:(FOCDeviceProgramEntity *)program
 {
-    _activeProgram = program;
     _requestProgramStart = true;
     _requestProgramStop = false;
     
-    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
+    Byte programId = [FOCDeviceProgramEntity byteFromInt:program.programId.intValue];
     NSLog(@"Requesting play for program %d", programId);
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
@@ -80,13 +79,23 @@
 {
     NSLog(@"Requesting program stop");
     
-    _activeProgram = nil;
     _requestProgramStart = false;
     _requestProgramStop = true;
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
     
     [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)writeProgram:(FOCDeviceProgramEntity *)program
+{
+    NSLog(@"Request manager got write command");
+    
+    // TODO call delegate
+    
+    NSData *firstDescriptor = [program serialiseFirstDescriptor];
+    NSData *secondDescriptor = [program serialiseSecondDescriptor];
+    
 }
 
 - (void)startNotificationListeners:(CBPeripheral *)focusDevice

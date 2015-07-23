@@ -62,7 +62,38 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     [self deserialiseSecondDescriptor:secondDescriptor];
 }
 
-- (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor // FIXME deserialises empty values
+- (NSData *)serialiseFirstDescriptor
+{
+    char bytes[20] = "";
+    
+    bytes[0] = _valid.boolValue;
+    bytes[10] = _programMode;
+    bytes[13] = _sham.boolValue;
+    
+    // TODO name, duration, sham duration, current, current offset
+    
+    return [[NSData alloc] initWithBytes:bytes length:20];
+}
+
+- (NSData *)serialiseSecondDescriptor
+{
+    char bytes[20] = "";
+    
+    bytes[1] = _bipolar.boolValue;
+    bytes[10] = _randomCurrent.boolValue;
+    bytes[11] = _randomFrequency.boolValue;
+    
+    
+    bytes[0] = _voltage.intValue;// FIXME not serialised correctly
+    
+    // TODO frequency/min frequency
+    
+    // TODO max frequency/duty cycle
+    
+    return nil;
+}
+
+- (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor
 {
     int length = [firstDescriptor length];
     
@@ -100,9 +131,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     NSData *shamDurationData = [firstDescriptor subdataWithRange:NSMakeRange(14, 2)];
     NSData *currentData = [firstDescriptor subdataWithRange:NSMakeRange(16, 2)];
     NSData *currentOffset = [firstDescriptor subdataWithRange:NSMakeRange(18, 2)];
-    
-    int nCurrent;
-    [currentData getBytes:&nCurrent length:sizeof(nCurrent)];
     
     _duration = [FOCDeviceProgramEntity getIntegerFromBytes:durationData];
     _shamDuration = [FOCDeviceProgramEntity getIntegerFromBytes:shamDurationData];
@@ -275,7 +303,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 
 - (CoreDataProgram *)serialiseToCoreDataModel:(CoreDataProgram *)data
 {
-    
     data.programId = _programId;
     data.programMode = [FOCDeviceProgramEntity persistableValueFor:_programMode];
     data.name = _name;
@@ -301,7 +328,8 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return data;
 }
 
-- (NSComparisonResult)compare:(FOCDeviceProgramEntity *)otherObject {
+- (NSComparisonResult)compare:(FOCDeviceProgramEntity *)otherObject
+{
     return [self.name compare:otherObject.name];
 }
 
