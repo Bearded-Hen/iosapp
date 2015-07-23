@@ -228,5 +228,4 @@
     [self.focusDevice readValueForCharacteristic:_cm.dataBuffer];
 }
 
-
 @end

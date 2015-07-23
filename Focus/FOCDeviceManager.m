@@ -10,8 +10,11 @@
 #import "FocusConstants.h"
 #import "FOCNotificationModel.h"
 
+static const int kPairButton = 1;
+static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 static const int kProgramCheckInterval = 0.5;
 static const double kProgramTimeoutMs = 1000;
+static const double kIgnoreInterval = 6000;
 
 @interface FOCDeviceManager ()
 
@@ -26,12 +29,11 @@ static const double kProgramTimeoutMs = 1000;
 @property FOCNotificationModel *notificationModel;
 @property bool isDevicePaired;
 @property bool isPlayingProgram;
+
 @property double lastNotificationMs;
+@property double ignoreNotificationMs;
 
 @end
-
-static const int kPairButton = 1;
-static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 
 @implementation FOCDeviceManager
 
@@ -42,6 +44,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
         
         _notificationModel = [[FOCNotificationModel alloc] init];
         _lastNotificationMs = 0;
+        _ignoreNotificationMs = 0;
         
         [NSTimer scheduledTimerWithTimeInterval:kProgramCheckInterval target:self selector:@selector(checkProgramPlayState) userInfo:nil repeats:true];
     }
@@ -55,18 +58,20 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 {
     double ms = [NSDate timeIntervalSinceReferenceDate] * 1000;
     double diff = ms - _lastNotificationMs;
+    double ignoreDiff = ms - _ignoreNotificationMs;
     
     if (diff > kProgramTimeoutMs) {
         if (_isPlayingProgram) {
             NSLog(@"Heuristic determined that the Focus device stopped playing a program independently of the app");
             
+            // still get notifications for few secs after stopping, these are ignored with flag
             _isPlayingProgram = false;
             [self didAlterProgramState:_isPlayingProgram error:nil];
         }
     }
-    else if (diff <= kProgramTimeoutMs) {
+    else if (diff <= kProgramTimeoutMs && ignoreDiff >= kIgnoreInterval) {
         if (!_isPlayingProgram) {
-            NSLog(@"Heuristic determined that the Focus device started playing a program independently of the app");
+            NSLog(@"Heuristic determined that the Focus device started playing a program independently of the app %f", ignoreDiff);
             
             _isPlayingProgram = true;
             [self didAlterProgramState:_isPlayingProgram error:nil];
@@ -319,6 +324,7 @@ static NSString *kStoredPeripheralId = @"StoredPeripheralId";
 - (void)didAlterProgramState:(bool)playing error:(NSError *)error
 {
     _isPlayingProgram = playing;
+    _ignoreNotificationMs = [NSDate timeIntervalSinceReferenceDate] * 1000;
     
     if (error == nil) {
         [_delegate programStateChanged:playing];
