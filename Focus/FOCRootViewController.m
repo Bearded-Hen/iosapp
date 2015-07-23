@@ -92,7 +92,7 @@
     
     int index = 0; // default to first if no previous controller
     
-    for (int i=0; i<=[_pageData count] && currentModel != nil; i++) {
+    for (int i=0; i<[_pageData count] && currentModel != nil; i++) {
         FOCDeviceProgramEntity *newModel = ((FOCUiPageModel *)_pageData[i]).program;
         
         if ([newModel.name isEqualToString:currentModel.name]
@@ -111,8 +111,10 @@
 {
     FOCDataViewController* startingViewController = [self viewControllerAtIndex:_pageIndex storyboard:self.storyboard];
     
-    NSArray* viewControllers = @[ startingViewController ];
-    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    if (startingViewController != nil) {
+        NSArray* viewControllers = @[ startingViewController ];
+        [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
 }
 
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {

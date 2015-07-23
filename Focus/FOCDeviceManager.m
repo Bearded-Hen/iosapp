@@ -359,7 +359,11 @@ static const double kIgnoreInterval = 6000;
     _lastNotificationMs = [NSDate timeIntervalSinceReferenceDate] * 1000;
     
     if (_isPlayingProgram) {
-        NSString *text = [NSString stringWithFormat:@"%02d:%02d - %d", _notificationModel.duration / 60, _notificationModel.duration % 60, _notificationModel.current];
+        int mins = _notificationModel.duration / 60;
+        int secs = _notificationModel.duration % 60;
+        float current = ((float)_notificationModel.current) / 1000;
+        
+        NSString *text = [NSString stringWithFormat:@"%02d:%02d - %.1fmA", mins, secs, current];
         [_delegate didChangeConnectionText:text];
     }
 }
