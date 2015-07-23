@@ -8,8 +8,9 @@
 
 #import "FOCDutyCycleAttributeSetting.h"
 
-static const int kMinDutyCycle = 20;
-static const int kMaxDutyCycle = 80;
+static const int kMinDutyCycle = 0;
+static const int kMaxDutyCycle = 100;
+static const int kApiScalar = 1000;
 
 @implementation FOCDutyCycleAttributeSetting
 
@@ -18,25 +19,37 @@ static const int kMaxDutyCycle = 80;
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
     for (int i=kMinDutyCycle; i<=kMaxDutyCycle; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d %%", i]];
+        [options addObject:[NSString stringWithFormat:@"%d%%", i]];
     }
     return [options copy];
 }
 
 + (int)indexForValue:(long)value
 {
-    return -1; // FIXME
+    value /= kApiScalar;
+    
+    for (int i=kMinDutyCycle; i<=kMaxDutyCycle; i++) {
+        if (i == value) {
+            return i - kMinDutyCycle;
+        }
+    }
+    return -1;
 }
 
 + (long)valueForIncrementIndex:(int)index
 {
-    return -1; // FIXME
+    for (int i=kMinDutyCycle; i<=kMaxDutyCycle; i++) {
+        if (i == index) {
+            return i * kApiScalar;
+        }
+    }
+    return -1;
 }
 
 + (NSString *)labelForValue:(long)value
 {
-    // FIXME
-    return nil;
+    int index = [self indexForValue:value];
+    return index != -1 ? [self labelsForAttribute][index] : nil;
 }
 
 @end

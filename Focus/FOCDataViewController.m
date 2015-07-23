@@ -238,7 +238,7 @@ static const float kAnimDuration = 0.3;
         return [FOCFrequencyAttributeSetting labelForValue:((NSNumber *) value).longValue];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
-        return [self readablePercentageString:value];
+        return [FOCDutyCycleAttributeSetting labelForValue:((NSNumber *) value).intValue];
     }
     else {
         return @"";
@@ -322,11 +322,12 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker:^(int minuteIndex, int secondIndex) {
             
+            int newDuration = [FOCDurationAttributeSetting durationForIndices:minuteIndex seconds:secondIndex];
             NSLog(@""); // TODO update model
             
         } duration:program.duration.intValue];
     }
-    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) { // FIXME
+    else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
             int newCurrent = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
@@ -348,7 +349,7 @@ static const float kAnimDuration = 0.3;
             
         } shamDuration:program.shamDuration.intValue];
     }
-    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) { // FIXME
+    else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
         [self showCurrentOffsetPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
             int newCurrentOffset = [FOCCurrentOffsetAttributeSetting valueForIncrementIndex:selectedIndex];
@@ -364,7 +365,12 @@ static const float kAnimDuration = 0.3;
         } frequency:((NSNumber *)program.frequency).longValue];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) { // FIXME
-        [self showDutyCyclePicker:nil dutyCycle:program.dutyCycle.intValue];
+        [self showDutyCyclePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+            
+            int newDutyCycle = [FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex];
+            NSLog(@"");
+            
+        } dutyCycle:program.dutyCycle.intValue];
     }
     else {
         NSLog(@"Unknown attribute edit attempted");
@@ -449,15 +455,9 @@ static const float kAnimDuration = 0.3;
 - (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
 {
     NSArray *options = [FOCDutyCycleAttributeSetting labelsForAttribute];
-    int index = 0; // FIXME index selection
+    int index = [FOCDutyCycleAttributeSetting indexForValue:dutyCycle];
     
     [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
-}
-
-- (NSString *)readablePercentageString:(id)value
-{
-    NSNumber *number = (NSNumber *) value;
-    return [NSString stringWithFormat:@"%ld%%", number.longValue];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
