@@ -15,4 +15,9 @@
     return 1800;
 }
 
++ (int)minCurrent
+{
+    return 0;
+}
+
 @end

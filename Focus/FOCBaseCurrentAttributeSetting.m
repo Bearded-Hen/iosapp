@@ -8,9 +8,7 @@
 
 #import "FOCBaseCurrentAttributeSetting.h"
 
-static const int kMinCurrent = 100;
 static const int kIncrement = 100;
-
 static const int kCurrentScalar = 1000;
 
 @implementation FOCBaseCurrentAttributeSetting
@@ -19,7 +17,7 @@ static const int kCurrentScalar = 1000;
 {
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
-    for (int i=kMinCurrent; i<=[self maxCurrent]; i+=kIncrement) {
+    for (int i=[self minCurrent]; i<=[self maxCurrent]; i+=kIncrement) {
         [options addObject:[NSString stringWithFormat:@"%.1f mA", ((float) i) / kCurrentScalar]];
     }
     return [options copy];
@@ -29,7 +27,7 @@ static const int kCurrentScalar = 1000;
 {
     NSMutableArray *rawValues = [[NSMutableArray alloc] init];
     
-    for (int i=kMinCurrent; i<=[self maxCurrent]; i+=kIncrement) {
+    for (int i=[self minCurrent]; i<=[self maxCurrent]; i+=kIncrement) {
         [rawValues addObject:[[NSNumber alloc] initWithInt:i]];
     }
     return rawValues;
@@ -61,6 +59,11 @@ static const int kCurrentScalar = 1000;
 }
 
 + (int)maxCurrent
+{
+    return -1;
+}
+
++ (int)minCurrent
 {
     return -1;
 }

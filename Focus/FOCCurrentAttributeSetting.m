@@ -15,4 +15,9 @@
     return 2000;
 }
 
++ (int)minCurrent
+{
+    return 100;
+}
+
 @end
