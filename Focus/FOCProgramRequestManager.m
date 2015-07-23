@@ -64,12 +64,12 @@
 
 - (void)startProgram:(FOCDeviceProgramEntity *)program
 {
-    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
-    NSLog(@"Requesting play for program %d", programId);
-    
     _activeProgram = program;
     _requestProgramStart = true;
     _requestProgramStop = false;
+    
+    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
+    NSLog(@"Requesting play for program %d", programId);
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
     
@@ -79,13 +79,12 @@
 - (void)stopActiveProgram
 {
     NSLog(@"Requesting program stop");
-    Byte programId = [FOCDeviceProgramEntity byteFromInt:_activeProgram.programId.intValue];
     
     _activeProgram = nil;
     _requestProgramStart = false;
     _requestProgramStop = true;
     
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
     
     [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
 }
