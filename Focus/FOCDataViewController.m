@@ -277,98 +277,102 @@ static const float kAnimDuration = 0.3;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *dataKey = _orderedEditKeys[indexPath.item];
-    FOCDeviceProgramEntity *program = _pageModel.program;
+    FOCDeviceProgramEntity *program = [_pageModel.program copy];
     
     if ([PROG_ATTR_MODE isEqualToString:dataKey]) {
         [self showModePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            ProgramMode newMode = [FOCModeAttributeSetting valueForIncrementIndex:selectedIndex];
-            // TODO attempt update to program mode
+            program.programMode = [FOCModeAttributeSetting valueForIncrementIndex:selectedIndex];
+            [_delegate didRequestProgramEdit:program];
             
         } mode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
         [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
 
-            bool newSham = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
-            // TODO update model
+            program.sham = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } currentState:program.sham.boolValue];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
         [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            bool newBipolar = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
-            // TODO update model
+            program.bipolar = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } currentState:program.bipolar.boolValue];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
         [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            bool newRandCurr = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
-            // TODO update model
+            program.randomCurrent = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } currentState:program.randomCurrent.boolValue];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
         [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            bool newRandFreq = [FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex];
-            // TODO update model
+            program.randomFrequency = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } currentState:program.randomFrequency.boolValue];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker:^(int minuteIndex, int secondIndex) {
-            
-            int newDuration = [FOCDurationAttributeSetting durationForIndices:minuteIndex seconds:secondIndex];
-            NSLog(@""); // TODO update model
+
+            program.duration = [[NSNumber alloc] initWithInt:[FOCDurationAttributeSetting durationForIndices:minuteIndex seconds:secondIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } duration:program.duration.intValue];
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         [self showCurrentPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newCurrent = [FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex];
-            NSLog(@"");
+            program.current = [[NSNumber alloc] initWithInt:[FOCCurrentAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
+            
         }
         title:@"Select Current" current:program.current.intValue];
     }
     else if ([PROG_ATTR_VOLTAGE isEqualToString:dataKey]) {
         [self showVoltagePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newVoltage = [FOCVoltageAttributeSetting valueForIncrementIndex:selectedIndex];
+            program.voltage = [[NSNumber alloc] initWithInt:[FOCVoltageAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } voltage:program.voltage.intValue];
     }
     else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
         [self showSecondPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newShamDuration = [FOCShamDurationAttributeSetting valueForIncrementIndex:selectedIndex];
+            program.shamDuration = [[NSNumber alloc] initWithInt:[FOCShamDurationAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } shamDuration:program.shamDuration.intValue];
     }
     else if ([PROG_ATTR_CURR_OFFSET isEqualToString:dataKey]) {
         [self showCurrentOffsetPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newCurrentOffset = [FOCCurrentOffsetAttributeSetting valueForIncrementIndex:selectedIndex];
-            NSLog(@"");
+            program.currentOffset = [[NSNumber alloc] initWithInt:[FOCCurrentOffsetAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } title:@"Select Current Offset" current:((NSNumber *)program.currentOffset).intValue];
     }
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         [self showFrequencyPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            long newFreq = [FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex];
+            program.frequency = [[NSNumber alloc] initWithInt:[FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } frequency:((NSNumber *)program.frequency).longValue];
     }
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) { // FIXME
         [self showDutyCyclePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            int newDutyCycle = [FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex];
-            NSLog(@"");
+            program.dutyCycle = [[NSNumber alloc] initWithInt:[FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex]];
+            [_delegate didRequestProgramEdit:program];
             
         } dutyCycle:program.dutyCycle.intValue];
     }

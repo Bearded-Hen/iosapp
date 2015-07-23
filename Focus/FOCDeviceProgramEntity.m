@@ -345,6 +345,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return (Byte) value;
 }
 
+
 //private static void putBoolean(byte[] data, boolean value, int index) {
 //
 //    data[index] = (byte) (value ? 0x01 : 0x00);
@@ -376,5 +377,38 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 //    data[start + 1] = (byte) ((value >> 8) & 0xff);
 //    data[start] = (byte) (value & 0xff);
 //}
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    FOCDeviceProgramEntity *copy = [[FOCDeviceProgramEntity alloc] init];
+    
+    if (copy) {
+        copy.programId = _programId;
+        copy.programMode = _programMode;
+        copy.name = _name;
+        copy.imageName = _imageName;
+        
+        copy.valid = _valid;
+        copy.sham = _sham;
+        copy.bipolar = _bipolar;
+        copy.randomCurrent = _randomCurrent;
+        copy.randomFrequency = _randomFrequency;
+        
+        copy.duration = _duration;
+        copy.current = _current;
+        copy.voltage = _voltage;
+        copy.shamDuration = _shamDuration;
+        copy.currentOffset = _currentOffset;
+        copy.minFrequency = _minFrequency;
+        copy.maxFrequency = _maxFrequency;
+        
+        copy.frequency = _frequency;
+        copy.dutyCycle = _dutyCycle;
+    }
+    
+    return copy;
+}
 
 @end

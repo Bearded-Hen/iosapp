@@ -196,6 +196,11 @@
     }
 }
 
+- (void)didRequestProgramEdit:(FOCDeviceProgramEntity *)program
+{
+    NSLog(@"Received program edit request"); // FIXME edit! (check if ready for commands in device manager)
+}
+
 #pragma mark - UIPageViewController delegate methods
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController*)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation

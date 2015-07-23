@@ -14,8 +14,21 @@
 
 @protocol FOCUiPageChangeDelegate <NSObject>
 
+/**
+ * Called when the UI model for displaying the program changes e.g. Settings visibility
+ */
 - (void)didAlterPageState:(FOCUiPageModel *)pageModel;
+
+/**
+ * Called when the user requests to stop/start a program through the app UI.
+ */
 - (void)didRequestProgramStateChange:(FOCUiPageModel *)pageModel play:(bool)play;
+
+/**
+ * Called when the user requests an edit to the program. The responder should write the
+ * edited program to the Focus device then notify the UI of changes to the model.
+ */
+- (void)didRequestProgramEdit:(FOCDeviceProgramEntity *)program;
 
 @end
 

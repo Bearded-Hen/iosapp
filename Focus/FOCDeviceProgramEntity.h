@@ -22,7 +22,7 @@
  *
  * Additional meta attributes will also be present, such as the program ID.
  */
-@interface FOCDeviceProgramEntity : NSObject
+@interface FOCDeviceProgramEntity : NSObject<NSCopying>
 
 extern NSString *const PROG_ATTR_MODE;
 extern NSString *const PROG_ATTR_SHAM;
