@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FOCBasePeripheralManager.h"
-#import "BluetoothPairingDelegate.h"
+#import "FOCBluetoothPairingDelegate.h"
 
 /**
  * Checks whether the Focus Device is paired to the iOS device, and automatically triggers
@@ -23,11 +23,11 @@
  * to mean that the devices are not paired, and is passed onto the delegate.
  */
 @interface FOCBluetoothPairManager : FOCBasePeripheralManager{
-    __weak id<BluetoothPairingDelegate> delegate_;
+    __weak id<FOCBluetoothPairingDelegate> delegate_;
 }
 
 - (void)checkPairing:(CBCharacteristic *)controlCmdRequest;
 
-@property (weak) id <BluetoothPairingDelegate> delegate;
+@property (weak) id <FOCBluetoothPairingDelegate> delegate;
 
 @end

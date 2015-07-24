@@ -33,6 +33,9 @@
 @property (weak) id <ProgramSyncDelegate> delegate;
 @property (readonly) FOCCharacteristicDiscoveryManager *cm;
 
+/**
+ * Initialises the program sync with the given characteristics.
+ */
 - (void)startProgramSync:(FOCCharacteristicDiscoveryManager *)cm;
 
 @end

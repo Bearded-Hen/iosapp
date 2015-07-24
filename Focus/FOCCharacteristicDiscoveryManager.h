@@ -9,16 +9,16 @@
 #import <Foundation/Foundation.h>
 
 #import "FOCBasePeripheralManager.h"
-#import "CharacteristicDiscoveryDelegate.h"
+#import "FOCCharacteristicDiscoveryDelegate.h"
 
 /**
  * Delegate which handles the discovery of services & characteristics on the Focus device.
  */
 @interface FOCCharacteristicDiscoveryManager : FOCBasePeripheralManager {
-    __weak id<CharacteristicDiscoveryDelegate> delegate_;
+    __weak id<FOCCharacteristicDiscoveryDelegate> delegate_;
 }
 
-@property (weak) id <CharacteristicDiscoveryDelegate> delegate;
+@property (weak) id <FOCCharacteristicDiscoveryDelegate> delegate;
 @property (readonly) CBCharacteristic *controlCmdResponse;
 @property (readonly) CBCharacteristic *controlCmdRequest;
 @property (readonly) CBCharacteristic *dataBuffer;

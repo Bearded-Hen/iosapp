@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#ifndef Focus_ProgramRequestDelegate_h
-#define Focus_ProgramRequestDelegate_h
+#ifndef Focus_FOCProgramRequestDelegate_h
+#define Focus_FOCProgramRequestDelegate_h
 
-@protocol ProgramRequestDelegate <NSObject>
+@protocol FOCProgramRequestDelegate <NSObject>
 
 /**
  * Called when a program either starts playing or is stopped on the Focus device.

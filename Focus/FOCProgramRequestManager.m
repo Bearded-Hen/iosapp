@@ -160,19 +160,19 @@
 {
     [super peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
     
-    if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
+    if ([FOC_CHARACTERISTIC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
         [self deserialiseCommandResponse:characteristic]; // deserialise response buffer data
     }
     else {
-        if ([FOC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
+        if ([FOC_CHARACTERISTIC_ACTUAL_CURRENT isEqualToString:characteristic.UUID.UUIDString]) {
             int current = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
             [_delegate didReceiveCurrentNotification:current];
         }
-        else if ([FOC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
+        else if ([FOC_CHARACTERISTIC_ACTIVE_MODE_DURATION isEqualToString:characteristic.UUID.UUIDString]) {
             int duration = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
             [_delegate didReceiveDurationNotification:duration];
         }
-        else if ([FOC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
+        else if ([FOC_CHARACTERISTIC_ACTIVE_MODE_REMAINING_TIME isEqualToString:characteristic.UUID.UUIDString]) {
             int remainingTime = [FOCDeviceProgramEntity getIntegerFromBytes:characteristic.value].intValue;
             [_delegate didReceiveRemainingTimeNotification:remainingTime];
         }
@@ -183,7 +183,7 @@
 {
     [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
     
-    if ([FOC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
+    if ([FOC_CHARACTERISTIC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
         Byte progId = _program.programId.intValue;
         Byte descId = !_hasWrittenFirstDescriptor ? FOC_PROG_DESC_FIRST : FOC_PROG_DESC_SECOND;
         
@@ -191,7 +191,7 @@
         
         [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
     }
-    else if ([FOC_CONTROL_CMD_REQUEST isEqualToString:characteristic.UUID.UUIDString]) {
+    else if ([FOC_CHARACTERISTIC_CONTROL_CMD_REQUEST isEqualToString:characteristic.UUID.UUIDString]) {
         // check command success & interpret
         [self.focusDevice readValueForCharacteristic:_cm.controlCmdResponse];
     }

@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#ifndef Focus_CharacteristicDiscoveryDelegate_h
-#define Focus_CharacteristicDiscoveryDelegate_h
+#ifndef Focus_FOCCharacteristicDiscoveryDelegate_h
+#define Focus_FOCCharacteristicDiscoveryDelegate_h
 
 /**
  * Delegate which will be called as soon as the required characteristics & services have been discovered on the device
  */
-@protocol CharacteristicDiscoveryDelegate <NSObject>
+@protocol FOCCharacteristicDiscoveryDelegate <NSObject>
 
 - (void)didFinishCharacteristicDiscovery:(NSError *) error;
 

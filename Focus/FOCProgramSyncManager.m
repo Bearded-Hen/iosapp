@@ -51,10 +51,10 @@
     [super peripheral:peripheral didUpdateValueForCharacteristic:characteristic error:error];
     
     if (error == nil) {
-        if ([FOC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
+        if ([FOC_CHARACTERISTIC_CONTROL_CMD_RESPONSE isEqualToString:characteristic.UUID.UUIDString]) {
             [self deserialiseCommandResponse:characteristic]; // read response buffer data
         }
-        else if ([FOC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
+        else if ([FOC_CHARACTERISTIC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
             [self interpretDataBuffer:characteristic];
         }
         else {
@@ -68,8 +68,10 @@
     [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
     
     if (error == nil) {
-        if ([FOC_CONTROL_CMD_REQUEST isEqualToString:characteristic.UUID.UUIDString]) {
-            [peripheral readValueForCharacteristic:_cm.controlCmdResponse]; // read the response buffer
+        if ([FOC_CHARACTERISTIC_CONTROL_CMD_REQUEST isEqualToString:characteristic.UUID.UUIDString]) {
+            
+             // read the response buffer
+            [peripheral readValueForCharacteristic:_cm.controlCmdResponse];
         }
         else {
             NSLog(@"Program Sync Manager failed to handle update to %@", [self loggableCharacteristicName:characteristic]);
@@ -221,7 +223,8 @@
 }
 
 /**
- * Reads the program descriptor from the data buffer (assumes a write command has been called before)
+ * Reads the program descriptor from the data buffer (assumes a write command has 
+ * been called before)
  */
 -(void)readProgramDescriptorBuffer
 {

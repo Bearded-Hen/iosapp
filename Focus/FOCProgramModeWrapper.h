@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "FOCDeviceProgramEntity.h"
 
+/**
+ * Wrapper class which contains a ProgramMode enum value.
+ */
 @interface FOCProgramModeWrapper : NSObject
 
 -(id)initWithMode:(ProgramMode) mode;

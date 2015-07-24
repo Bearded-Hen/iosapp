@@ -103,22 +103,22 @@
 {
     NSString *name;
     
-    if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_REQUEST]) {
+    if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_CONTROL_CMD_REQUEST]) {
         name = @"Control Command Request";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CONTROL_CMD_RESPONSE]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_CONTROL_CMD_RESPONSE]) {
         name = @"Control Command Response";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_DATA_BUFFER]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_DATA_BUFFER]) {
         name = @"Data Buffer";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTUAL_CURRENT]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_ACTUAL_CURRENT]) {
         name = @"Actual Current";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_DURATION]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_ACTIVE_MODE_DURATION]) {
         name = @"Active Mode Duration";
     }
-    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_ACTIVE_MODE_REMAINING_TIME]) {
+    else if ([characteristic.UUID.UUIDString isEqualToString:FOC_CHARACTERISTIC_ACTIVE_MODE_REMAINING_TIME]) {
         name = @"Active Mode Remaining Time";
     }
     else {

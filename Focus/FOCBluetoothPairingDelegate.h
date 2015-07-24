@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Bearded Hen. All rights reserved.
 //
 
-#ifndef Focus_BluetoothPairingDelegate_h
-#define Focus_BluetoothPairingDelegate_h
+#ifndef Focus_FOCBluetoothPairingDelegate_h
+#define Focus_FOCBluetoothPairingDelegate_h
 
-@protocol BluetoothPairingDelegate <NSObject>
+@protocol FOCBluetoothPairingDelegate <NSObject>
 
 - (void)didDiscoverBluetoothPairState:(BOOL)paired error:(NSError *)error;
 

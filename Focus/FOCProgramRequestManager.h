@@ -9,16 +9,16 @@
 #import "FOCBasePeripheralManager.h"
 #import "FOCDeviceProgramEntity.h"
 #import "FOCCharacteristicDiscoveryManager.h"
-#import "ProgramRequestDelegate.h"
+#import "FOCProgramRequestDelegate.h"
 
 /**
  * Handles requests from the UI to start, stop, and edit programs.
  */
 @interface FOCProgramRequestManager : FOCBasePeripheralManager {
-    __weak id<ProgramRequestDelegate> delegate_;
+    __weak id<FOCProgramRequestDelegate> delegate_;
 }
 
-@property (weak) id <ProgramRequestDelegate> delegate;
+@property (weak) id <FOCProgramRequestDelegate> delegate;
 @property FOCCharacteristicDiscoveryManager *cm;
 
 /**

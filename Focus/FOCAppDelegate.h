@@ -13,12 +13,7 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "FOCDeviceManager.h"
-
-@protocol FOCProgramSyncDelegate <NSObject>
-
-- (void)didChangeDataSet:(NSArray *)dataSet;
-
-@end
+#import "FOCProgramSyncDelegate.h"
 
 /**
  * Contains a Device manager instance which allows the Focus Device to be interacted with
