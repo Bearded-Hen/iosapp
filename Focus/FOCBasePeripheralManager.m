@@ -77,6 +77,9 @@
 
 #pragma mark - Logging code
 
+/**
+ * Finds a friendly name for a service, if available
+ */
 - (NSString *)loggableServiceName:(CBService *)service
 {
     NSString *name;
@@ -99,6 +102,9 @@
     return name;
 }
 
+/**
+ * Finds a friendly name for a characteristic, if available.
+ */
 - (NSString *)loggableCharacteristicName:(CBCharacteristic *)characteristic
 {
     NSString *name;
@@ -129,11 +135,17 @@
 
 #pragma mark - Serialisation/deserialisation
 
+/**
+ * Creates a command for the Control Command Request characteristic.
+ */
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId
 {
     return [self constructCommandRequest:cmdId subCmdId:subCmdId progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
 }
 
+/**
+ * Creates a command for the Control Command Request characteristic.
+ */
 - (NSData *)constructCommandRequest:(Byte)cmdId subCmdId:(Byte)subCmdId progId:(Byte)progId progDescId:(Byte)progDescId
 {
     const unsigned char bytes[] = {cmdId, subCmdId, progId, progDescId, FOC_EMPTY_BYTE};
@@ -141,6 +153,9 @@
     return [NSData dataWithBytes:bytes length:sizeof(bytes)];;
 }
 
+/**
+ * Deserialises a byte array from the Control Command Response characteristic, and calls interpretCommandResponse
+ */
 - (void)deserialiseCommandResponse:(CBCharacteristic *)characteristic {
     NSData *data = characteristic.value;
     
@@ -161,11 +176,17 @@
     }
 }
 
+/**
+ * Allows interpretation of the command response without having to manually deserialise the byte array.
+ */
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
     
 }
 
+/**
+ * Allows interpretation of the command response without having to manually deserialise the byte array.
+ */
 - (void)interpretCommandResponse:(NSError *)error
 {
     

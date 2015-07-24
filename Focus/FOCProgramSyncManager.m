@@ -35,12 +35,10 @@
 
 - (void)startProgramSync:(FOCCharacteristicDiscoveryManager *)cm
 {
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS];
     _cm = cm;
     
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_MAX_PROGRAMS];
-    
     [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
-    
     _lastSubCmd = FOC_SUBCMD_MAX_PROGRAMS;
     
     NSLog(@"Writing %@", [self loggableCharacteristicName:_cm.controlCmdRequest]);
@@ -78,33 +76,10 @@
         }
     }
 }
-
-#pragma mark - deserialisation
-
-- (void)deserialiseCommandResponse:(CBCharacteristic *)characteristic {
-    NSData *data = characteristic.value;
-    
-    if (data != nil) {
-        int length = [data length];
-        
-        Byte *bd = (Byte*)malloc(length);
-        memcpy(bd, [data bytes], length);
-        
-        const unsigned char data[] = {bd[2], bd[3], bd[4], bd[5]};
-        free(bd);
-        
-        [self interpretCommandResponse:bd[0] status:bd[1] data:data characteristic:characteristic];
-    }
-    else {
-        [self.delegate didFinishProgramSync:
-         [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil]];
-    }
-}
     
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
-    if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) {
-        // Handles Program sync callbacks.
+    if (status == FOC_STATUS_CMD_SUCCESS && FOC_CMD_MANAGE_PROGRAMS == cmdId) { // Handles Program sync callbacks.
         
         if (FOC_SUBCMD_MAX_PROGRAMS == _lastSubCmd) {
             _programCount = data[0];
@@ -150,6 +125,10 @@
     [[NSError alloc] initWithDomain:FOCUS_ERROR_DOMAIN code:0 userInfo:nil]];
 }
 
+/**
+ * Interprets the contents of the data buffer. If this is the first descriptor, the second program descriptor
+ * will then be requested (and read here)
+ */
 -(void)interpretDataBuffer:(CBCharacteristic *)characteristic
 {
     NSData *data = characteristic.value;

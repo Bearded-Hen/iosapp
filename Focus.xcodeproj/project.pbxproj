@@ -85,6 +85,8 @@
 		F02C1B901B6297F1005AE647 /* FOCBluetoothPairingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCBluetoothPairingDelegate.h; sourceTree = "<group>"; };
 		F02C1B911B629827005AE647 /* FOCCharacteristicDiscoveryDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCCharacteristicDiscoveryDelegate.h; sourceTree = "<group>"; };
 		F02C1B921B62998F005AE647 /* FOCProgramSyncDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCProgramSyncDelegate.h; sourceTree = "<group>"; };
+		F02C1B931B629F67005AE647 /* ProgramMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramMode.h; sourceTree = "<group>"; };
+		F02C1B941B629FAB005AE647 /* FocusConnectionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FocusConnectionState.h; sourceTree = "<group>"; };
 		F03EB1851B5D51060034BA08 /* FOCDurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FOCDurationPickerDelegate.h; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.h"; sourceTree = "<group>"; };
 		F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FOCDurationPickerDelegate.m; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.m"; sourceTree = "<group>"; };
 		F03EB1881B5EAD350034BA08 /* FOCNotificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCNotificationModel.h; sourceTree = "<group>"; };
@@ -396,6 +398,8 @@
 		F08E18851B3D691A00FA765C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
+				F02C1B931B629F67005AE647 /* ProgramMode.h */,
+				F02C1B941B629FAB005AE647 /* FocusConnectionState.h */,
 				F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */,
 				F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */,
 				F02C1B8A1B6291DD005AE647 /* delegates */,

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreDataProgram.h"
+#import "ProgramMode.h"
 
 /**
  * A POCO which represents the program data stored on the Focus device.
@@ -16,7 +17,7 @@
  *
  * program mode, duration, current, sham, sham period, voltage
  *
- * The following attributes are OPTIONALLY PRESENT:
+ * The following attributes are OPTIONALLY PRESENT (dependent on mode):
  *
  * bipolar, randomCurrent, randomFrequency, currentOffset, frequency, duty cycle, minFrequency, maxFrequency
  *
@@ -38,13 +39,6 @@ extern NSString *const PROG_ATTR_MIN_FREQ;
 extern NSString *const PROG_ATTR_MAX_FREQ;
 extern NSString *const PROG_ATTR_FREQUENCY;
 extern NSString *const PROG_ATTR_DUTY_CYCLE;
-
-typedef NS_ENUM(int, ProgramMode) {
-    DCS,
-    ACS,
-    RNS,
-    PCS
-};
 
 - (id)initWithCoreDataModel:(CoreDataProgram *)model;
 

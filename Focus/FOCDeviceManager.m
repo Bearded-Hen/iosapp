@@ -142,6 +142,9 @@ static const double kIgnoreInterval = 6000;
 
 #pragma mark - implementation
 
+/**
+ * Attempts to connect to previously known devices, or if none are found, initiates a BLE scan
+ */
 - (void)connectFocusDevice
 {
     [self updateConnectionState:SCANNING];
@@ -171,6 +174,9 @@ static const double kIgnoreInterval = 6000;
     }
 }
 
+/**
+ * Scans for peripherals with a Focus characteristic filter.
+ */
 - (void)scanForFocusPeripherals
 {
     NSLog(@"BLE peripheral scan initiated");
@@ -212,6 +218,9 @@ static const double kIgnoreInterval = 6000;
     [self handleBluetoothStateUpdate];
 }
 
+/**
+ * Handles connection/disconnection events of bluetooth, and shows errors to user if required.
+ */
 - (void)handleBluetoothStateUpdate
 {
     if ([_cbCentralManager state] == CBCentralManagerStatePoweredOn) {
@@ -383,7 +392,8 @@ static const double kIgnoreInterval = 6000;
 {
     _lastNotificationMs = [NSDate timeIntervalSinceReferenceDate] * 1000;
     
-    if (_isPlayingProgram) {
+    if (_isPlayingProgram) { // shouldn't show when program isn't playing
+        
         int mins = _notificationModel.duration / 60;
         int secs = _notificationModel.duration % 60;
         float current = ((float)_notificationModel.current) / 1000;

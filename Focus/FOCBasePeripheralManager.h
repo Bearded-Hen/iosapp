@@ -13,6 +13,10 @@
 
 #import "FocusConstants.h"
 
+/**
+ * A base manager class which contains useful functionality for interacting with the Focus
+ * device e.g., human-friendly logging, command response deserialisation, etc
+ */
 @interface FOCBasePeripheralManager : NSObject<CBPeripheralDelegate>
 
 - (id)initWithPeripheral:(CBPeripheral *) focusDevice;
