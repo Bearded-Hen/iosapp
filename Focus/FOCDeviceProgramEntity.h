@@ -122,6 +122,6 @@ typedef NS_ENUM(int, ProgramMode) {
 /**
  * Serialises an int to a byte
  */
-+ (Byte)byteFromInt:(int)value;
++ (Byte)byteFromInt:(NSNumber *)value;
 
 @end

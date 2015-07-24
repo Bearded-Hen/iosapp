@@ -67,10 +67,24 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     char bytes[20] = "";
     
     bytes[0] = _valid.boolValue;
+    
+    for (int i=0; i<[_name length] && i<=9; i++) {
+        bytes[i + 1] = [_name characterAtIndex:i];
+    }
+    
     bytes[10] = _programMode;
+    bytes[11] = _duration.intValue & 0xff;
+    bytes[12] = (_duration.intValue >> 8) & 0xff;
     bytes[13] = _sham.boolValue;
     
-    // TODO name, duration, sham duration, current, current offset
+    bytes[14] = _shamDuration.intValue & 0xff;
+    bytes[15] = (_shamDuration.intValue >> 8) & 0xff;
+    
+    bytes[16] = _current.intValue & 0xff;
+    bytes[17] = (_current.intValue >> 8) & 0xff;
+    c
+    bytes[18] = _currentOffset.intValue & 0xff;
+    bytes[19] = (_currentOffset.intValue >> 8) & 0xff;
     
     return [[NSData alloc] initWithBytes:bytes length:20];
 }
@@ -79,18 +93,17 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 {
     char bytes[20] = "";
     
+    bytes[0] = (Byte) _voltage.intValue;
     bytes[1] = _bipolar.boolValue;
-    bytes[10] = _randomCurrent.boolValue;
-    bytes[11] = _randomFrequency.boolValue;
-    
-    
-    bytes[0] = _voltage.intValue;// FIXME not serialised correctly
-    
+
     // TODO frequency/min frequency
     
     // TODO max frequency/duty cycle
     
-    return nil;
+    bytes[10] = _randomCurrent.boolValue;
+    bytes[11] = _randomFrequency.boolValue;
+    
+    return [[NSData alloc] initWithBytes:bytes length:20];
 }
 
 - (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor
@@ -123,6 +136,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
             break;
         }
     }
+    
     NSData *nameData = [firstDescriptor subdataWithRange:NSMakeRange(1, nameLength)];
     _name = [[NSString alloc] initWithBytes:nameData.bytes length:nameData.length encoding:NSUTF8StringEncoding];
     
@@ -138,6 +152,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     _currentOffset = [FOCDeviceProgramEntity getIntegerFromBytes:currentOffset];
     
     NSLog(@"Deserialised first descriptor %@", firstDescriptor);
+    NSLog(@"Reserialised first descriptor %@", [self serialiseFirstDescriptor]);
     
     free(descriptor);
 }
@@ -167,6 +182,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     _dutyCycle = [FOCDeviceProgramEntity getLongFromBytes:dutyData];
     
     NSLog(@"Deserialised second descriptor %@", secondDescriptor);
+    NSLog(@"Reserialised second descriptor %@", [self serialiseSecondDescriptor]);
     
     free(descriptor);
 }
@@ -368,43 +384,27 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     }
 }
 
-+ (Byte)byteFromInt:(int)value
++ (Byte)byteFromSmallInt:(NSNumber *)value
 {
-    return (Byte) value;
+    return (Byte) value.intValue;
 }
 
++ (Byte)byteFromInt:(NSNumber *)value
+{
+    int n = value.intValue;
+    return ((Byte) (n)) + ((Byte) (n >> 8));
+}
 
-//private static void putBoolean(byte[] data, boolean value, int index) {
-//
-//    data[index] = (byte) (value ? 0x01 : 0x00);
-//}
-//
-//private static void putString(byte[] data, String value, int start, int end) {
-//
-//    for (int i = start; i <= end; i++) {
-//
-//        if (i < value.length() + start) {
-//            data[i] = (byte) (value.charAt(i - start));
-//        }
-//        else {
-//            data[i] = 0x00;
-//        }
-//    }
-//}
-//
-//private static void putLong(byte[] data, long value, int start) {
-//
-//    data[start + 3] = (byte) ((value >> 24) & 0xff);
-//    data[start + 2] = (byte) ((value >> 16) & 0xff);
-//    data[start + 1] = (byte) ((value >> 8) & 0xff);
-//    data[start] = (byte) (value & 0xff);
-//}
-//
-//private static void putInteger(byte[] data, int value, int start) {
-//
-//    data[start + 1] = (byte) ((value >> 8) & 0xff);
-//    data[start] = (byte) (value & 0xff);
-//}
++ (Byte)byteFromLong:(NSNumber *)value
+{
+    long l = value.longValue;
+    
+    return    ((Byte) (l))
+            + ((Byte) (l >> 8))
+            + ((Byte) (l >> 16))
+            + ((Byte) (l >> 24));
+}
+
 
 #pragma mark NSCopying
 
