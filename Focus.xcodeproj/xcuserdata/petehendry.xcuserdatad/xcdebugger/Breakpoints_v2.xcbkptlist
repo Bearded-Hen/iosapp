@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459432083.842442"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "-deserialiseSecondDescriptor:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459432083.842442"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "-deserialiseFirstDescriptor:"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "-deserialiseSecondDescriptor:"
             landmarkType = "5">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "-editableAttributes"
             landmarkType = "5">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
             landmarkName = "-editableAttributes"
             landmarkType = "5">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
             landmarkName = "-editableAttributes"
             landmarkType = "5">
          </BreakpointContent>
@@ -618,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "-serialiseToCoreDataModel:"
             landmarkType = "5">
          </BreakpointContent>
@@ -666,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceProgramEntity.m"
-            timestampString = "459430048.537955"
+            timestampString = "459434755.876934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "-compare:"
             landmarkType = "5">
          </BreakpointContent>

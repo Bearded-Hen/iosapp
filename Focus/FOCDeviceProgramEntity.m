@@ -82,7 +82,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     
     bytes[16] = _current.intValue & 0xff;
     bytes[17] = (_current.intValue >> 8) & 0xff;
-    c
+    
     bytes[18] = _currentOffset.intValue & 0xff;
     bytes[19] = (_currentOffset.intValue >> 8) & 0xff;
     
@@ -95,10 +95,20 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     
     bytes[0] = (Byte) _voltage.intValue;
     bytes[1] = _bipolar.boolValue;
-
-    // TODO frequency/min frequency
     
-    // TODO max frequency/duty cycle
+    long firstUnion = _programMode == DCS ? _minFrequency.longValue : _frequency.longValue;
+    
+    bytes[2] = firstUnion & 0xff;
+    bytes[3] = (firstUnion >> 8) & 0xff;
+    bytes[4] = (firstUnion >> 16) & 0xff;
+    bytes[5] = (firstUnion >> 24) & 0xff;
+    
+    long secondUnion = (_programMode != ACS && _programMode != DCS) ? _dutyCycle.longValue : _maxFrequency.longValue;
+    
+    bytes[6] = secondUnion & 0xff;
+    bytes[7] = (secondUnion >> 8) & 0xff;
+    bytes[8] = (secondUnion >> 16) & 0xff;
+    bytes[9] = (secondUnion >> 24) & 0xff;
     
     bytes[10] = _randomCurrent.boolValue;
     bytes[11] = _randomFrequency.boolValue;
@@ -152,8 +162,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     _currentOffset = [FOCDeviceProgramEntity getIntegerFromBytes:currentOffset];
     
     NSLog(@"Deserialised first descriptor %@", firstDescriptor);
-    NSLog(@"Reserialised first descriptor %@", [self serialiseFirstDescriptor]);
-    
     free(descriptor);
 }
 
@@ -170,9 +178,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     _randomFrequency = [[NSNumber alloc] initWithBool:descriptor[11]];
     
     //serialise misc values
-    if (FOC_EMPTY_BYTE != descriptor[0]) {
-        _voltage = [[NSNumber alloc] initWithInt:descriptor[0]];
-    }
+    _voltage = [[NSNumber alloc] initWithInt:descriptor[0]];
     
     // TODO below values
     NSData *frequencyData = [secondDescriptor subdataWithRange:NSMakeRange(2, 4)];
@@ -181,9 +187,10 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     _frequency = [FOCDeviceProgramEntity getLongFromBytes:frequencyData];
     _dutyCycle = [FOCDeviceProgramEntity getLongFromBytes:dutyData];
     
-    NSLog(@"Deserialised second descriptor %@", secondDescriptor);
-    NSLog(@"Reserialised second descriptor %@", [self serialiseSecondDescriptor]);
+    _minFrequency = _frequency;
+    _maxFrequency = _dutyCycle;
     
+    NSLog(@"Deserialised second descriptor %@", secondDescriptor);
     free(descriptor);
 }
 
