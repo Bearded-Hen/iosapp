@@ -455,6 +455,7 @@
 				F08E18801B3D691A00FA765C /* Frameworks */,
 				F08E18811B3D691A00FA765C /* Resources */,
 				CE2D5CAF279693DF35B1B845 /* Copy Pods Resources */,
+				F022CF461B623844000C70A7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -579,6 +580,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Focus/Pods-Focus-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F022CF461B623844000C70A7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 6fc94c1a88a4e0b18cacf8c3df868be4b9a52643 7ad36d7250c76bb53186241bef98051ed802cf0322b3dd716b62f35015f8d10e";
 		};
 /* End PBXShellScriptBuildPhase section */
 

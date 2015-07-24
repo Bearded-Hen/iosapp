@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Focus-Crashlytics.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Focus-Fabric.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Focus.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>748C2815670E03D4774BD41E</key>
+		<key>54CCBC0DA1BEA9119DCD9688</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C36A15EB553D2DDCDD450FBF</key>
+		<key>69FDE19CD066E156B86DB56A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83C8B2E3C282617C15127C03</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B95CAE77F9DFD3B7D84CCB7D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

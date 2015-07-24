@@ -1,10 +1,18 @@
 PODS:
   - ActionSheetPicker-3.0 (1.6.2)
+  - Crashlytics (3.1.0)
+  - Fabric (1.2.8):
+    - Fabric/Base
+  - Fabric/Base (1.2.8)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
+  - Crashlytics
+  - Fabric
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: cc9f90ae785070623e9b972270013c3242190fb0
+  Crashlytics: ef9a58a4e806b316a1748c06432f6f847ba09ac6
+  Fabric: a9eabe53915e9f1db55a84dd2838737928675878
 
 COCOAPODS: 0.34.4

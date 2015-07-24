@@ -27,6 +27,8 @@ static NSString* kStorePath = @"focus.sqlite";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [Fabric with:@[CrashlyticsKit]];
+    
     self.focusDeviceManager = [[FOCDeviceManager alloc] init];
     _managedObjectContext = [self managedObjectContext];
     
