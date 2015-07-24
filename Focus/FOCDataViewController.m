@@ -446,10 +446,6 @@ static const float kAnimDuration = 0.3;
     [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
 
-
-// FIXME below pickers
-
-
 - (void)showTimePicker:(TimeDurationDoneBlock)doneBlock duration:(int)duration
 {
     NSNumber *secondsIndex = [[NSNumber alloc] initWithInt:[FOCDurationAttributeSetting indexForSeconds:duration]];
@@ -478,8 +474,6 @@ static const float kAnimDuration = 0.3;
     
     [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
 }
-
-// FIXME requires formatting
 
 - (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
 {

@@ -24,6 +24,6 @@
 /**
  * Returns the program mode for a given increment index.
  */
-+ (ProgramMode)valueForIncrementIndex:(int)index;
++ (ProgramMode)valueForIncrementIndex:(long)index;
 
 @end

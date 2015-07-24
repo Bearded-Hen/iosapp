@@ -8,10 +8,6 @@
 
 #import "FOCDurationAttributeSetting.h"
 
-static const int kMinValue = 300;
-static const int kMaxValue = 2400;
-static const int kIncrement = 1;
-
 @implementation FOCDurationAttributeSetting
 
 + (NSArray *)labelsForSeconds

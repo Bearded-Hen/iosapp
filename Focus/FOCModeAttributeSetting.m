@@ -36,7 +36,7 @@ static NSString *kPcsLabel = @"Pulse";
     }
 }
 
-+ (ProgramMode)valueForIncrementIndex:(int)index
++ (ProgramMode)valueForIncrementIndex:(long)index
 {
     switch (index) {
         case 0: return DCS;
