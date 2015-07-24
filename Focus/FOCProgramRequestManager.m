@@ -26,9 +26,7 @@
 - (void)startProgram:(FOCDeviceProgramEntity *)program
 {
     [self clearState:nil starting:true stopping:false editing:false];
-    
-    Byte programId = _program.programId.intValue;
-    NSLog(@"Requesting play for program %d", programId);
+    Byte programId = (Byte) program.programId.intValue;
     
     NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
     
@@ -99,7 +97,9 @@
             _hasWrittenSecondDescriptor = true;
             
             // enable program
-            NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_ENABLE_PROG];
+            Byte programId = (Byte) _program.programId.intValue;
+            
+            NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_ENABLE_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
             
             [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
         }
