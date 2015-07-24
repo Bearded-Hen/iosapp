@@ -18,6 +18,11 @@
 - (void)didAlterProgramState:(bool)playing error:(NSError *)error;
 
 /**
+ * Called when an edit request for a program is completed or fails.
+ */
+- (void)didEditProgram:(FOCDeviceProgramEntity *)program success:(bool)success;
+
+/**
  * Called when the Focus device updates its current value via a notification.
  */
 - (void)didReceiveCurrentNotification:(int)current;

@@ -52,7 +52,7 @@
 
     // disable editing for now
     
-//    [self.focusDevice writeValue:[program serialiseFirstDescriptor] forCharacteristic:_cm.dataBuffer type:CBCharacteristicWriteWithResponse];
+    [self.focusDevice writeValue:[program serialiseFirstDescriptor] forCharacteristic:_cm.dataBuffer type:CBCharacteristicWriteWithResponse];
 }
 
 - (void)clearState:(FOCDeviceProgramEntity *)program starting:(bool)starting stopping:(bool)stopping editing:(bool)editing
@@ -104,13 +104,13 @@
             [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
         }
         else {
-            // TODO delegate
+            [_delegate didEditProgram:_program success:true];
             NSLog(@"Finished editing program!");
         }
     }
     else {
-        NSLog(@"Failure in edit");
-        // TODO handle err
+        [_delegate didEditProgram:_program success:false];
+        NSLog(@"Failure in program edit");
     }
 }
 

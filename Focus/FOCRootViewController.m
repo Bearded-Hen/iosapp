@@ -135,6 +135,21 @@
     return [_pageData indexOfObject:viewController.pageModel];
 }
 
+- (FOCUiPageModel *)findPageModelById:(FOCDeviceProgramEntity *)program
+{
+    for (int i=0; i<[_pageData count]; i++) {
+        FOCUiPageModel *model = _pageData[i];
+        
+        bool idMatch = model.program.programId.intValue == program.programId.intValue;
+        bool nameMatch = [model.program.name isEqualToString:program.name];
+        
+        if (idMatch && nameMatch) {
+            return model;
+        }
+    }
+    return nil;
+}
+
 #pragma mark DeviceStateDelegate
 
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState
@@ -158,6 +173,17 @@
     [self refreshDisplayedController];
 }
 
+- (void)didUpdateProgram:(FOCDeviceProgramEntity *)program
+{
+    FOCUiPageModel *matchingModel = [self findPageModelById:program];
+    
+    if (matchingModel != nil) {
+        matchingModel.program = program;
+    }
+    
+    [self refreshDisplayedController];
+}
+
 #pragma mark ProgramSyncDelegate
 
 - (void)didChangeDataSet:(NSArray *)dataSet
@@ -169,20 +195,10 @@
 
 -(void)didAlterPageState:(FOCUiPageModel *)pageModel
 {
-    FOCDeviceProgramEntity *currentProgram = pageModel.program;
-    FOCDeviceProgramEntity *alteredProgram;
+    FOCUiPageModel *matchingModel = [self findPageModelById:pageModel.program];
     
-    for (int i=0; i<[_pageData count]; i++) {
-        FOCUiPageModel *model = _pageData[i];
-        alteredProgram = model.program;
-        
-        bool idMatch = currentProgram.programId.intValue == alteredProgram.programId.intValue;
-        bool nameMatch = [currentProgram.name isEqualToString:alteredProgram.name];
-        
-        if (idMatch && nameMatch) {
-            _pageData[i] = pageModel;
-            break;
-        }
+    if (matchingModel != nil) {
+        matchingModel = pageModel;
     }
 }
 
@@ -198,7 +214,14 @@
 
 - (void)didRequestProgramEdit:(FOCDeviceProgramEntity *)program
 {
-    [_deviceManager writeProgram:program];
+    FOCUiPageModel *matchingModel = [self findPageModelById:program];
+    
+    if (matchingModel != nil && ![matchingModel.program isEqual:program]) {
+        [_deviceManager writeProgram:program];
+    }
+    else {
+        NSLog(@"Program attributes don't differ, skipping edit request");
+    }
 }
 
 #pragma mark - UIPageViewController delegate methods

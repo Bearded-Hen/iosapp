@@ -41,4 +41,6 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
  */
 - (void)programStateChanged:(bool)playing;
 
+- (void)didUpdateProgram:(FOCDeviceProgramEntity *)program;
+
 @end

@@ -412,7 +412,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
             + ((Byte) (l >> 24));
 }
 
-
 #pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone

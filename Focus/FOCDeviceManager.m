@@ -351,6 +351,16 @@ static const double kIgnoreInterval = 6000;
     }
 }
 
+- (void)didEditProgram:(FOCDeviceProgramEntity *)program success:(bool)success
+{
+    if (success) {
+        [_delegate didUpdateProgram:program];
+    }
+    else {
+        [self displayUserErrMessage:@"Edit failed" message:@"Please check the device is connected and powered on."];
+    }
+}
+
 - (void)didReceiveCurrentNotification:(int)current
 {
     _notificationModel.current = current;
