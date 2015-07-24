@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * Models the data that should be displayed for each attribute of a program; i.e., a title & value
+ */
 @interface FOCDisplayAttributeModel : NSObject
 
 @property NSString *attrLabel;

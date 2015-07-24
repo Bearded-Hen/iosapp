@@ -14,6 +14,7 @@ NSString *const FONT_AWESOME = @"FontAwesome";
 const float DEFAULT_ICON_SIZE = 28.0;
 
 static NSDictionary *faMap;
+static UIFont *font;
 
 +(void)initialize
 {
@@ -36,7 +37,10 @@ static NSDictionary *faMap;
 
 +(UIFont *)font
 {
-    return [UIFont fontWithName:FONT_AWESOME size:DEFAULT_ICON_SIZE];
+    if (font == nil) {
+        font = [UIFont fontWithName:FONT_AWESOME size:DEFAULT_ICON_SIZE];
+    }
+    return font;
 }
 
 @end

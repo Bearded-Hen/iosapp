@@ -14,7 +14,7 @@
 #import "FOCColorMap.h"
 #import "FOCProgramAttributeView.h"
 #import "ActionSheetPicker.h"
-#import "ActionSheetPickerTimeDelegate.h"
+#import "FOCDurationPickerDelegate.h"
 
 #import "FOCModeAttributeSetting.h"
 #import "FOCBoolAttributeSetting.h"
@@ -452,7 +452,7 @@ static const float kAnimDuration = 0.3;
     
     NSNumber *minutesIndex = [[NSNumber alloc] initWithInt:[FOCDurationAttributeSetting indexForMinutes:duration]];
     
-    ActionSheetPickerTimeDelegate *delg = [[ActionSheetPickerTimeDelegate alloc] initWithIndices:minutesIndex.intValue secondIndex:secondsIndex.intValue doneBlock:doneBlock];
+    FOCDurationPickerDelegate *delg = [[FOCDurationPickerDelegate alloc] initWithIndices:minutesIndex.intValue secondIndex:secondsIndex.intValue doneBlock:doneBlock];
     
     NSArray *initialSelections = [[NSArray alloc] initWithObjects:minutesIndex, secondsIndex, nil];
     

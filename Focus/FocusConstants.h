@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * Defines constants which are used by the Focus device.
+ */
 @interface FocusConstants : NSObject
 
 extern NSString *const FOCUS_ERROR_DOMAIN;
@@ -15,7 +18,6 @@ extern NSString *const FOCUS_ERROR_DOMAIN;
 extern NSString *const BLE_SERVICE_BATTERY;
 extern NSString *const BLE_SERVICE_INFO;
 extern NSString *const FOC_SERVICE_TDCS;
-
 extern NSString *const FOC_SERVICE_UNKNOWN;
 
 extern NSString *const FOC_CONTROL_CMD_REQUEST;
@@ -26,8 +28,20 @@ extern NSString *const FOC_ACTIVE_MODE_DURATION;
 extern NSString *const FOC_ACTIVE_MODE_REMAINING_TIME;
 
 extern const Byte FOC_EMPTY_BYTE;
+
+/**
+ * Returned if a command was successful.
+ */
 extern const Byte FOC_STATUS_CMD_SUCCESS;
+
+/**
+ * Returned if a command failed.
+ */
 extern const Byte FOC_STATUS_CMD_FAILURE;
+
+/**
+ * Returned if a command is unsupported.
+ */
 extern const Byte FOC_STATUS_CMD_UNSUPPORTED;
 
 extern const Byte FOC_CMD_SLEEP_MODE;
@@ -44,7 +58,14 @@ extern const Byte FOC_SUBCMD_DISABLE_PROG;
 extern const Byte FOC_SUBCMD_START_PROG;
 extern const Byte FOC_SUBCMD_STOP_PROG;
 
+/**
+ * The ID for the first program descriptor.
+ */
 extern const Byte FOC_PROG_DESC_FIRST;
+
+/**
+ * The ID for the second program descriptor.
+ */
 extern const Byte FOC_PROG_DESC_SECOND;
 
 extern const int FOC_PROG_STATUS_VALID;

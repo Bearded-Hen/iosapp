@@ -9,12 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FOCBasePeripheralManager.h"
-
-@protocol BluetoothPairingDelegate <NSObject>
-
-- (void)didDiscoverBluetoothPairState:(BOOL)paired error:(NSError *)error;
-
-@end
+#import "BluetoothPairingDelegate.h"
 
 /**
  * Checks whether the Focus Device is paired to the iOS device, and automatically triggers

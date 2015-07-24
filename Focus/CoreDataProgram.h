@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+/**
+ * A model that is used to store the state of a Focus program in CoreData.
+ * Bool/Int/Long fields are boxed as NSNumbers.
+ */
 @interface CoreDataProgram : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;

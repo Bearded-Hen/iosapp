@@ -10,12 +10,7 @@
 
 #import "FOCBasePeripheralManager.h"
 #import "FOCCharacteristicDiscoveryManager.h"
-
-@protocol ProgramSyncDelegate <NSObject>
-
-- (void)didFinishProgramSync:(NSError *) error;
-
-@end
+#import "ProgramSyncDelegate.h"
 
 /**
  * Handles the initial syncing of programs from the Focus Device to the iOS device. This

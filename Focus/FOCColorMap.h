@@ -13,6 +13,9 @@
  */
 @interface FOCColorMap : NSObject
 
+/**
+ * Converts a 6-hex string or 8-hex string into a UIColor.
+ */
 +(UIColor *) colorFromString: (NSString *) colorString;
 
 @end

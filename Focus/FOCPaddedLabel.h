@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ * Custom UILabel with padding around text
+ */
 @interface FOCPaddedLabel : UILabel
-
-@property (nonatomic, assign) UIEdgeInsets edgeInsets;
 
 @end

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * A model which stores the values of the most recent notifications received from
+ * the focus device.
+ */
 @interface FOCNotificationModel : NSObject
 
 @property int current;

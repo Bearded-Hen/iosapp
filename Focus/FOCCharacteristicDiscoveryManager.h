@@ -9,15 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FOCBasePeripheralManager.h"
-
-/**
- * Delegate which will be called as soon as the required characteristics & services have been discovered on the device
- */
-@protocol CharacteristicDiscoveryDelegate <NSObject>
-
-- (void)didFinishCharacteristicDiscovery:(NSError *) error;
-
-@end
+#import "CharacteristicDiscoveryDelegate.h"
 
 /**
  * Delegate which handles the discovery of services & characteristics on the Focus device.

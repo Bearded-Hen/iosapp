@@ -8,9 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ * Manages the FontAwesome typeface & provides convenience methods for retrieving unicode
+ * characters via FA codes. See http://fortawesome.github.io/ for further details.
+ */
 @interface FOCFontAwesome : NSObject
 
+/**
+ * Returns the unicode character for a code e.g. fa-play
+ */
 +(NSString *) unicodeForIcon:(NSString *)iconName;
+
+/**
+ * Returns an instance of the FontAwesome typeface.
+ */
 +(UIFont *) font;
 
 extern NSString *const FONT_AWESOME;

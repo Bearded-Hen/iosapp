@@ -11,6 +11,8 @@
 #import "FOCModelController.h"
 #import "FOCDataViewController.h"
 
+static NSString *kIdentifier = @"FOCDataViewController";
+
 @interface FOCRootViewController ()
 
 @property FOCDeviceManager *deviceManager;
@@ -52,7 +54,7 @@
     [self setupPagingGestureRecognisers];
 }
 
-- (void)setupPagingGestureRecognisers
+- (void)setupPagingGestureRecognisers // ignore pages when tapping at side
 {
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
     
@@ -67,11 +69,6 @@
 - (FOCDataViewController *)currentViewController
 {
     return ([_pageData count] == 0) ? nil : (FOCDataViewController*) self.pageViewController.viewControllers[0];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
 }
 
 - (void)reloadData
@@ -124,7 +121,7 @@
         return nil;
     }
     
-    FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"FOCDataViewController"];
+    FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:kIdentifier];
     dataViewController.pageModel = _pageData[index];
     dataViewController.delegate = self;
     
@@ -148,6 +145,11 @@
         }
     }
     return nil;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark DeviceStateDelegate

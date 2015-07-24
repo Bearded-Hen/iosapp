@@ -11,27 +11,12 @@
 #import "FOCUiPageModel.h"
 #import "FOCDeviceProgramEntity.h"
 #import "FOCDeviceStateDelegate.h"
-
-@protocol FOCUiPageChangeDelegate <NSObject>
-
-/**
- * Called when the UI model for displaying the program changes e.g. Settings visibility
- */
-- (void)didAlterPageState:(FOCUiPageModel *)pageModel;
+#import "FOCUiPageChangeDelegate.h"
 
 /**
- * Called when the user requests to stop/start a program through the app UI.
+ * Controls how the view for an individual program should be displayed, and provides a
+ * delegate for handling any events requiring changes to the model layer e.g. playing a program
  */
-- (void)didRequestProgramStateChange:(FOCUiPageModel *)pageModel play:(bool)play;
-
-/**
- * Called when the user requests an edit to the program. The responder should write the
- * edited program to the Focus device then notify the UI of changes to the model.
- */
-- (void)didRequestProgramEdit:(FOCDeviceProgramEntity *)program;
-
-@end
-
 @interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
@@ -49,6 +34,9 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
+/**
+ * Updates the text which is displayed on the bottom status bar.
+ */
 -(void)updateConnectionText:(NSString *)connectionText;
 
 @end

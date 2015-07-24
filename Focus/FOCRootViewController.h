@@ -10,6 +10,7 @@
 #import "FOCAppDelegate.h"
 #import "FOCDataViewController.h"
 #import "FOCDeviceStateDelegate.h"
+#import "FOCUiPageChangeDelegate.h"
 
 @class FOCUiPageModel;
 
@@ -25,7 +26,14 @@
 @property (weak) id <FOCUiPageChangeDelegate> delegate;
 @property (strong, nonatomic) UIPageViewController* pageViewController;
 
+/**
+ * Returns the view controller at the given index, or nil if none exists.
+ */
 - (FOCDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
+
+/**
+ * Returns the index of the given view controller, or NSNotFound if it is not in the dataset.
+ */
 - (NSUInteger)indexOfViewController:(FOCDataViewController *)viewController;
 
 @end

@@ -17,6 +17,9 @@
  */
 @interface FOCUiPageModel : NSObject
 
+/**
+ * Initialises the model with the given program.
+ */
 - (id)initWithProgram:(FOCDeviceProgramEntity *)program;
 
 @property bool isPlaying;

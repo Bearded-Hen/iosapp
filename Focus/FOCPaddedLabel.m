@@ -10,6 +10,12 @@
 
 static const int kPadding = 4;
 
+@interface FOCPaddedLabel ()
+
+@property (nonatomic, assign) UIEdgeInsets edgeInsets;
+
+@end
+
 @implementation FOCPaddedLabel
 
 - (id)initWithFrame:(CGRect)frame

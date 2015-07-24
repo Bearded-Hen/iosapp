@@ -15,6 +15,9 @@
 #import "FOCProgramSyncManager.h"
 #import "FOCProgramRequestManager.h"
 #import "FOCBluetoothPairManager.h"
+#import "ProgramSyncDelegate.h"
+#import "ProgramRequestDelegate.h"
+#import "BluetoothPairingDelegate.h"
 
 @import CoreBluetooth;
 @import QuartzCore;

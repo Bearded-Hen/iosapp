@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD171ED5012F72236E08F676 /* libPods-Focus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E351264E7925E223EB98A98 /* libPods-Focus.a */; };
-		F03EB1871B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1861B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m */; };
+		F03EB1871B5D51060034BA08 /* FOCDurationPickerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */; };
 		F03EB18A1B5EAD350034BA08 /* FOCNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */; };
 		F03EB18F1B5FA2530034BA08 /* FOCBaseAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB18E1B5FA2530034BA08 /* FOCBaseAttributeSetting.m */; };
 		F03EB1941B5FA38B0034BA08 /* FOCModeAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1931B5FA38B0034BA08 /* FOCModeAttributeSetting.m */; };
@@ -79,8 +79,13 @@
 		2928B39D71D7CE71C363419C /* Pods-Focus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.debug.xcconfig"; sourceTree = "<group>"; };
 		9E351264E7925E223EB98A98 /* libPods-Focus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Focus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F7831D71596F3BB83C3AEA /* Pods-Focus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.release.xcconfig"; sourceTree = "<group>"; };
-		F03EB1851B5D51060034BA08 /* ActionSheetPickerTimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionSheetPickerTimeDelegate.h; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/ActionSheetPickerTimeDelegate.h"; sourceTree = "<group>"; };
-		F03EB1861B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ActionSheetPickerTimeDelegate.m; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/ActionSheetPickerTimeDelegate.m"; sourceTree = "<group>"; };
+		F02C1B8B1B629344005AE647 /* FOCUiPageChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCUiPageChangeDelegate.h; sourceTree = "<group>"; };
+		F02C1B8E1B62971A005AE647 /* ProgramSyncDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramSyncDelegate.h; sourceTree = "<group>"; };
+		F02C1B8F1B6297B5005AE647 /* ProgramRequestDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramRequestDelegate.h; sourceTree = "<group>"; };
+		F02C1B901B6297F1005AE647 /* BluetoothPairingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothPairingDelegate.h; sourceTree = "<group>"; };
+		F02C1B911B629827005AE647 /* CharacteristicDiscoveryDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CharacteristicDiscoveryDelegate.h; sourceTree = "<group>"; };
+		F03EB1851B5D51060034BA08 /* FOCDurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FOCDurationPickerDelegate.h; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.h"; sourceTree = "<group>"; };
+		F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FOCDurationPickerDelegate.m; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.m"; sourceTree = "<group>"; };
 		F03EB1881B5EAD350034BA08 /* FOCNotificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCNotificationModel.h; sourceTree = "<group>"; };
 		F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCNotificationModel.m; sourceTree = "<group>"; };
 		F03EB18D1B5FA2530034BA08 /* FOCBaseAttributeSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCBaseAttributeSetting.h; sourceTree = "<group>"; };
@@ -218,6 +223,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F02C1B8A1B6291DD005AE647 /* delegates */ = {
+			isa = PBXGroup;
+			children = (
+				F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */,
+				F02C1B8B1B629344005AE647 /* FOCUiPageChangeDelegate.h */,
+				F02C1B8E1B62971A005AE647 /* ProgramSyncDelegate.h */,
+				F02C1B8F1B6297B5005AE647 /* ProgramRequestDelegate.h */,
+				F02C1B901B6297F1005AE647 /* BluetoothPairingDelegate.h */,
+				F02C1B911B629827005AE647 /* CharacteristicDiscoveryDelegate.h */,
+			);
+			name = delegates;
+			sourceTree = "<group>";
+		};
 		F03EB18B1B5FA1040034BA08 /* program */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,37 +303,13 @@
 			name = base;
 			sourceTree = "<group>";
 		};
-		F07113391B4E887400D0A7D1 /* manager */ = {
-			isa = PBXGroup;
-			children = (
-				F08834611B42E1310022400A /* FOCDeviceManager.h */,
-				F08834621B42E1310022400A /* FOCDeviceManager.m */,
-				F07113301B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.h */,
-				F07113311B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m */,
-				F07113361B4E85DD00D0A7D1 /* FOCBasePeripheralManager.h */,
-				F07113371B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m */,
-			);
-			name = manager;
-			sourceTree = "<group>";
-		};
-		F071133A1B4E888100D0A7D1 /* requests */ = {
-			isa = PBXGroup;
-			children = (
-				F071133B1B4E88A500D0A7D1 /* FOCProgramSyncManager.h */,
-				F071133C1B4E88A500D0A7D1 /* FOCProgramSyncManager.m */,
-				F07113411B4FF64000D0A7D1 /* FOCProgramRequestManager.h */,
-				F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */,
-				F071135B1B551EF800D0A7D1 /* FOCBluetoothPairManager.h */,
-				F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */,
-			);
-			name = requests;
-			sourceTree = "<group>";
-		};
 		F088345D1B42E0090022400A /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				F03EB1851B5D51060034BA08 /* ActionSheetPickerTimeDelegate.h */,
-				F03EB1861B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m */,
+				F07113E11B57F00300D0A7D1 /* FOCColorMap.h */,
+				F07113E21B57F00300D0A7D1 /* FOCColorMap.m */,
+				F03EB1851B5D51060034BA08 /* FOCDurationPickerDelegate.h */,
+				F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */,
 				F07113EF1B591E0E00D0A7D1 /* FOCPaddedLabel.h */,
 				F07113F01B591E0E00D0A7D1 /* FOCPaddedLabel.m */,
 				F07113441B5405B400D0A7D1 /* FOCFontAwesome.h */,
@@ -342,6 +336,8 @@
 		F088345F1B42E0270022400A /* model */ = {
 			isa = PBXGroup;
 			children = (
+				F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */,
+				F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */,
 				F03EB1901B5FA36B0034BA08 /* attributes */,
 				F03EB18B1B5FA1040034BA08 /* program */,
 				F03EB18C1B5FA1120034BA08 /* ui */,
@@ -352,9 +348,18 @@
 		F08834601B42E02C0022400A /* bluetooth */ = {
 			isa = PBXGroup;
 			children = (
-				F071133A1B4E888100D0A7D1 /* requests */,
-				F07113391B4E887400D0A7D1 /* manager */,
-				F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */,
+				F071133B1B4E88A500D0A7D1 /* FOCProgramSyncManager.h */,
+				F071133C1B4E88A500D0A7D1 /* FOCProgramSyncManager.m */,
+				F07113411B4FF64000D0A7D1 /* FOCProgramRequestManager.h */,
+				F07113421B4FF64000D0A7D1 /* FOCProgramRequestManager.m */,
+				F071135B1B551EF800D0A7D1 /* FOCBluetoothPairManager.h */,
+				F071135C1B551EF800D0A7D1 /* FOCBluetoothPairManager.m */,
+				F08834611B42E1310022400A /* FOCDeviceManager.h */,
+				F08834621B42E1310022400A /* FOCDeviceManager.m */,
+				F07113301B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.h */,
+				F07113311B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m */,
+				F07113361B4E85DD00D0A7D1 /* FOCBasePeripheralManager.h */,
+				F07113371B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m */,
 				F071131D1B4C232A00D0A7D1 /* FocusConstants.h */,
 				F071131E1B4C232A00D0A7D1 /* FocusConstants.m */,
 			);
@@ -389,21 +394,13 @@
 		F08E18851B3D691A00FA765C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
-				F07113E11B57F00300D0A7D1 /* FOCColorMap.h */,
-				F07113E21B57F00300D0A7D1 /* FOCColorMap.m */,
-				F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */,
-				F07113DE1B57A84000D0A7D1 /* CoreDataProgram.h */,
-				F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */,
-				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
+				F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */,
+				F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */,
+				F02C1B8A1B6291DD005AE647 /* delegates */,
 				F088345D1B42E0090022400A /* ui */,
 				F088345E1B42E0210022400A /* controllers */,
 				F08834601B42E02C0022400A /* bluetooth */,
 				F088345F1B42E0270022400A /* model */,
-				F08E188A1B3D691A00FA765C /* FOCAppDelegate.h */,
-				F08E188B1B3D691A00FA765C /* FOCAppDelegate.m */,
-				F08E18961B3D691A00FA765C /* Main.storyboard */,
-				F08E18991B3D691A00FA765C /* Images.xcassets */,
-				F08E189B1B3D691A00FA765C /* LaunchScreen.xib */,
 				F08E18861B3D691A00FA765C /* Supporting Files */,
 			);
 			path = Focus;
@@ -412,6 +409,11 @@
 		F08E18861B3D691A00FA765C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F08E18961B3D691A00FA765C /* Main.storyboard */,
+				F08E18991B3D691A00FA765C /* Images.xcassets */,
+				F08E189B1B3D691A00FA765C /* LaunchScreen.xib */,
+				F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */,
+				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
 				F071136B1B5562E100D0A7D1 /* bluetooth_connected.png */,
 				F071136C1B5562E100D0A7D1 /* bluetooth_disconnected.png */,
 				F071136D1B5562E100D0A7D1 /* bluetooth_disabled.png */,
@@ -633,7 +635,7 @@
 				F07113DD1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld in Sources */,
 				F03EB1B61B5FFB4B0034BA08 /* FOCCurrentAttributeSetting.m in Sources */,
 				F07113321B4E793C00D0A7D1 /* FOCCharacteristicDiscoveryManager.m in Sources */,
-				F03EB1871B5D51060034BA08 /* ActionSheetPickerTimeDelegate.m in Sources */,
+				F03EB1871B5D51060034BA08 /* FOCDurationPickerDelegate.m in Sources */,
 				F03EB1A41B5FB1C50034BA08 /* FOCVoltageAttributeSetting.m in Sources */,
 				F071135D1B551EF800D0A7D1 /* FOCBluetoothPairManager.m in Sources */,
 				F07113971B5680C900D0A7D1 /* FOCDisplayAttributeModel.m in Sources */,

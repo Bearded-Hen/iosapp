@@ -22,6 +22,9 @@
 +(FOCDeviceProgramEntity *)pulse;
 +(FOCDeviceProgramEntity *)noise;
 
+/**
+ * Returns an array containing all the default Focus programs.
+ */
 +(NSArray *) allDefaults;
 
 @end
