@@ -34,6 +34,9 @@
 
 @end
 
+/**
+ * Handles requests from the UI to start, stop, and edit programs.
+ */
 @interface FOCProgramRequestManager : FOCBasePeripheralManager {
     __weak id<ProgramRequestDelegate> delegate_;
 }

@@ -12,11 +12,52 @@
 
 @property bool requestProgramStart;
 @property bool requestProgramStop;
+@property bool editingProgram;
 @property bool hasSentStartRequest;
 
 @end
 
 @implementation FOCProgramRequestManager
+
+- (void)startProgram:(FOCDeviceProgramEntity *)program
+{
+    _requestProgramStart = true;
+    _requestProgramStop = false;
+    _editingProgram = false;
+    
+    Byte programId = [FOCDeviceProgramEntity byteFromInt:program.programId.intValue];
+    NSLog(@"Requesting play for program %d", programId);
+    
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
+    
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)stopActiveProgram
+{
+    NSLog(@"Requesting program stop");
+    
+    _requestProgramStart = false;
+    _requestProgramStop = true;
+    _editingProgram = false;
+    
+    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
+    
+    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)writeProgram:(FOCDeviceProgramEntity *)program
+{
+    NSLog(@"Request manager got write command");
+    
+    _requestProgramStart = false;
+    _requestProgramStop = false;
+    _editingProgram = true;
+    
+    NSData *firstDescriptor = [program serialiseFirstDescriptor];
+    
+    [self.focusDevice writeValue:firstDescriptor forCharacteristic:_cm.dataBuffer type:CBCharacteristicWriteWithResponse];
+}
 
 - (void)interpretCommandResponse:(Byte)cmdId status:(Byte)status data:(const unsigned char *)data characteristic:(CBCharacteristic *)characteristic
 {
@@ -62,41 +103,6 @@
     NSLog(@"Command response error %@", error);
 }
 
-- (void)startProgram:(FOCDeviceProgramEntity *)program
-{
-    _requestProgramStart = true;
-    _requestProgramStop = false;
-    
-    Byte programId = [FOCDeviceProgramEntity byteFromInt:program.programId.intValue];
-    NSLog(@"Requesting play for program %d", programId);
-    
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_START_PROG progId:programId progDescId:FOC_EMPTY_BYTE];
-    
-    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
-}
-
-- (void)stopActiveProgram
-{
-    NSLog(@"Requesting program stop");
-    
-    _requestProgramStart = false;
-    _requestProgramStop = true;
-    
-    NSData *data = [self constructCommandRequest:FOC_CMD_MANAGE_PROGRAMS subCmdId:FOC_SUBCMD_STOP_PROG progId:FOC_EMPTY_BYTE progDescId:FOC_EMPTY_BYTE];
-    
-    [self.focusDevice writeValue:data forCharacteristic:_cm.controlCmdRequest type:CBCharacteristicWriteWithResponse];
-}
-
-- (void)writeProgram:(FOCDeviceProgramEntity *)program
-{
-    NSLog(@"Request manager got write command");
-    
-    // TODO call delegate
-    
-    NSData *firstDescriptor = [program serialiseFirstDescriptor];
-    NSData *secondDescriptor = [program serialiseSecondDescriptor];
-    
-}
 
 - (void)startNotificationListeners:(CBPeripheral *)focusDevice
 {
@@ -140,7 +146,13 @@
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     [super peripheral:peripheral didWriteValueForCharacteristic:characteristic error:error];
-    [self.focusDevice readValueForCharacteristic:_cm.controlCmdResponse]; // read to check success
+    
+    if ([FOC_DATA_BUFFER isEqualToString:characteristic.UUID.UUIDString]) {
+        // TODO write data buffer to memory
+    }
+    else { // control command written
+        [self.focusDevice readValueForCharacteristic:_cm.controlCmdResponse]; // read to check success
+    }
 }
 
 @end
