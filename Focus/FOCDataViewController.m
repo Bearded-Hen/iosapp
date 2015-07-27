@@ -291,45 +291,16 @@ static const float kAnimDuration = 0.3;
         } mode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-
-            program.sham = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
-
-            if (program.sham.boolValue != _pageModel.program.sham.boolValue) {
-                [_delegate didRequestProgramEdit:program];
-            }
-            
-        } currentState:program.sham.boolValue];
+        [self flipBooleanField:program.sham program:program];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-            
-            program.bipolar = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
-            
-            if (program.bipolar.boolValue != _pageModel.program.bipolar.boolValue) {
-                [_delegate didRequestProgramEdit:program];
-            }
-        } currentState:program.bipolar.boolValue];
+        [self flipBooleanField:program.bipolar program:program];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-            
-            program.randomCurrent = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
-            
-            if (program.randomCurrent.boolValue != _pageModel.program.randomCurrent.boolValue) {
-                [_delegate didRequestProgramEdit:program];
-            }
-        } currentState:program.randomCurrent.boolValue];
+        [self flipBooleanField:program.randomCurrent program:program];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-        [self showBooleanPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-            
-            program.randomFrequency = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
-            
-            if (program.randomFrequency.boolValue != _pageModel.program.randomFrequency.boolValue) {
-                [_delegate didRequestProgramEdit:program];
-            }
-        } currentState:program.randomFrequency.boolValue];
+        [self flipBooleanField:program.randomFrequency program:program];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker:^(int minuteIndex, int secondIndex) {
@@ -392,7 +363,7 @@ static const float kAnimDuration = 0.3;
             }
         } frequency:((NSNumber *)program.frequency).longValue];
     }
-    else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) { // FIXME
+    else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) {
         [self showDutyCyclePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
             program.dutyCycle = [[NSNumber alloc] initWithLong:[FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex]];
@@ -405,6 +376,12 @@ static const float kAnimDuration = 0.3;
     else {
         NSLog(@"Unknown attribute edit attempted");
     }
+}
+
+- (void)flipBooleanField:(NSNumber *)value program:(FOCDeviceProgramEntity *)program
+{
+    value = [[NSNumber alloc] initWithBool:!value.boolValue];
+    [_delegate didRequestProgramEdit:program];
 }
 
 - (void)showModePicker:(ActionStringDoneBlock)doneBlock mode:(ProgramMode)mode
