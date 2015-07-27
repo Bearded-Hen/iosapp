@@ -23,6 +23,6 @@
 /**
  * Returns the boolean value for a given increment index.
  */
-+ (bool)valueForIncrementIndex:(int)index;
++ (bool)valueForIncrementIndex:(long)index;
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD171ED5012F72236E08F676 /* libPods-Focus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E351264E7925E223EB98A98 /* libPods-Focus.a */; };
+		F02C1B971B667222005AE647 /* FOCAttributeFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1B961B667222005AE647 /* FOCAttributeFlowLayout.m */; };
 		F03EB1871B5D51060034BA08 /* FOCDurationPickerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */; };
 		F03EB18A1B5EAD350034BA08 /* FOCNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */; };
 		F03EB18F1B5FA2530034BA08 /* FOCBaseAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB18E1B5FA2530034BA08 /* FOCBaseAttributeSetting.m */; };
@@ -47,7 +48,6 @@
 		F07113E01B57A84000D0A7D1 /* CoreDataProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113DF1B57A84000D0A7D1 /* CoreDataProgram.m */; };
 		F07113E31B57F00300D0A7D1 /* FOCColorMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113E21B57F00300D0A7D1 /* FOCColorMap.m */; };
 		F07113E61B5800C600D0A7D1 /* FOCProgramAttributeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */; };
-		F07113E91B580FE900D0A7D1 /* ALGReversedFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113E81B580FE900D0A7D1 /* ALGReversedFlowLayout.m */; };
 		F07113EE1B5908F500D0A7D1 /* FOCUiPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113ED1B5908F500D0A7D1 /* FOCUiPageModel.m */; };
 		F07113F11B591E0E00D0A7D1 /* FOCPaddedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F07113F01B591E0E00D0A7D1 /* FOCPaddedLabel.m */; };
 		F08834631B42E1310022400A /* FOCDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F08834621B42E1310022400A /* FOCDeviceManager.m */; };
@@ -87,6 +87,8 @@
 		F02C1B921B62998F005AE647 /* FOCAppSyncDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCAppSyncDelegate.h; sourceTree = "<group>"; };
 		F02C1B931B629F67005AE647 /* ProgramMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramMode.h; sourceTree = "<group>"; };
 		F02C1B941B629FAB005AE647 /* FocusConnectionState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FocusConnectionState.h; sourceTree = "<group>"; };
+		F02C1B951B667222005AE647 /* FOCAttributeFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCAttributeFlowLayout.h; sourceTree = "<group>"; };
+		F02C1B961B667222005AE647 /* FOCAttributeFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCAttributeFlowLayout.m; sourceTree = "<group>"; };
 		F03EB1851B5D51060034BA08 /* FOCDurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FOCDurationPickerDelegate.h; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.h"; sourceTree = "<group>"; };
 		F03EB1861B5D51060034BA08 /* FOCDurationPickerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FOCDurationPickerDelegate.m; path = "../../../../Downloads/ActionSheetPicker-3.0-master 2/ObjC-Example/Example/Classes/FOCDurationPickerDelegate.m"; sourceTree = "<group>"; };
 		F03EB1881B5EAD350034BA08 /* FOCNotificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCNotificationModel.h; sourceTree = "<group>"; };
@@ -155,8 +157,6 @@
 		F07113E21B57F00300D0A7D1 /* FOCColorMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCColorMap.m; sourceTree = "<group>"; };
 		F07113E41B5800C600D0A7D1 /* FOCProgramAttributeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCProgramAttributeView.h; sourceTree = "<group>"; };
 		F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCProgramAttributeView.m; sourceTree = "<group>"; };
-		F07113E71B580FE900D0A7D1 /* ALGReversedFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALGReversedFlowLayout.h; sourceTree = "<group>"; };
-		F07113E81B580FE900D0A7D1 /* ALGReversedFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALGReversedFlowLayout.m; sourceTree = "<group>"; };
 		F07113EA1B58F72700D0A7D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F07113EC1B5908F500D0A7D1 /* FOCUiPageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCUiPageModel.h; sourceTree = "<group>"; };
 		F07113ED1B5908F500D0A7D1 /* FOCUiPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCUiPageModel.m; sourceTree = "<group>"; };
@@ -320,8 +320,8 @@
 				F07113451B5405B400D0A7D1 /* FOCFontAwesome.m */,
 				F07113E41B5800C600D0A7D1 /* FOCProgramAttributeView.h */,
 				F07113E51B5800C600D0A7D1 /* FOCProgramAttributeView.m */,
-				F07113E71B580FE900D0A7D1 /* ALGReversedFlowLayout.h */,
-				F07113E81B580FE900D0A7D1 /* ALGReversedFlowLayout.m */,
+				F02C1B951B667222005AE647 /* FOCAttributeFlowLayout.h */,
+				F02C1B961B667222005AE647 /* FOCAttributeFlowLayout.m */,
 			);
 			name = ui;
 			sourceTree = "<group>";
@@ -613,6 +613,7 @@
 				F03EB1971B5FA8290034BA08 /* FOCBoolAttributeSetting.m in Sources */,
 				F07113E01B57A84000D0A7D1 /* CoreDataProgram.m in Sources */,
 				F03EB1B91B5FFB770034BA08 /* FOCCurrentOffsetAttributeSetting.m in Sources */,
+				F02C1B971B667222005AE647 /* FOCAttributeFlowLayout.m in Sources */,
 				F03EB1BC1B5FFF310034BA08 /* FOCDurationAttributeSetting.m in Sources */,
 				F03EB1A11B5FAFBA0034BA08 /* FOCDutyCycleAttributeSetting.m in Sources */,
 				F03EB1AD1B5FC8AC0034BA08 /* FOCLongAttributeSetting.m in Sources */,
@@ -630,7 +631,6 @@
 				F07113431B4FF64000D0A7D1 /* FOCProgramRequestManager.m in Sources */,
 				F07113EE1B5908F500D0A7D1 /* FOCUiPageModel.m in Sources */,
 				F03EB1AA1B5FB50B0034BA08 /* FOCBaseCurrentAttributeSetting.m in Sources */,
-				F07113E91B580FE900D0A7D1 /* ALGReversedFlowLayout.m in Sources */,
 				F07113381B4E85DD00D0A7D1 /* FOCBasePeripheralManager.m in Sources */,
 				F07113941B56774E00D0A7D1 /* FOCProgramModeWrapper.m in Sources */,
 				F07113F11B591E0E00D0A7D1 /* FOCPaddedLabel.m in Sources */,

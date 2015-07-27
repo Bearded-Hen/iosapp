@@ -18,7 +18,7 @@ static const int kMaxShamDuration = 50;
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
     for (int i=kMinShamDuration; i<=kMaxShamDuration; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d s", i]];
+        [options addObject:[NSString stringWithFormat:@"%ds", i]];
     }
     return [options copy];
 }
@@ -33,9 +33,14 @@ static const int kMaxShamDuration = 50;
     return value;
 }
 
-+ (int)valueForIncrementIndex:(int)index
++ (int)valueForIncrementIndex:(long)index
 {
     return index;
+}
+
++ (NSString *)timeLabelForView:(int)duration
+{
+    return [NSString stringWithFormat:@"%d", duration];
 }
 
 @end

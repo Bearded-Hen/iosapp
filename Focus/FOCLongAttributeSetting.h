@@ -23,6 +23,6 @@
 /**
  * Returns the long value for a given increment index.
  */
-+ (long)valueForIncrementIndex:(int)index;
++ (long)valueForIncrementIndex:(long)index;
 
 @end

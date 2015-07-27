@@ -307,37 +307,33 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
 {
     NSMutableArray *editKeys = [[NSMutableArray alloc] init];
     
-    [editKeys addObject:PROG_ATTR_SHAM_DURATION];
-    [editKeys addObject:PROG_ATTR_VOLTAGE];
+    [editKeys addObject:PROG_ATTR_MODE];
+    [editKeys addObject:PROG_ATTR_CURRENT];
+    [editKeys addObject:PROG_ATTR_DURATION];
     
-    if (_bipolar != nil && _programMode != DCS) {
-        [editKeys addObject:PROG_ATTR_BIPOLAR];
+    if (_frequency != nil && _programMode != DCS) {
+        [editKeys addObject:PROG_ATTR_FREQUENCY];
     }
-    
-    [editKeys addObject:PROG_ATTR_SHAM];
-    
-    if (_randomFrequency != nil && _programMode == RNS) {
-        [editKeys addObject:PROG_ATTR_RAND_FREQ];
-    }
-    if (_randomCurrent != nil && _programMode == RNS) {
-        [editKeys addObject:PROG_ATTR_RAND_CURR];
-    }
-    
     if (_currentOffset != nil && _programMode != DCS) {
         [editKeys addObject:PROG_ATTR_CURR_OFFSET];
     }
     if (_dutyCycle != nil && (_programMode != ACS && _programMode != DCS)) {
         [editKeys addObject:PROG_ATTR_DUTY_CYCLE];
     }
-    
-    [editKeys addObject:PROG_ATTR_DURATION];
-    
-    if (_frequency != nil && _programMode != DCS) {
-        [editKeys addObject:PROG_ATTR_FREQUENCY];
+    if (_randomFrequency != nil && _programMode == RNS) {
+        [editKeys addObject:PROG_ATTR_RAND_FREQ];
     }
-    [editKeys addObject:PROG_ATTR_MODE];
-    [editKeys addObject:PROG_ATTR_CURRENT];
-
+    if (_randomCurrent != nil && _programMode == RNS) {
+        [editKeys addObject:PROG_ATTR_RAND_CURR];
+    }
+    if (_bipolar != nil && _programMode != DCS) {
+        [editKeys addObject:PROG_ATTR_BIPOLAR];
+    }
+    
+    [editKeys addObject:PROG_ATTR_SHAM];
+    [editKeys addObject:PROG_ATTR_SHAM_DURATION];
+    [editKeys addObject:PROG_ATTR_VOLTAGE];
+    
     return editKeys;
 }
 

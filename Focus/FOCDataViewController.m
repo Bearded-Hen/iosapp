@@ -220,10 +220,11 @@ static const float kAnimDuration = 0.3;
         
         return [FOCBoolAttributeSetting labelForValue:((NSNumber *) value).boolValue];
     }
-    else if ([PROG_ATTR_DURATION isEqualToString:dataKey] ||
-             [PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
-        
+    else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         return [FOCDurationAttributeSetting timeLabelForView:((NSNumber *)value).intValue];
+    }
+    else if ([PROG_ATTR_SHAM_DURATION isEqualToString:dataKey]) {
+        return [FOCShamDurationAttributeSetting timeLabelForView:((NSNumber *)value).intValue];
     }
     else if ([PROG_ATTR_CURRENT isEqualToString:dataKey]) {
         return [FOCCurrentAttributeSetting labelForValue:((NSNumber *) value).intValue];
@@ -384,7 +385,7 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_FREQUENCY isEqualToString:dataKey]) {
         [self showFrequencyPicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            program.frequency = [[NSNumber alloc] initWithInt:[FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex]];
+            program.frequency = [[NSNumber alloc] initWithLong:[FOCFrequencyAttributeSetting valueForIncrementIndex:selectedIndex]];
             
             if (program.frequency.longValue != _pageModel.program.frequency.longValue) {
                 [_delegate didRequestProgramEdit:program];
@@ -394,7 +395,7 @@ static const float kAnimDuration = 0.3;
     else if ([PROG_ATTR_DUTY_CYCLE isEqualToString:dataKey]) { // FIXME
         [self showDutyCyclePicker:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
-            program.dutyCycle = [[NSNumber alloc] initWithInt:[FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex]];
+            program.dutyCycle = [[NSNumber alloc] initWithLong:[FOCDutyCycleAttributeSetting valueForIncrementIndex:selectedIndex]];
             
             if (program.dutyCycle.longValue != _pageModel.program.dutyCycle.longValue) {
                 [_delegate didRequestProgramEdit:program];

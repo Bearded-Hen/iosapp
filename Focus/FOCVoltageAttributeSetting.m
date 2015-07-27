@@ -18,7 +18,7 @@ static const int kMaxVoltage = 60;
     NSMutableArray *options = [[NSMutableArray alloc] init];
     
     for (int i=kMinVoltage; i<=kMaxVoltage; i++) {
-        [options addObject:[NSString stringWithFormat:@"%d V", i]];
+        [options addObject:[NSString stringWithFormat:@"%dV", i]];
     }
     return [options copy];
 }
@@ -28,7 +28,7 @@ static const int kMaxVoltage = 60;
     return value - kMinVoltage;
 }
 
-+ (int)valueForIncrementIndex:(int)index
++ (int)valueForIncrementIndex:(long)index
 {
     return index + kMinVoltage;
 }

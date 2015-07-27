@@ -52,6 +52,8 @@ static const float kFontSize = 11.0;
         
         _keyLabel.font = [UIFont systemFontOfSize:kFontSize];
         _valueLabel.font = [UIFont systemFontOfSize:kFontSize];
+        
+        _valueLabel.textAlignment = NSTextAlignmentCenter;
 
         [self setViewColorState:false];
         [self addSubview:_keyLabel];

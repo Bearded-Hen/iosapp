@@ -28,7 +28,7 @@ static NSString *kOff = @"OFF";
     return value ? kOn : kOff;
 }
 
-+ (bool)valueForIncrementIndex:(int)index
++ (bool)valueForIncrementIndex:(long)index
 {
     return index == 0;
 }

@@ -30,8 +30,8 @@
 {
     self = [super init];
     if (self) {
-        self->_expandContentSizeToBounds = YES;
-        self->_minimumContentSizeHeight = nil;
+        _expandContentSizeToBounds = true;
+        _minimumContentSizeHeight = nil;
     }
     return self;
 }

@@ -20,10 +20,10 @@ static const int kApiScalar = 1000;
         int n = number.intValue;
         
         if (n <= 900) {
-            [options addObject:[NSString stringWithFormat:@"%.1f Hz", ((float) n) / kApiScalar]];
+            [options addObject:[NSString stringWithFormat:@"%.1fHz", ((float) n) / kApiScalar]];
         }
         else {
-            [options addObject:[NSString stringWithFormat:@"%d Hz", n / kApiScalar]];
+            [options addObject:[NSString stringWithFormat:@"%dHz", n / kApiScalar]];
         }
     }
     return [options copy];
@@ -59,7 +59,7 @@ static const int kApiScalar = 1000;
     return -1;
 }
 
-+ (long)valueForIncrementIndex:(int)index
++ (long)valueForIncrementIndex:(long)index
 {
     NSArray *rawValues = [self rawUnscaledValues];
     return (index <= [rawValues count]) ? ((NSNumber *)rawValues[index]).longValue : -1;
@@ -69,17 +69,17 @@ static const int kApiScalar = 1000;
 {
     for (int i=100; i<=900; i+=100) {
         if (i == value) {
-            return [NSString stringWithFormat:@"%.1f Hz", (float)i / kApiScalar];
+            return [NSString stringWithFormat:@"%.1fHz", (float)i / kApiScalar];
         }
     }
     for (int i=1000; i<=29000; i+=1000) {
         if (i == value) {
-            return [NSString stringWithFormat:@"%d Hz", i / kApiScalar];
+            return [NSString stringWithFormat:@"%dHz", i / kApiScalar];
         }
     }
     for (int i=30000; i<=300000; i+=10000) {
         if (i == value) {
-            return [NSString stringWithFormat:@"%d Hz", i / kApiScalar];
+            return [NSString stringWithFormat:@"%dHz", i / kApiScalar];
         }
     }
     NSLog(@"Could not match frequency %ld ", value);
@@ -87,9 +87,4 @@ static const int kApiScalar = 1000;
     return nil;
 }
 
-//- (void)showFrequencyPicker
-//{
-//    
-//    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:nil cancelBlock:nil origin:_collectionView];
-//}
 @end

@@ -36,7 +36,7 @@ static const int kApiScalar = 1000;
     return -1;
 }
 
-+ (long)valueForIncrementIndex:(int)index
++ (long)valueForIncrementIndex:(long)index
 {
     for (int i=kMinDutyCycle; i<=kMaxDutyCycle; i++) {
         if (i == index) {

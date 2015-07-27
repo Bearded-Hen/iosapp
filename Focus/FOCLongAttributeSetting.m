@@ -20,7 +20,7 @@
     return -1;
 }
 
-+ (long)valueForIncrementIndex:(int)index
++ (long)valueForIncrementIndex:(long)index
 {
     return -1;
 }

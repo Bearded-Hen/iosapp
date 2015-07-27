@@ -10,4 +10,9 @@
 
 @interface FOCShamDurationAttributeSetting : FOCIntAttributeSetting
 
+/**
+ * Returns a label in the format %d
+ */
++ (NSString *)timeLabelForView:(int)duration;
+
 @end
