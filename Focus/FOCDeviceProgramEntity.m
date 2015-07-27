@@ -93,8 +93,17 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     bytes[0] = (Byte) _voltage.intValue;
     bytes[1] = _bipolar.boolValue;
     
-    if (_programMode == PCS && _frequency.longValue < 1000) {
-        _frequency = [[NSNumber alloc] initWithLong:1000];
+    if (_frequency.longValue < 100) {
+        _frequency = [[NSNumber alloc] initWithLong:100];
+    }
+    if (_minFrequency.longValue < 100) {
+        _maxFrequency = [[NSNumber alloc] initWithLong:100];
+    }
+    if (_maxFrequency.longValue < 100) {
+        _maxFrequency = [[NSNumber alloc] initWithLong:100];
+    }
+    if (_dutyCycle.longValue < 20) {
+        _dutyCycle = [[NSNumber alloc] initWithLong:20];
     }
     
     long firstUnion = _frequency.longValue;
@@ -103,11 +112,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     bytes[3] = (firstUnion >> 8) & 0xff;
     bytes[4] = (firstUnion >> 16) & 0xff;
     bytes[5] = (firstUnion >> 24) & 0xff;
-    
-    
-    if (_programMode == PCS && _dutyCycle.longValue < 20) {
-        _dutyCycle = [[NSNumber alloc] initWithLong:20];
-    }
     
     long secondUnion = (_programMode == PCS) ? _dutyCycle.longValue : _maxFrequency.longValue;
 

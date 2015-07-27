@@ -18,6 +18,7 @@ static NSString *kIdentifier = @"FOCDataViewController";
 @property FOCDeviceManager *deviceManager;
 @property (strong, nonatomic) NSMutableArray *pageData;
 @property int pageIndex;
+@property NSString *statusText;
 
 @end
 
@@ -123,6 +124,7 @@ static NSString *kIdentifier = @"FOCDataViewController";
     
     FOCDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:kIdentifier];
     dataViewController.pageModel = _pageData[index];
+    dataViewController.pageModel.connectionText = _statusText;
     dataViewController.delegate = self;
     
     return dataViewController;
@@ -164,7 +166,8 @@ static NSString *kIdentifier = @"FOCDataViewController";
 
 - (void)didChangeConnectionText:(NSString *)connectionText
 {
-    [[self currentViewController] updateConnectionText:connectionText];
+    _statusText = connectionText;
+    [[self currentViewController] updateConnectionText:_statusText];
 }
 
 - (void)programStateChanged:(bool)playing

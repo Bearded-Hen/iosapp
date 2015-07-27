@@ -198,12 +198,16 @@ static const double kIgnoreInterval = 6000;
         case DISABLED: stateName = @"Disabled"; break;
         case UNKNOWN: stateName = @"Unknown"; break;
     }
-    
     NSLog(@"Focus connection state changed to '%@'", stateName);
     
     _connectionState = state;
-    _connectionText = stateName;
     [_delegate didChangeConnectionState:_connectionState];
+    [self updateConnectionText:stateName];
+}
+
+- (void)updateConnectionText:(NSString *)text
+{
+    _connectionText = text;
     [_delegate didChangeConnectionText:_connectionText];
 }
 
@@ -318,11 +322,11 @@ static const double kIgnoreInterval = 6000;
         FOCCharacteristicDiscoveryManager *cm = _characteristicManager;
         [_syncManager startProgramSync:cm];
         
-        _connectionText = @"Syncing Device";
-        [_delegate didChangeConnectionText:_connectionText];
+        [self updateConnectionText:@"Syncing Device"];
     }
     else {
         NSLog(@"Focus device is not paired. Prompting user.");
+        [self updateConnectionText:@"Pairing Device"];
         
         [[[UIAlertView alloc] initWithTitle:@"Pair Bluetooth" message:@"The app can't talk to your device without pairing." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Pair", nil] show];
     }
