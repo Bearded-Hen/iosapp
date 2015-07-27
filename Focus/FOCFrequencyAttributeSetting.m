@@ -67,21 +67,22 @@ static const int kApiScalar = 1000;
 
 + (NSString *)labelForValue:(long)value
 {
-    for (int i=100; i<=900; i++) {
+    for (int i=100; i<=900; i+=100) {
         if (i == value) {
             return [NSString stringWithFormat:@"%.1f Hz", (float)i / kApiScalar];
         }
     }
-    for (int i=1000; i<=2900; i++) {
+    for (int i=1000; i<=29000; i+=1000) {
         if (i == value) {
             return [NSString stringWithFormat:@"%d Hz", i / kApiScalar];
         }
     }
-    for (int i=30000; i<=300000; i+=10) {
+    for (int i=30000; i<=300000; i+=10000) {
         if (i == value) {
             return [NSString stringWithFormat:@"%d Hz", i / kApiScalar];
         }
     }
+    NSLog(@"Could not match %ld frequency", value);
     
     return nil;
 }

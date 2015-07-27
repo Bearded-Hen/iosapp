@@ -315,7 +315,7 @@ static const float kAnimDuration = 0.3;
             
             program.randomCurrent = [[NSNumber alloc] initWithBool:[FOCBoolAttributeSetting valueForIncrementIndex:selectedIndex]];
             
-            if (program.randomCurrent.boolValue != _pageModel.program.randomFrequency.boolValue) {
+            if (program.randomCurrent.boolValue != _pageModel.program.randomCurrent.boolValue) {
                 [_delegate didRequestProgramEdit:program];
             }
         } currentState:program.randomCurrent.boolValue];
