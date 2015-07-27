@@ -45,10 +45,11 @@
 
 - (void)writeProgram:(FOCDeviceProgramEntity *)program
 {
+    
+    NSLog(@"Writing program:\n%@", [_program programDebugInfo]);
+    
     [self clearState:program starting:false stopping:false editing:true];
     NSLog(@"Request manager got write command");
-
-    // disable editing for now
     
     [self.focusDevice writeValue:[program serialiseFirstDescriptor] forCharacteristic:_cm.dataBuffer type:CBCharacteristicWriteWithResponse];
 }

@@ -82,7 +82,7 @@ static const int kApiScalar = 1000;
             return [NSString stringWithFormat:@"%d Hz", i / kApiScalar];
         }
     }
-    NSLog(@"Could not match %ld frequency", value);
+    NSLog(@"Could not match frequency %ld ", value);
     
     return nil;
 }

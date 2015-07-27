@@ -56,12 +56,6 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     return self;
 }
 
-- (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor
-{
-    [self deserialiseFirstDescriptor:firstDescriptor];
-    [self deserialiseSecondDescriptor:secondDescriptor];
-}
-
 - (NSData *)serialiseFirstDescriptor
 {
     char bytes[20] = "";
@@ -72,7 +66,7 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
         bytes[i + 1] = [_name characterAtIndex:i];
     }
     
-    bytes[10] = _programMode;
+    bytes[10] = _programMode & 0xff;
     bytes[11] = _duration.intValue & 0xff;
     bytes[12] = (_duration.intValue >> 8) & 0xff;
     bytes[13] = _sham.boolValue;
@@ -85,8 +79,11 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     
     bytes[18] = _currentOffset.intValue & 0xff;
     bytes[19] = (_currentOffset.intValue >> 8) & 0xff;
+
+    NSData *data = [[NSData alloc] initWithBytes:bytes length:20];
+    NSLog(@"First descriptor serialised %@", data);
     
-    return [[NSData alloc] initWithBytes:bytes length:20];
+    return data;
 }
 
 - (NSData *)serialiseSecondDescriptor
@@ -96,15 +93,24 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     bytes[0] = (Byte) _voltage.intValue;
     bytes[1] = _bipolar.boolValue;
     
-    long firstUnion = _programMode == DCS ? _minFrequency.longValue : _frequency.longValue;
+    if (_programMode == PCS && _frequency.longValue < 1000) {
+        _frequency = [[NSNumber alloc] initWithLong:1000];
+    }
+    
+    long firstUnion = _frequency.longValue;
     
     bytes[2] = firstUnion & 0xff;
     bytes[3] = (firstUnion >> 8) & 0xff;
     bytes[4] = (firstUnion >> 16) & 0xff;
     bytes[5] = (firstUnion >> 24) & 0xff;
     
-    long secondUnion = (_programMode != ACS && _programMode != DCS) ? _dutyCycle.longValue : _maxFrequency.longValue;
     
+    if (_programMode == PCS && _dutyCycle.longValue < 20) {
+        _dutyCycle = [[NSNumber alloc] initWithLong:20];
+    }
+    
+    long secondUnion = (_programMode == PCS) ? _dutyCycle.longValue : _maxFrequency.longValue;
+
     bytes[6] = secondUnion & 0xff;
     bytes[7] = (secondUnion >> 8) & 0xff;
     bytes[8] = (secondUnion >> 16) & 0xff;
@@ -113,7 +119,16 @@ NSString *const PROG_ATTR_DUTY_CYCLE = @"PROG_ATTR_DUTY_CYCLE";
     bytes[10] = _randomCurrent.boolValue;
     bytes[11] = _randomFrequency.boolValue;
     
-    return [[NSData alloc] initWithBytes:bytes length:20];
+    NSData *data = [[NSData alloc] initWithBytes:bytes length:20];
+    NSLog(@"Second descriptor serialised %@", data);
+    
+    return data;
+}
+
+- (void)deserialiseDescriptors:(NSData *)firstDescriptor secondDescriptor:(NSData *)secondDescriptor
+{
+    [self deserialiseFirstDescriptor:firstDescriptor];
+    [self deserialiseSecondDescriptor:secondDescriptor];
 }
 
 - (void)deserialiseFirstDescriptor:(NSData *)firstDescriptor

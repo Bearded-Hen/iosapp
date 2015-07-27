@@ -362,6 +362,8 @@ static const double kIgnoreInterval = 6000;
 
 - (void)didEditProgram:(FOCDeviceProgramEntity *)program success:(bool)success
 {
+    // TODO should persist in core data
+    
     if (success) {
         [_delegate didUpdateProgram:program];
     }
