@@ -1,5 +1,5 @@
 //
-//  FOCProgramSyncDelegate.h
+//  ProgramSyncDelegate.h
 //  Focus
 //
 //  Created by Jamie Lynch on 24/07/2015.
@@ -9,9 +9,15 @@
 #ifndef Focus_FOCProgramSyncDelegate_h
 #define Focus_FOCProgramSyncDelegate_h
 
-@protocol FOCProgramSyncDelegate <NSObject> // FIXME should not be in app delegate
+/**
+ * Delegate for callbacks when Bluetooth syncing of programs finishes
+ */
+@protocol FOCProgramSyncDelegate <NSObject>
 
-- (void)didChangeDataSet:(NSArray *)dataSet;
+/**
+ * Called when a Program Sync between the iOS app and Focus device has finished.
+ */
+- (void)didFinishProgramSync:(NSError *) error;
 
 @end
 

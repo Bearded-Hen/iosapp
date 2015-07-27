@@ -8,7 +8,6 @@
 
 #import "CoreDataProgram.h"
 
-
 @implementation CoreDataProgram
 
 @dynamic name;

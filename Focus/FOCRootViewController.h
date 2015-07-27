@@ -18,7 +18,7 @@
  * Controls all the pages in the ViewPager, and what data they should display.
  * Responds to callbacks from the Focus Device manager and updates the UI appropriately.
  */
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCProgramSyncDelegate, FOCUiPageChangeDelegate> {
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCAppSyncDelegate, FOCUiPageChangeDelegate> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
 }

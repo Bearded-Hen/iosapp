@@ -14,6 +14,9 @@
  */
 @protocol FOCCharacteristicDiscoveryDelegate <NSObject>
 
+/**
+ * Called when all visibile BLE characteristics are discovered from the device.
+ */
 - (void)didFinishCharacteristicDiscovery:(NSError *) error;
 
 @end

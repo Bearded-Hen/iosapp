@@ -19,6 +19,9 @@
  */
 @interface FOCBasePeripheralManager : NSObject<CBPeripheralDelegate>
 
+/**
+ * Initialises a new manager instance with the given peripheral.
+ */
 - (id)initWithPeripheral:(CBPeripheral *) focusDevice;
 
 /**

@@ -15,7 +15,7 @@
 #import "FOCProgramSyncManager.h"
 #import "FOCProgramRequestManager.h"
 #import "FOCBluetoothPairManager.h"
-#import "ProgramSyncDelegate.h"
+#import "FOCProgramSyncDelegate.h"
 #import "FOCProgramRequestDelegate.h"
 #import "FOCBluetoothPairingDelegate.h"
 
@@ -27,7 +27,7 @@
  * which allows consumers of the Api to receive callbacks when the Device connection state 
  * changes.
  */
-@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, FOCCharacteristicDiscoveryDelegate, ProgramSyncDelegate, FOCProgramRequestDelegate, FOCBluetoothPairingDelegate, UIAlertViewDelegate> {
+@interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, FOCCharacteristicDiscoveryDelegate, FOCProgramSyncDelegate, FOCProgramRequestDelegate, FOCBluetoothPairingDelegate, UIAlertViewDelegate> {
     __weak id<FOCDeviceStateDelegate> delegate_;
 }
 

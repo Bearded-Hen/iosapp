@@ -10,7 +10,7 @@
 
 #import "FOCBasePeripheralManager.h"
 #import "FOCCharacteristicDiscoveryManager.h"
-#import "ProgramSyncDelegate.h"
+#import "FOCProgramSyncDelegate.h"
 
 /**
  * Handles the initial syncing of programs from the Focus Device to the iOS device. This
@@ -27,10 +27,10 @@
  * 5. Move onto next program or notify delegate that sync has finished.
  */
 @interface FOCProgramSyncManager : FOCBasePeripheralManager {
-    __weak id<ProgramSyncDelegate> delegate_;
+    __weak id<FOCProgramSyncDelegate> delegate_;
 }
 
-@property (weak) id <ProgramSyncDelegate> delegate;
+@property (weak) id <FOCProgramSyncDelegate> delegate;
 @property (readonly) FOCCharacteristicDiscoveryManager *cm;
 
 /**

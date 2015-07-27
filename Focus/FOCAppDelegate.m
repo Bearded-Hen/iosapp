@@ -40,8 +40,7 @@ static NSString* kStorePath = @"focus.sqlite";
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    NSLog(@"Application became inactive!");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -55,18 +54,18 @@ static NSString* kStorePath = @"focus.sqlite";
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    NSLog(@"Application became active!");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSLog(@"Application terminating!");
 }
 
 #pragma mark - Core Data stack
 
 - (void)saveSyncedPrograms:(NSArray *)syncedPrograms
 {
-    NSLog(@"Persisting %d saved programs.", [syncedPrograms count]);
+    NSLog(@"Persisting %lu saved programs.", (unsigned long)[syncedPrograms count]);
     [self pruneStalePrograms];
 
     for (FOCDeviceProgramEntity *entity in syncedPrograms) {
@@ -128,7 +127,7 @@ static NSString* kStorePath = @"focus.sqlite";
         NSLog(@"Failed to retrieve persisted programs %@", error);
     }
     else {
-        NSLog(@"Retrieved %d persisted programs, serialising...", [array count]);
+        NSLog(@"Retrieved %lu persisted programs, serialising...", (unsigned long)[array count]);
     }
     
     if (array != nil) {

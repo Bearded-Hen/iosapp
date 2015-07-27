@@ -26,6 +26,9 @@
     __weak id<FOCBluetoothPairingDelegate> delegate_;
 }
 
+/**
+ * Initiates a BLE request that checks whether a peripheral device is already paired to the iOS device.
+ */
 - (void)checkPairing:(CBCharacteristic *)controlCmdRequest;
 
 @property (weak) id <FOCBluetoothPairingDelegate> delegate;

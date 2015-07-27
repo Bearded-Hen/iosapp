@@ -8,21 +8,13 @@
 
 #import "FOCDeviceProgramEntity.h"
 #import "FOCNotificationModel.h"
+#import "FocusConnectionState.h"
 
 /**
  * Defines callbacks that will be fired when the Focus device state changes.
  * Responders should update the UI as necessary.
  */
 @protocol FOCDeviceStateDelegate <NSObject>
-
-typedef NS_ENUM(NSInteger, FocusConnectionState) {
-    CONNECTED,
-    CONNECTING,
-    SCANNING,
-    DISCONNECTED,
-    DISABLED,
-    UNKNOWN
-};
 
 /**
  * Called when the connection state of the Focus device to the app changes, allowing the UI
@@ -41,6 +33,9 @@ typedef NS_ENUM(NSInteger, FocusConnectionState) {
  */
 - (void)programStateChanged:(bool)playing;
 
+/**
+ * Called when a program state was updated.
+ */
 - (void)didUpdateProgram:(FOCDeviceProgramEntity *)program;
 
 @end

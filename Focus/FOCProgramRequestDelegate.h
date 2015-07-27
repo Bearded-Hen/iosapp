@@ -9,6 +9,9 @@
 #ifndef Focus_FOCProgramRequestDelegate_h
 #define Focus_FOCProgramRequestDelegate_h
 
+/**
+ * Defines callbacks that update the UI in response to changes in the program state
+ */
 @protocol FOCProgramRequestDelegate <NSObject>
 
 /**
