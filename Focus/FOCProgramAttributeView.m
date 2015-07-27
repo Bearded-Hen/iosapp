@@ -10,6 +10,7 @@
 #import "FOCPaddedLabel.h"
 #import "FOCColorMap.h"
 
+static NSString *kAttrDarkDisabled = @"#FF707070";
 static NSString *kAttrDarkDefault = @"#CC404040";
 static NSString *kAttrDarkPressed = @"#EE404040";
 static NSString *kAttrLightDefault = @"#CCFFFFFF";
@@ -22,11 +23,13 @@ static const float kFontSize = 11.0;
 
 @property UIColor *colorDarkDefault;
 @property UIColor *colorDarkPressed;
+@property UIColor *colorDarkDisabled;
 @property UIColor *colorLightDefault;
 @property UIColor *colorLightPressed;
 
 @property FOCPaddedLabel *keyLabel;
 @property FOCPaddedLabel *valueLabel;
+@property bool displayFadedText;
 
 @end
 
@@ -37,8 +40,11 @@ static const float kFontSize = 11.0;
     if (self = [super initWithFrame:frame]) {
         _colorDarkDefault = [FOCColorMap colorFromString:kAttrDarkDefault];
         _colorLightDefault = [FOCColorMap colorFromString:kAttrLightDefault];
+        
         _colorDarkPressed = [FOCColorMap colorFromString:kAttrDarkPressed];
         _colorLightPressed = [FOCColorMap colorFromString:kAttrLightPressed];
+        
+        _colorDarkDisabled = [FOCColorMap colorFromString:kAttrDarkDisabled];
         
         int width = self.frame.size.width;
         int height = self.frame.size.height;
@@ -56,6 +62,7 @@ static const float kFontSize = 11.0;
         _valueLabel.textAlignment = NSTextAlignmentCenter;
 
         [self setViewColorState:false];
+        
         [self addSubview:_keyLabel];
         [self addSubview:_valueLabel];
     }
@@ -77,12 +84,19 @@ static const float kFontSize = 11.0;
     [self setViewColorState:false];
 }
 
-- (void)setViewColorState:(bool) pressed
+- (void)setViewColorState:(bool)pressed
 {
-    _valueLabel.textColor = [UIColor blackColor];;
+    _valueLabel.textColor = [UIColor blackColor];
     _keyLabel.textColor = pressed ? _colorLightPressed : _colorLightDefault;
     _keyLabel.backgroundColor = pressed ? _colorDarkPressed : _colorDarkDefault;
     _valueLabel.backgroundColor = pressed ? _colorLightPressed : _colorLightDefault;
+    
+    if (!pressed) {
+        _valueLabel.textColor = _displayFadedText ? _colorDarkDisabled : [UIColor blackColor];
+    }
+    else {
+        _valueLabel.textColor = _colorDarkPressed;
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -101,6 +115,8 @@ static const float kFontSize = 11.0;
 {
     _keyLabel.text = model.attrLabel;
     _valueLabel.text = model.attrValue;
+    _displayFadedText = [model.attrValue isEqualToString:@"OFF"];
+    [self setViewColorState:false];
 }
 
 @end

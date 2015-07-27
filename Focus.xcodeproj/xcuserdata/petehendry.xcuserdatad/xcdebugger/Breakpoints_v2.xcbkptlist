@@ -650,11 +650,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCProgramAttributeView.m"
-            timestampString = "458753477.490261"
+            timestampString = "459705101.229413"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "-initWithFrame:"
             landmarkType = "5">
          </BreakpointContent>

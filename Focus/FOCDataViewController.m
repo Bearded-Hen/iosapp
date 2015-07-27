@@ -268,8 +268,8 @@ static const float kAnimDuration = 0.3;
     FOCProgramAttributeView *view = [[FOCProgramAttributeView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
     
     [view updateModel:model];
-    [cell addSubview:view];
     
+    [cell addSubview:view];
     return cell;
 }
 
@@ -291,16 +291,20 @@ static const float kAnimDuration = 0.3;
         } mode:program.programMode];
     }
     else if ([PROG_ATTR_SHAM isEqualToString:dataKey]) {
-        [self flipBooleanField:program.sham program:program];
+        program.sham = [self flipBooleanField:program.sham program:program];
+        [_delegate didRequestProgramEdit:program];
     }
     else if ([PROG_ATTR_BIPOLAR isEqualToString:dataKey]) {
-        [self flipBooleanField:program.bipolar program:program];
+        program.bipolar = [self flipBooleanField:program.bipolar program:program];
+        [_delegate didRequestProgramEdit:program];
     }
     else if ([PROG_ATTR_RAND_CURR isEqualToString:dataKey]) {
-        [self flipBooleanField:program.randomCurrent program:program];
+        program.randomCurrent = [self flipBooleanField:program.randomCurrent program:program];
+        [_delegate didRequestProgramEdit:program];
     }
     else if ([PROG_ATTR_RAND_FREQ isEqualToString:dataKey]) {
-        [self flipBooleanField:program.randomFrequency program:program];
+        program.randomFrequency = [self flipBooleanField:program.randomFrequency program:program];
+        [_delegate didRequestProgramEdit:program];
     }
     else if ([PROG_ATTR_DURATION isEqualToString:dataKey]) {
         [self showTimePicker:^(int minuteIndex, int secondIndex) {
@@ -378,10 +382,9 @@ static const float kAnimDuration = 0.3;
     }
 }
 
-- (void)flipBooleanField:(NSNumber *)value program:(FOCDeviceProgramEntity *)program
+- (NSNumber *)flipBooleanField:(NSNumber *)value program:(FOCDeviceProgramEntity *)program
 {
-    value = [[NSNumber alloc] initWithBool:!value.boolValue];
-    [_delegate didRequestProgramEdit:program];
+    return [[NSNumber alloc] initWithBool:!value.boolValue];
 }
 
 - (void)showModePicker:(ActionStringDoneBlock)doneBlock mode:(ProgramMode)mode
