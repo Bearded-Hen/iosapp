@@ -185,8 +185,14 @@ static NSString *kIdentifier = @"FOCDataViewController";
     if (matchingModel != nil) {
         matchingModel.program = program;
     }
+    FOCAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
-    [self refreshDisplayedController];
+    NSMutableArray *ary = [[NSMutableArray alloc] init];
+    
+    for (FOCUiPageModel *model in _pageData) {
+        [ary addObject:model.program];
+    }
+    [delegate saveSyncedPrograms:ary];
 }
 
 #pragma mark ProgramSyncDelegate
