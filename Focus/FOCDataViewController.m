@@ -392,7 +392,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCModeAttributeSetting labelsForAttribute];
     int index = [FOCModeAttributeSetting indexForValue:mode];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showBooleanPicker:(ActionStringDoneBlock)doneBlock currentState:(bool)currentState
@@ -400,7 +400,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCBoolAttributeSetting labelsForAttribute];
     int index = [FOCBoolAttributeSetting indexForValue:currentState];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Mode" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showSecondPicker:(ActionStringDoneBlock)doneBlock shamDuration:(int)shamDuration
@@ -408,7 +408,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCShamDurationAttributeSetting labelsForAttribute];
     int index = [FOCShamDurationAttributeSetting indexForValue:shamDuration];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Sham Period" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Sham Period" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showVoltagePicker:(ActionStringDoneBlock)doneBlock voltage:(int)voltage
@@ -416,7 +416,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCVoltageAttributeSetting labelsForAttribute];
     int index = [FOCVoltageAttributeSetting indexForValue:voltage];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Voltage" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showFrequencyPicker:(ActionStringDoneBlock)doneBlock frequency:(long)frequency
@@ -424,7 +424,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCFrequencyAttributeSetting labelsForAttribute];
     int index = [FOCFrequencyAttributeSetting indexForValue:frequency];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Frequency" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showTimePicker:(TimeDurationDoneBlock)doneBlock duration:(int)duration
@@ -437,7 +437,7 @@ static const float kAnimDuration = 0.3;
     
     NSArray *initialSelections = [[NSArray alloc] initWithObjects:minutesIndex, secondsIndex, nil];
     
-    [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:true origin:_collectionView initialSelections:initialSelections];
+    [ActionSheetCustomPicker showPickerWithTitle:@"Select Time" delegate:delg showCancelButton:true origin:_programTitleLabel initialSelections:initialSelections];
 }
 
 - (void)showCurrentPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title current:(int)current;
@@ -445,7 +445,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCCurrentAttributeSetting labelsForAttribute];
     int index = [FOCCurrentAttributeSetting indexForValue:current];
     
-    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showCurrentOffsetPicker:(ActionStringDoneBlock)doneBlock title:(NSString *)title current:(int)current;
@@ -453,7 +453,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCCurrentOffsetAttributeSetting labelsForAttribute];
     int index = [FOCCurrentOffsetAttributeSetting indexForValue:current];
     
-    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:title rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 - (void)showDutyCyclePicker:(ActionStringDoneBlock)doneBlock dutyCycle:(int)dutyCycle
@@ -461,7 +461,7 @@ static const float kAnimDuration = 0.3;
     NSArray *options = [FOCDutyCycleAttributeSetting labelsForAttribute];
     int index = [FOCDutyCycleAttributeSetting indexForValue:dutyCycle];
     
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_collectionView];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Duty Cycle" rows:options initialSelection:index doneBlock:doneBlock cancelBlock:nil origin:_programTitleLabel];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
