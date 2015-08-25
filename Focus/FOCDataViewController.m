@@ -73,6 +73,17 @@ static const float kAnimDuration = 0.3;
     
     [self setBluetoothImage:_pageModel.connectionState];
     [self updateConnectionText:_pageModel.connectionText];
+    
+    UITapGestureRecognizer *clickListener = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDeviceList)];
+    clickListener.numberOfTapsRequired = 1;
+    
+    [_bluetoothConnectionIcon setUserInteractionEnabled:true];
+    [_bluetoothConnectionIcon addGestureRecognizer:clickListener];
+}
+
+- (void)showDeviceList
+{
+    [self performSegueWithIdentifier:@"showDeviceList" sender:self];
 }
 
 - (void)didClickSettingsButton

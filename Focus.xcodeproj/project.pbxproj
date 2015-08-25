@@ -63,6 +63,7 @@
 		F08E18B61B3D856600FA765C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B41B3D856600FA765C /* CoreFoundation.framework */; };
 		F08E18B71B3D856600FA765C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B51B3D856600FA765C /* CoreGraphics.framework */; };
 		F08E18B91B3D857A00FA765C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B81B3D857A00FA765C /* Foundation.framework */; };
+		F0A154E11B8CCCE4000536D3 /* FOCDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A154E01B8CCCE4000536D3 /* FOCDeviceListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,6 +185,8 @@
 		F08E18B41B3D856600FA765C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		F08E18B51B3D856600FA765C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F08E18B81B3D857A00FA765C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F0A154DF1B8CCCE4000536D3 /* FOCDeviceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCDeviceListViewController.h; sourceTree = "<group>"; };
+		F0A154E01B8CCCE4000536D3 /* FOCDeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceListViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +336,8 @@
 				F08E188E1B3D691A00FA765C /* FOCRootViewController.m */,
 				F08E18901B3D691A00FA765C /* FOCDataViewController.h */,
 				F08E18911B3D691A00FA765C /* FOCDataViewController.m */,
+				F0A154DF1B8CCCE4000536D3 /* FOCDeviceListViewController.h */,
+				F0A154E01B8CCCE4000536D3 /* FOCDeviceListViewController.m */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -624,6 +629,7 @@
 				F07113401B4FDE5600D0A7D1 /* FOCDeviceProgramEntity.m in Sources */,
 				F03EB1A71B5FB1E70034BA08 /* FOCIntAttributeSetting.m in Sources */,
 				F07113E61B5800C600D0A7D1 /* FOCProgramAttributeView.m in Sources */,
+				F0A154E11B8CCCE4000536D3 /* FOCDeviceListViewController.m in Sources */,
 				F03EB1B01B5FCA4F0034BA08 /* FOCFrequencyAttributeSetting.m in Sources */,
 				F08E188C1B3D691A00FA765C /* FOCAppDelegate.m in Sources */,
 				F03EB18F1B5FA2530034BA08 /* FOCBaseAttributeSetting.m in Sources */,
