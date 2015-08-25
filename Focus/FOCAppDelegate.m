@@ -69,16 +69,18 @@ static NSString* kStorePath = @"focus.sqlite";
     [self pruneStalePrograms];
 
     for (FOCDeviceProgramEntity *entity in syncedPrograms) {
-        CoreDataProgram *data = [NSEntityDescription
-                                 insertNewObjectForEntityForName:kFocusProgramEntity
-                                 inManagedObjectContext:_managedObjectContext];
-        data = [entity serialiseToCoreDataModel:data];
+        
+        if (entity.name != nil && ![entity.name isEqualToString:@""]) {
+            CoreDataProgram *data = [NSEntityDescription
+                                     insertNewObjectForEntityForName:kFocusProgramEntity
+                                     inManagedObjectContext:_managedObjectContext];
+            data = [entity serialiseToCoreDataModel:data];
+        }
     }
-    
     NSError *error;
     
     if (![_managedObjectContext save:&error]) {
-        NSLog(@"Failed to save: %@", [error localizedDescription]);
+        NSLog(@"Failed to save program sync: %@", [error localizedDescription]);
     }
     
     [self.syncDelegate didChangeDataSet:syncedPrograms];
@@ -90,7 +92,7 @@ static NSString* kStorePath = @"focus.sqlite";
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:kFocusProgramEntity inManagedObjectContext:_managedObjectContext]];
-    [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    [request setIncludesPropertyValues:NO]; // only fetch the managedObjectID
     
     NSError *error = nil;
     NSArray *persistedPrograms = [_managedObjectContext executeFetchRequest:request error:&error];
