@@ -166,9 +166,9 @@
         memcpy(bd, [data bytes], length);
         
         const unsigned char data[] = {bd[2], bd[3], bd[4], bd[5]};
-        free(bd);
         
         [self interpretCommandResponse:bd[0] status:bd[1] data:data characteristic:characteristic];
+        free(bd);
     }
     else {
         [self interpretCommandResponse:

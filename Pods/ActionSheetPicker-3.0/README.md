@@ -22,7 +22,7 @@ ActionSheetPicker-3.0
 
 Please welcome: **ActionSheetPicker-3.0**!
 
-`pod 'ActionSheetPicker-3.0', '~> 1.5.1'` (**iOS 5.1.1-8.x** compatible!)
+`pod 'ActionSheetPicker-3.0', '~> 1.7.1'` (**iOS 5.1.1-8.x** compatible!)
 
 Improvements more than welcome - they are kindly requested :)
 
@@ -55,6 +55,15 @@ There are 4 distinct picker view options: `ActionSheetStringPicker`, `ActionShee
 
 ### Basic Usage ##
 
+**For detailed info about customisations, please look  [BASIC USAGE](https://github.com/skywinder/ActionSheetPicker-3.0/blob/master/BASIC-USAGE.md)**
+
+- custom buttons view
+- custom buttons callbacks
+- Action by clicking outside of the picker
+- Other customisations
+
+**For detailed examples, please check [Example Projects](#example-projects) in this repo.**
+
 ```obj-c
 // Inside a IBAction method:
 
@@ -65,9 +74,8 @@ NSArray *colors = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Orange"
                                         rows:colors
                             initialSelection:0
                                    doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-                                      NSLog(@"Picker: %@", picker);
-                                      NSLog(@"Selected Index: %@", selectedIndex);
-                                      NSLog(@"Selected Value: %@", selectedValue);
+                                      NSLog(@"Picker: %@, Index: %@, value: %@", 
+                                      picker, selectedIndex, selectedValue);
                                     }
                                  cancelBlock:^(ActionSheetStringPicker *picker) {
                                       NSLog(@"Block Picker Canceled");
@@ -75,14 +83,7 @@ NSArray *colors = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Orange"
                                       origin:sender];
 // You can also use self.view if you don't have a sender
 ```
-For detailed examples, please check [Example Projects](#example-projects) in this repo.
 
-About other customisations, please look  [Wiki-page](https://github.com/skywinder/ActionSheetPicker-3.0/wiki/Basic-Usage):
-
-- custom buttons view
-- custom buttons callbacks
-- Action by clicking outside of the picker
-- Other customisations
  
 ##Installation##
 
@@ -99,6 +100,9 @@ $ gem install cocoapods
 To integrate ActionSheetPicker-3.0 into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
 pod 'ActionSheetPicker-3.0'
 ```
 
@@ -107,6 +111,19 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
+
+### Import to project
+
+To import pod you should add string:
+
+- For `Obj-c` projects:
+
+        #import "ActionSheetPicker.h"
+
+- For `Swift` projects:
+
+
+        import ActionSheetPicker_3_0
 
 ### Carthage
 

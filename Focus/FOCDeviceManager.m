@@ -9,6 +9,7 @@
 #import "FOCDeviceManager.h"
 #import "FocusConstants.h"
 #import "FOCNotificationModel.h"
+#import <Crashlytics/Crashlytics.h>
 
 static const int kPairButton = 1;
 static NSString *kStoredPeripheralId = @"StoredPeripheralId";
@@ -84,16 +85,27 @@ static const double kIgnoreInterval = 6000;
 - (void)refreshDeviceState
 {
     if (_focusDevice == nil || _focusDevice.state != CBPeripheralStateConnected) {
+        CLS_LOG("Refreshing bluetooth scan");
         [self handleBluetoothStateUpdate];
     }
     else if (!_isDevicePaired) {
+        CLS_LOG("Attempting device pair prompt");
         [self promptPairingDialog];
+    }
+    else {
+        CLS_LOG("No refresh action required");
     }
 }
 
 - (void)closeConnection
 {
-    [_cbCentralManager cancelPeripheralConnection:_focusDevice];
+    if (_focusDevice != nil) {
+        CLS_LOG("Closing peripheral connection");
+        [_cbCentralManager cancelPeripheralConnection:_focusDevice];
+    }
+    else {
+        CLS_LOG("No peripheral connection available to close");
+    }
 }
 
 - (void) displayUserErrMessage:(NSString *) title message:(NSString *)message {
