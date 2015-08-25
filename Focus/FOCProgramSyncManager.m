@@ -115,7 +115,7 @@
         NSLog(@"Command %hhu unsupported for characteristic %@", cmdId, [self loggableCharacteristicName:characteristic]);
     }
     else {
-        NSLog(@"Failed to handle control command response");
+        NSLog(@"Failed to handle control command response %@", cmdId);
     }
 }
 
