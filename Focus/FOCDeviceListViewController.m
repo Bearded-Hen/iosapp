@@ -7,13 +7,14 @@
 //
 
 #import "FOCDeviceListViewController.h"
+#import "FOCDeviceManager.h"
+#import "FOCAppDelegate.h"
 
 static NSString *kCellIdentifier = @"DeviceTableItem";
 
 @interface FOCDeviceListViewController ()
-
 @property NSArray *deviceList;
-
+@property FOCDeviceManager *deviceManager;
 @end
 
 @implementation FOCDeviceListViewController
@@ -24,6 +25,16 @@ static NSString *kCellIdentifier = @"DeviceTableItem";
         _deviceList = [NSArray arrayWithObject:@"Test device"];
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
+        
+    _deviceManager = delegate.focusDeviceManager;
+    _deviceManager.delegate = self;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

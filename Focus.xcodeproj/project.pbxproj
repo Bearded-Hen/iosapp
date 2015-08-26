@@ -80,6 +80,7 @@
 		2928B39D71D7CE71C363419C /* Pods-Focus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.debug.xcconfig"; sourceTree = "<group>"; };
 		9E351264E7925E223EB98A98 /* libPods-Focus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Focus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F7831D71596F3BB83C3AEA /* Pods-Focus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.release.xcconfig"; sourceTree = "<group>"; };
+		F020C4CA1B8DBC1B000AE3A2 /* FOCBleScanDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCBleScanDelegate.h; sourceTree = "<group>"; };
 		F02C1B8B1B629344005AE647 /* FOCUiPageChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCUiPageChangeDelegate.h; sourceTree = "<group>"; };
 		F02C1B8E1B62971A005AE647 /* FOCProgramSyncDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCProgramSyncDelegate.h; sourceTree = "<group>"; };
 		F02C1B8F1B6297B5005AE647 /* FOCProgramRequestDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCProgramRequestDelegate.h; sourceTree = "<group>"; };
@@ -233,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				F08834641B42E1D90022400A /* FOCDeviceStateDelegate.h */,
+				F020C4CA1B8DBC1B000AE3A2 /* FOCBleScanDelegate.h */,
 				F02C1B8B1B629344005AE647 /* FOCUiPageChangeDelegate.h */,
 				F02C1B8E1B62971A005AE647 /* FOCProgramSyncDelegate.h */,
 				F02C1B8F1B6297B5005AE647 /* FOCProgramRequestDelegate.h */,

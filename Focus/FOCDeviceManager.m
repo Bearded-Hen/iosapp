@@ -191,11 +191,31 @@ static const double kIgnoreInterval = 6000;
  */
 - (void)scanForFocusPeripherals
 {
+    [self performSelector:@selector(cancelScanIfNeeded) withObject:nil afterDelay:10];
+    
     NSLog(@"BLE peripheral scan initiated");
     
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
     [self.cbCentralManager scanForPeripheralsWithServices:desiredServices options:nil];
+}
+
+/**
+ * Cancel scan after X seconds timeout
+ */
+- (void)cancelScanIfNeeded
+{
+    if (_connectionState == SCANNING) {
+        [[[UIAlertView alloc] initWithTitle:@"Scan cancelled" message:@"No devices found" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+        [self cancelScan];
+    }
+}
+
+- (void)cancelScan
+{
+    [self.cbCentralManager stopScan];
+    NSLog(@"Terminating BLE Scan, initiating connection");
+    [self updateConnectionState:DISCONNECTED];
 }
 
 - (void)updateConnectionState:(FocusConnectionState)state
@@ -270,9 +290,7 @@ static const double kIgnoreInterval = 6000;
 - (void)centralManager:(CBCentralManager*)central didDiscoverPeripheral:(CBPeripheral*)peripheral advertisementData:(NSDictionary*)advertisementData RSSI:(NSNumber*)RSSI
 {
     NSLog(@"Discovered '%@ - %@'", peripheral.name, peripheral.identifier.UUIDString);
-    [self.cbCentralManager stopScan];
-    NSLog(@"Terminating BLE Scan, initiating connection");
-    
+    [self cancelScan];
     self.focusDevice = peripheral;
     
     [self.cbCentralManager connectPeripheral:self.focusDevice options:nil];
