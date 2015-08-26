@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD171ED5012F72236E08F676 /* libPods-Focus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E351264E7925E223EB98A98 /* libPods-Focus.a */; };
+		F020C4CC1B8DED1C000AE3A2 /* icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F020C4CB1B8DED1C000AE3A2 /* icon.xcassets */; };
 		F02C1B971B667222005AE647 /* FOCAttributeFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F02C1B961B667222005AE647 /* FOCAttributeFlowLayout.m */; };
 		F03EB18A1B5EAD350034BA08 /* FOCNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB1891B5EAD350034BA08 /* FOCNotificationModel.m */; };
 		F03EB18F1B5FA2530034BA08 /* FOCBaseAttributeSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EB18E1B5FA2530034BA08 /* FOCBaseAttributeSetting.m */; };
@@ -81,6 +82,7 @@
 		9E351264E7925E223EB98A98 /* libPods-Focus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Focus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F7831D71596F3BB83C3AEA /* Pods-Focus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Focus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Focus/Pods-Focus.release.xcconfig"; sourceTree = "<group>"; };
 		F020C4CA1B8DBC1B000AE3A2 /* FOCBleScanDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCBleScanDelegate.h; sourceTree = "<group>"; };
+		F020C4CB1B8DED1C000AE3A2 /* icon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = icon.xcassets; sourceTree = "<group>"; };
 		F02C1B8B1B629344005AE647 /* FOCUiPageChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FOCUiPageChangeDelegate.h; sourceTree = "<group>"; };
 		F02C1B8E1B62971A005AE647 /* FOCProgramSyncDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCProgramSyncDelegate.h; sourceTree = "<group>"; };
 		F02C1B8F1B6297B5005AE647 /* FOCProgramRequestDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FOCProgramRequestDelegate.h; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 		F08E187A1B3D691A00FA765C = {
 			isa = PBXGroup;
 			children = (
+				F020C4CB1B8DED1C000AE3A2 /* icon.xcassets */,
 				F08E18851B3D691A00FA765C /* Focus */,
 				F07113EA1B58F72700D0A7D1 /* QuartzCore.framework */,
 				F08E18B81B3D857A00FA765C /* Foundation.framework */,
@@ -550,6 +553,7 @@
 				F071136A1B555DEA00D0A7D1 /* program_noise.png in Resources */,
 				F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */,
 				F071136E1B5562E100D0A7D1 /* bluetooth_connected.png in Resources */,
+				F020C4CC1B8DED1C000AE3A2 /* icon.xcassets in Resources */,
 				F07113661B555DEA00D0A7D1 /* program_wave.png in Resources */,
 				F071136F1B5562E100D0A7D1 /* bluetooth_disconnected.png in Resources */,
 				F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */,
