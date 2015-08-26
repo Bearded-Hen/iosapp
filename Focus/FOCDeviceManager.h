@@ -18,6 +18,7 @@
 #import "FOCProgramSyncDelegate.h"
 #import "FOCProgramRequestDelegate.h"
 #import "FOCBluetoothPairingDelegate.h"
+#import "FOCBleScanDelegate.h"
 
 @import CoreBluetooth;
 @import QuartzCore;
@@ -28,10 +29,14 @@
  * changes.
  */
 @interface FOCDeviceManager : NSObject<CBCentralManagerDelegate, FOCCharacteristicDiscoveryDelegate, FOCProgramSyncDelegate, FOCProgramRequestDelegate, FOCBluetoothPairingDelegate, UIAlertViewDelegate> {
+
     __weak id<FOCDeviceStateDelegate> delegate_;
+    __weak id<FOCBleScanDelegate> scanningDelegate_;
 }
 
 @property (weak) id <FOCDeviceStateDelegate> delegate;
+@property (weak) id <FOCBleScanDelegate> scanningDelegate;
+
 @property FocusConnectionState connectionState;
 @property NSString *connectionText;
 
@@ -60,5 +65,15 @@
  * Attempt to write an edited program to the device.
  */
 - (void)writeProgram:(FOCDeviceProgramEntity *)program;
+
+/**
+ * Initiate a scan for peripheral devices
+ */
+- (void)scanForFocusPeripherals;
+
+/**
+ * Switch to using a new device
+ */
+- (void)useNewFocusDevice:(CBPeripheral *)peripheral;
 
 @end

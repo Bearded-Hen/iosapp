@@ -21,13 +21,14 @@ static const double kIgnoreInterval = 6000;
 
 @property CBCentralManager* cbCentralManager;
 @property CBPeripheral* focusDevice;
+@property NSMutableArray *scannedDevices;
 
 @property FOCBluetoothPairManager *bluetoothPairManager;
 @property FOCCharacteristicDiscoveryManager *characteristicManager;
 @property FOCProgramSyncManager *syncManager;
 @property FOCProgramRequestManager *requestManager;
-
 @property FOCNotificationModel *notificationModel;
+
 @property bool isDevicePaired;
 @property bool isPlayingProgram;
 
@@ -38,7 +39,8 @@ static const double kIgnoreInterval = 6000;
 
 @implementation FOCDeviceManager
 
-- (id)init {
+- (id)init
+{
     if (self = [super init]) {
         self.cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self updateConnectionState:UNKNOWN];
@@ -46,6 +48,8 @@ static const double kIgnoreInterval = 6000;
         _notificationModel = [[FOCNotificationModel alloc] init];
         _lastNotificationMs = 0;
         _ignoreNotificationMs = 0;
+        
+        _scannedDevices = [[NSMutableArray alloc] init];
         
         [NSTimer scheduledTimerWithTimeInterval:kProgramCheckInterval target:self selector:@selector(checkProgramPlayState) userInfo:nil repeats:true];
     }
@@ -159,8 +163,6 @@ static const double kIgnoreInterval = 6000;
  */
 - (void)connectFocusDevice
 {
-    [self updateConnectionState:SCANNING];
-    
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] init];
     id storedId = [userDefaults objectForKey:kStoredPeripheralId];
     
@@ -179,10 +181,11 @@ static const double kIgnoreInterval = 6000;
         }
         else {
             [self scanForFocusPeripherals];
+            [self updateConnectionState:SCANNING];
         }
     }
     else {
-        [self scanForFocusPeripherals];
+        [self updateConnectionState:DISCONNECTED];
     }
 }
 
@@ -191,22 +194,33 @@ static const double kIgnoreInterval = 6000;
  */
 - (void)scanForFocusPeripherals
 {
-    [self performSelector:@selector(cancelScanIfNeeded) withObject:nil afterDelay:10];
-    
+    [self performSelector:@selector(finishDeviceScan) withObject:nil afterDelay:10];
     NSLog(@"BLE peripheral scan initiated");
+    
+    // reset previous peripherals
+    [[[NSUserDefaults alloc] init] setObject:nil forKey:kStoredPeripheralId];
+    
+    if (self.focusDevice != nil) {
+        [_cbCentralManager cancelPeripheralConnection:_focusDevice];
+    }
     
     NSMutableArray *desiredServices = [[NSMutableArray alloc] init];
     [desiredServices addObject:[CBUUID UUIDWithString:FOC_SERVICE_UNKNOWN]];
-    [self.cbCentralManager scanForPeripheralsWithServices:desiredServices options:nil];
+    [self.cbCentralManager scanForPeripheralsWithServices:nil options:nil];
+    
+    // FIXME should filter!
+    
 }
 
 /**
  * Cancel scan after X seconds timeout
  */
-- (void)cancelScanIfNeeded
+- (void)finishDeviceScan
 {
-    if (_connectionState == SCANNING) {
+    if ([_scannedDevices count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Scan cancelled" message:@"No devices found" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+    }
+    if (_connectionState == SCANNING) {
         [self cancelScan];
     }
 }
@@ -216,6 +230,20 @@ static const double kIgnoreInterval = 6000;
     [self.cbCentralManager stopScan];
     NSLog(@"Terminating BLE Scan, initiating connection");
     [self updateConnectionState:DISCONNECTED];
+}
+
+- (void)useNewFocusDevice:(CBPeripheral *)peripheral
+{
+    [self finishDeviceScan];
+    self.focusDevice = peripheral;
+    
+    if (self.focusDevice != nil) {
+        [self.cbCentralManager connectPeripheral:self.focusDevice options:nil];
+        [self updateConnectionState:CONNECTING];
+    }
+    else {
+        [self updateConnectionState:DISCONNECTED];
+    }
 }
 
 - (void)updateConnectionState:(FocusConnectionState)state
@@ -290,11 +318,8 @@ static const double kIgnoreInterval = 6000;
 - (void)centralManager:(CBCentralManager*)central didDiscoverPeripheral:(CBPeripheral*)peripheral advertisementData:(NSDictionary*)advertisementData RSSI:(NSNumber*)RSSI
 {
     NSLog(@"Discovered '%@ - %@'", peripheral.name, peripheral.identifier.UUIDString);
-    [self cancelScan];
-    self.focusDevice = peripheral;
-    
-    [self.cbCentralManager connectPeripheral:self.focusDevice options:nil];
-    [self updateConnectionState:CONNECTING];
+    [_scannedDevices addObject:peripheral];
+    [_scanningDelegate didDiscoverFocusDevice:peripheral];
 }
 
 - (void)centralManager:(CBCentralManager*)central didConnectPeripheral:(CBPeripheral*)peripheral

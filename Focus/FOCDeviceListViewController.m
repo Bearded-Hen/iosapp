@@ -13,7 +13,7 @@
 static NSString *kCellIdentifier = @"DeviceTableItem";
 
 @interface FOCDeviceListViewController ()
-@property NSArray *deviceList;
+@property NSMutableArray *deviceList;
 @property FOCDeviceManager *deviceManager;
 @end
 
@@ -22,9 +22,15 @@ static NSString *kCellIdentifier = @"DeviceTableItem";
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self =[super initWithCoder:aDecoder]) {
-        _deviceList = [NSArray arrayWithObject:@"Test device"];
+        _deviceList = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+- (void)didDiscoverFocusDevice:(id)peripheral
+{
+    [_deviceList addObject:peripheral];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -32,9 +38,10 @@ static NSString *kCellIdentifier = @"DeviceTableItem";
     [super viewDidLoad];
     
     FOCAppDelegate *delegate = (FOCAppDelegate *) [[UIApplication sharedApplication] delegate];
-        
     _deviceManager = delegate.focusDeviceManager;
-    _deviceManager.delegate = self;
+    _deviceManager.scanningDelegate = self;
+    
+    [_deviceManager scanForFocusPeripherals];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -50,12 +57,23 @@ static NSString *kCellIdentifier = @"DeviceTableItem";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
     }
     
-    cell.textLabel.text = [_deviceList objectAtIndex:indexPath.row];
+    CBPeripheral *peripheral = [_deviceList objectAtIndex:indexPath.row];
+    NSString *deviceName = [NSString stringWithFormat:@"%@ - %@", peripheral.name, peripheral.identifier.UUIDString];
+    
+    cell.textLabel.text = deviceName;
     return cell;
 }
 
 - (IBAction)didSelectDone:(id)sender
 {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    CBPeripheral *peripheral;
+    
+    if (indexPath != nil) {
+        peripheral = [_deviceList objectAtIndex:indexPath.row];
+    }
+    
+    [_deviceManager useNewFocusDevice:peripheral];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -1114,11 +1114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "462274331.533972"
+            timestampString = "462278149.114603"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
             landmarkName = "-didDiscoverBluetoothPairState:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1146,11 +1146,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "462274331.533972"
+            timestampString = "462278149.114603"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
             landmarkName = "-didDiscoverBluetoothPairState:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1162,11 +1162,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceManager.m"
-            timestampString = "462274331.533972"
+            timestampString = "462278149.114603"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
             landmarkName = "-didDiscoverBluetoothPairState:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1226,11 +1226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Focus/FOCDeviceListViewController.m"
-            timestampString = "462274124.775273"
+            timestampString = "462276406.855162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1264,6 +1264,22 @@
             startingLineNumber = "22"
             endingLineNumber = "22"
             landmarkName = "-initWithCoder:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Focus/FOCDeviceListViewController.m"
+            timestampString = "462277752.229687"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "-didSelectDone:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
