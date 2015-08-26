@@ -58,7 +58,6 @@
 		F08E18921B3D691A00FA765C /* FOCDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18911B3D691A00FA765C /* FOCDataViewController.m */; };
 		F08E18981B3D691A00FA765C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F08E18961B3D691A00FA765C /* Main.storyboard */; };
 		F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F08E18991B3D691A00FA765C /* Images.xcassets */; };
-		F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F08E189B1B3D691A00FA765C /* LaunchScreen.xib */; };
 		F08E18A91B3D691A00FA765C /* FocusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E18A81B3D691A00FA765C /* FocusTests.m */; };
 		F08E18B31B3D821500FA765C /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B21B3D821500FA765C /* CoreBluetooth.framework */; };
 		F08E18B61B3D856600FA765C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B41B3D856600FA765C /* CoreFoundation.framework */; };
@@ -180,7 +179,6 @@
 		F08E18911B3D691A00FA765C /* FOCDataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FOCDataViewController.m; sourceTree = "<group>"; };
 		F08E18971B3D691A00FA765C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F08E18991B3D691A00FA765C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F08E189C1B3D691A00FA765C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F08E18A21B3D691A00FA765C /* FocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08E18A71B3D691A00FA765C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F08E18A81B3D691A00FA765C /* FocusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FocusTests.m; sourceTree = "<group>"; };
@@ -427,7 +425,6 @@
 			children = (
 				F08E18961B3D691A00FA765C /* Main.storyboard */,
 				F08E18991B3D691A00FA765C /* Images.xcassets */,
-				F08E189B1B3D691A00FA765C /* LaunchScreen.xib */,
 				F07113DB1B56B85500D0A7D1 /* FocusProgram.xcdatamodeld */,
 				F07113581B5410EB00D0A7D1 /* FontAwesome.ttf */,
 				F071136B1B5562E100D0A7D1 /* bluetooth_connected.png */,
@@ -551,7 +548,6 @@
 				F08E18981B3D691A00FA765C /* Main.storyboard in Resources */,
 				F07113671B555DEA00D0A7D1 /* program_pulse.png in Resources */,
 				F071136A1B555DEA00D0A7D1 /* program_noise.png in Resources */,
-				F08E189D1B3D691A00FA765C /* LaunchScreen.xib in Resources */,
 				F071136E1B5562E100D0A7D1 /* bluetooth_connected.png in Resources */,
 				F020C4CC1B8DED1C000AE3A2 /* icon.xcassets in Resources */,
 				F07113661B555DEA00D0A7D1 /* program_wave.png in Resources */,
@@ -689,14 +685,6 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		F08E189B1B3D691A00FA765C /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F08E189C1B3D691A00FA765C /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -781,6 +769,7 @@
 			baseConfigurationReference = 2928B39D71D7CE71C363419C /* Pods-Focus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iOS Development: Peter Hendry (3V295AV9B2)";
 				INFOPLIST_FILE = Focus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -795,6 +784,7 @@
 			baseConfigurationReference = A6F7831D71596F3BB83C3AEA /* Pods-Focus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iOS Development: Peter Hendry (3V295AV9B2)";
 				INFOPLIST_FILE = Focus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
