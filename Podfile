@@ -7,6 +7,7 @@ target 'Focus' do
 pod 'ActionSheetPicker-3.0'
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'JBChartView'
 end
 
 target 'FocusTests' do

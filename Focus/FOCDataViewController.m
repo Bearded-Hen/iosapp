@@ -37,6 +37,7 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 static const int kVerticalEdgeInset = 20;
 static const int kHorizontalEdgeInset = 10;
 static const float kAnimDuration = 0.3;
+static const float kGraphHeight = 160;
 static NSString *kDeviceListSegueId = @"showDeviceList";
 
 @interface FOCDataViewController ()
@@ -80,6 +81,19 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     
     [_bluetoothConnectionIcon setUserInteractionEnabled:true];
     [_bluetoothConnectionIcon addGestureRecognizer:clickListener];
+    
+    _currentGraph.dataSource = self;
+    _currentGraph.delegate = self;
+    _currentGraph.backgroundColor = [UIColor clearColor];
+    _currentGraph.maximumValue = 2.0;
+    _currentGraph.minimumValue = 0.0;
+    _currentGraph.showsLineSelection = false;
+    _currentGraph.showsVerticalSelection = false;
+
+    [_backgroundImageView addSubview:_currentGraph];
+    [_currentGraph reloadData];
+    
+    _currentGraph.hidden = _pageModel.isPlaying;
 }
 
 - (void)showDeviceList
@@ -489,6 +503,35 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
 - (UIEdgeInsets)collectionView: (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(kVerticalEdgeInset, kHorizontalEdgeInset, kVerticalEdgeInset, kHorizontalEdgeInset);
+}
+
+#pragma mark - JBLineChartView
+
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return 1;
+}
+
+- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
+{
+    return 20;
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
+{
+    float r = rand() % 20;
+    r /= 10;
+    return r;
+}
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return [UIColor blueColor];
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return 0.0;
 }
 
 @end

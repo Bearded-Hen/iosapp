@@ -30,6 +30,33 @@
                             <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFW-NB-ba9" customClass="UIImageView">
                                 <rect key="frame" x="-4" y="45" width="608" height="555"/>
                                 <subviews>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
+                                        <rect key="frame" x="7" y="48" width="594" height="427"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <collectionViewLayout key="collectionViewLayout" id="fVS-DG-1aN" customClass="FOCAttributeFlowLayout"/>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProgramAttributeCell" id="U3D-ko-mI5">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hzS-jB-y9W" id="smU-yg-eu3"/>
+                                            <outlet property="delegate" destination="hzS-jB-y9W" id="zdD-ey-CCJ"/>
+                                        </connections>
+                                    </collectionView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sT-dO-rhF" customClass="JBLineChartView">
+                                        <rect key="frame" x="16" y="315" width="576" height="160"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="160" id="YCO-Ka-Nn4"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q8m-AG-Kp0">
                                         <rect key="frame" x="16" y="475" width="576" height="64"/>
                                         <subviews>
@@ -173,41 +200,29 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
-                                        <rect key="frame" x="7" y="8" width="594" height="459"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <collectionViewLayout key="collectionViewLayout" id="fVS-DG-1aN" customClass="FOCAttributeFlowLayout"/>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProgramAttributeCell" id="U3D-ko-mI5">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </view>
-                                            </collectionViewCell>
-                                        </cells>
-                                        <connections>
-                                            <outlet property="dataSource" destination="hzS-jB-y9W" id="smU-yg-eu3"/>
-                                            <outlet property="delegate" destination="hzS-jB-y9W" id="zdD-ey-CCJ"/>
-                                        </connections>
-                                    </collectionView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" id="6jI-zO-Ac3"/>
                                     <constraint firstAttribute="bottom" secondItem="q8m-AG-Kp0" secondAttribute="bottom" constant="16" id="HBZ-lx-35c"/>
                                     <constraint firstItem="q8m-AG-Kp0" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="16" id="HtA-uz-5iL"/>
-                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" constant="8" id="Lxn-BA-7bU"/>
-                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" id="O86-k3-WE5"/>
-                                    <constraint firstAttribute="trailing" secondItem="BfS-H7-5PZ" secondAttribute="trailing" constant="7" id="cTI-U4-jGJ"/>
-                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="top" secondItem="wFW-NB-ba9" secondAttribute="top" constant="8" id="sG9-mt-hZU"/>
-                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="7" id="tiv-Yb-3W3"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="6sT-dO-rhF" secondAttribute="bottom" id="IGi-EC-twY"/>
+                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="7" id="N4T-wL-RL3"/>
+                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="top" secondItem="wFW-NB-ba9" secondAttribute="top" constant="48" id="OB8-up-qiL"/>
+                                    <constraint firstAttribute="trailing" secondItem="BfS-H7-5PZ" secondAttribute="trailing" constant="7" id="Tg2-Ga-VSN"/>
+                                    <constraint firstAttribute="trailing" secondItem="6sT-dO-rhF" secondAttribute="trailing" constant="16" id="b4c-ZU-cBj"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="width" secondItem="6sT-dO-rhF" secondAttribute="width" id="cPr-5k-fiA"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="width" secondItem="6sT-dO-rhF" secondAttribute="width" id="ery-Hw-fPR"/>
+                                    <constraint firstItem="BfS-H7-5PZ" firstAttribute="leading" secondItem="6sT-dO-rhF" secondAttribute="trailing" constant="-585" id="rHL-Cd-f4v"/>
                                     <constraint firstAttribute="trailing" secondItem="q8m-AG-Kp0" secondAttribute="trailing" constant="16" id="ukR-Xz-HMn"/>
+                                    <constraint firstItem="6sT-dO-rhF" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="16" id="vDO-gT-7Ki"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="6sT-dO-rhF" secondAttribute="bottom" id="vkX-zP-uDs"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="O86-k3-WE5"/>
+                                        <exclude reference="rHL-Cd-f4v"/>
+                                        <exclude reference="cPr-5k-fiA"/>
+                                        <exclude reference="vkX-zP-uDs"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -235,6 +250,7 @@
                         <outlet property="btnPlayProgram" destination="pIl-H5-jT5" id="uRJ-vy-PlN"/>
                         <outlet property="btnProgramSettings" destination="sy5-cC-SEH" id="QAK-ox-I9f"/>
                         <outlet property="collectionView" destination="BfS-H7-5PZ" id="BFT-o9-09r"/>
+                        <outlet property="currentGraph" destination="6sT-dO-rhF" id="TtC-jh-Zc8"/>
                         <outlet property="programControlContainer" destination="q8m-AG-Kp0" id="aFa-MR-IIX"/>
                         <outlet property="programTitleLabel" destination="i7n-lc-4In" id="rcZ-OW-8pa"/>
                         <outlet property="statusLabel" destination="srE-aT-ANO" id="9LV-WY-Cdj"/>
@@ -254,7 +270,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Yag-tm-2y2">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceTableItem" id="Yag-tm-2y2">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yag-tm-2y2" id="9SC-Iv-A60">
                                     <autoresizingMask key="autoresizingMask"/>

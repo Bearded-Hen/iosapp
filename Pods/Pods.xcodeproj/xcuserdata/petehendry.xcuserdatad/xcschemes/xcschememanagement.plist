@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Focus-JBChartView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Focus.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0628B9475CC84E0682B3C162</key>
+		<key>0655D0A8132AB098B34BB2CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>856DD5C0FB3B5B16A73B8BB4</key>
+		<key>29CD719403AF766E7E31FC03</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F671F92F979DE3407F100D9</key>
+		<key>55D25FC0462084DBBE603234</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B4DF91C94EAD3CF93653EBC7</key>
+		<key>5DB27F77216EECC9DA809494</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D24AF807DCD79D2EAB20CF0F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

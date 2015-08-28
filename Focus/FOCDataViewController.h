@@ -13,11 +13,15 @@
 #import "FOCDeviceStateDelegate.h"
 #import "FOCUiPageChangeDelegate.h"
 
+#import "JBChartView.h"
+#import "JBBarChartView.h"
+#import "JBLineChartView.h"
+
 /**
  * Controls how the view for an individual program should be displayed, and provides a
  * delegate for handling any events requiring changes to the model layer e.g. playing a program
  */
-@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
+@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, JBLineChartViewDataSource, JBLineChartViewDelegate> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
 }
@@ -33,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bluetoothConnectionIcon;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet JBLineChartView *currentGraph;
 
 /**
  * Updates the text which is displayed on the bottom status bar.
