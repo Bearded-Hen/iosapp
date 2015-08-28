@@ -29,8 +29,10 @@ static NSString *kCellIdentifier = @"DeviceTableItem";
 
 - (void)didDiscoverFocusDevice:(id)peripheral
 {
-    [_deviceList addObject:peripheral];
-    [self.tableView reloadData];
+    if (![_deviceList containsObject:peripheral]) {
+        [_deviceList addObject:peripheral];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)viewDidLoad

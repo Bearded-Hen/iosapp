@@ -37,7 +37,7 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 static const int kVerticalEdgeInset = 20;
 static const int kHorizontalEdgeInset = 10;
 static const float kAnimDuration = 0.3;
-static const float kGraphHeight = 160;
+
 static NSString *kDeviceListSegueId = @"showDeviceList";
 
 @interface FOCDataViewController ()
@@ -93,7 +93,7 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     [_backgroundImageView addSubview:_currentGraph];
     [_currentGraph reloadData];
     
-    _currentGraph.hidden = _pageModel.isPlaying;
+    _currentGraph.hidden = !_pageModel.isPlaying;
 }
 
 - (void)showDeviceList
@@ -526,7 +526,7 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
 
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
 {
-    return [UIColor blueColor];
+    return [FOCColorMap colorFromString:@"#5292C1"];
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex

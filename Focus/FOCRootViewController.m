@@ -105,8 +105,10 @@ static NSString *kIdentifier = @"FOCDataViewController";
     [self refreshDisplayedController];
 }
 
-- (void)refreshDisplayedController
+- (void)refreshDisplayedController // TODO update without replacing
 {
+    NSLog(@"Refreshing displayed controller");
+    
     FOCDataViewController* startingViewController = [self viewControllerAtIndex:_pageIndex storyboard:self.storyboard];
     
     if (startingViewController != nil) {

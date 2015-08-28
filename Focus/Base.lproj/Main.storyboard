@@ -31,7 +31,7 @@
                                 <rect key="frame" x="-4" y="45" width="608" height="555"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BfS-H7-5PZ">
-                                        <rect key="frame" x="7" y="48" width="594" height="427"/>
+                                        <rect key="frame" x="7" y="48" width="594" height="411"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <collectionViewLayout key="collectionViewLayout" id="fVS-DG-1aN" customClass="FOCAttributeFlowLayout"/>
                                         <cells>
@@ -203,7 +203,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" id="6jI-zO-Ac3"/>
+                                    <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="BfS-H7-5PZ" secondAttribute="bottom" constant="16" id="6jI-zO-Ac3"/>
                                     <constraint firstAttribute="bottom" secondItem="q8m-AG-Kp0" secondAttribute="bottom" constant="16" id="HBZ-lx-35c"/>
                                     <constraint firstItem="q8m-AG-Kp0" firstAttribute="leading" secondItem="wFW-NB-ba9" secondAttribute="leading" constant="16" id="HtA-uz-5iL"/>
                                     <constraint firstItem="q8m-AG-Kp0" firstAttribute="top" secondItem="6sT-dO-rhF" secondAttribute="bottom" id="IGi-EC-twY"/>
