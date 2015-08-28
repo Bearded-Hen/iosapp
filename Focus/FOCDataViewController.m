@@ -37,6 +37,7 @@ static NSString *kBluetoothDisabled = @"bluetooth_disabled.png";
 static const int kVerticalEdgeInset = 20;
 static const int kHorizontalEdgeInset = 10;
 static const float kAnimDuration = 0.3;
+static NSString *kDeviceListSegueId = @"showDeviceList";
 
 @interface FOCDataViewController ()
 
@@ -69,7 +70,7 @@ static const float kAnimDuration = 0.3;
     _editableAttributes = [_pageModel.program editableAttributes];
     
     [_collectionView reloadData];
-    _collectionView.hidden = _pageModel.settingsHidden;
+    _collectionView.hidden = _pageModel.settingsHidden || _pageModel.isPlaying;
     
     [self setBluetoothImage:_pageModel.connectionState];
     [self updateConnectionText:_pageModel.connectionText];
@@ -83,28 +84,30 @@ static const float kAnimDuration = 0.3;
 
 - (void)showDeviceList
 {
-    [self performSegueWithIdentifier:@"showDeviceList" sender:self];
+    [self performSegueWithIdentifier:kDeviceListSegueId sender:self];
 }
 
 - (void)didClickSettingsButton
 {
-    _pageModel.settingsHidden = !_pageModel.settingsHidden;
-    
-    if (_pageModel.settingsHidden) {
-        [UIView animateWithDuration:kAnimDuration animations:^{
+    if (!_pageModel.isPlaying) {
+        _pageModel.settingsHidden = !_pageModel.settingsHidden;
+        
+        if (_pageModel.settingsHidden) {
+            [UIView animateWithDuration:kAnimDuration animations:^{
+                _collectionView.alpha = 0;
+            } completion: ^(BOOL finished) {
+                _collectionView.hidden = finished;
+            }];
+        }
+        else {
             _collectionView.alpha = 0;
-        } completion: ^(BOOL finished) {
-            _collectionView.hidden = finished;
-        }];
+            _collectionView.hidden = NO;
+            [UIView animateWithDuration:kAnimDuration animations:^{
+                _collectionView.alpha = 1;
+            }];
+        }
+        [_delegate didAlterPageState:_pageModel];
     }
-    else {
-        _collectionView.alpha = 0;
-        _collectionView.hidden = NO;
-        [UIView animateWithDuration:kAnimDuration animations:^{
-            _collectionView.alpha = 1;
-        }];
-    }
-    [_delegate didAlterPageState:_pageModel];
 }
 
 - (void)didClickChangePlayStateButton
