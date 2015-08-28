@@ -13,11 +13,13 @@
 #import "FOCColorMap.h"
 
 static NSString *kIdentifier = @"FOCDataViewController";
+static const long long kNotificationTimeout = 5000;
 
 @interface FOCRootViewController ()
 
 @property FOCDeviceManager *deviceManager;
 @property (strong, nonatomic) NSMutableArray *pageData;
+@property (strong, atomic) NSMutableArray *currentNotificationAry;
 @property int pageIndex;
 @property NSString *statusText;
 
@@ -29,6 +31,7 @@ static NSString *kIdentifier = @"FOCDataViewController";
 {
     [super viewDidLoad];
     _pageData = [[NSMutableArray alloc] init];
+    _currentNotificationAry = [[NSMutableArray alloc] init];
     
     [self reloadData];
     
@@ -103,7 +106,12 @@ static NSString *kIdentifier = @"FOCDataViewController";
     }
     
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
-    [self refreshDisplayedController];
+    [[self currentController].currentGraph reloadData];
+}
+
+- (FOCDataViewController *)currentController
+{
+    return [self viewControllerAtIndex:_pageIndex storyboard:self.storyboard];
 }
 
 - (void)refreshDisplayedController // TODO update without replacing
@@ -173,6 +181,25 @@ static NSString *kIdentifier = @"FOCDataViewController";
 {
     _statusText = connectionText;
     [[self currentViewController] updateConnectionText:_statusText];
+}
+
+- (void)didChangeNotification: (CurrentNotification *)notification
+{
+    [_currentNotificationAry addObject:notification];
+    
+    for (int i=0; i<[_currentNotificationAry count]; i++) {
+        CurrentNotification *notification = [_currentNotificationAry objectAtIndex:i];
+
+        long long diff = ([[NSDate date] timeIntervalSinceDate:notification.receivedDate] * 1000);
+        
+        if (diff > kNotificationTimeout) {
+            NSLog(@"Removed stale item %lld", diff);
+            [_currentNotificationAry removeObjectAtIndex:i];
+            i--;
+        }
+    }
+    NSLog(@"Notification count of %d", [_currentNotificationAry count]);
+    [self refreshDisplayedController];
 }
 
 - (void)programStateChanged:(bool)playing
@@ -282,21 +309,20 @@ static NSString *kIdentifier = @"FOCDataViewController";
 
 #pragma mark - JBLineChartViewDataSource
 
-- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
-{
-    return 1;
-}
-
 - (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
 {
-    return 20;
+    return [_currentNotificationAry count];
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
 {
-    float r = rand() % 20;
-    r /= 10;
-    return r;
+    FOCNotificationModel *notification = [_currentNotificationAry objectAtIndex:horizontalIndex];
+    return ((float)notification.current) / 1000;
+}
+
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return 1;
 }
 
 #pragma mark - JBLineChartViewDelegate

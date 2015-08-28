@@ -9,6 +9,7 @@
 #import "FOCDeviceProgramEntity.h"
 #import "FOCNotificationModel.h"
 #import "FocusConnectionState.h"
+#import "CurrentNotification.h"
 
 /**
  * Defines callbacks that will be fired when the Focus device state changes.
@@ -21,6 +22,11 @@
  * to response.
  */
 - (void)didChangeConnectionState: (FocusConnectionState)connectionState;
+
+/**
+ * Called when the notification changes
+ */
+- (void)didChangeNotification: (CurrentNotification *)notification;
 
 /**
  * Called when the connection text that should be displayed by the UI changes due to

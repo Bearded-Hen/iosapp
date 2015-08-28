@@ -17,5 +17,6 @@
 @property int current;
 @property int duration;
 @property int remainingTime;
+@property NSDate *receivedTime;
 
 @end

@@ -16,6 +16,7 @@
         _current = 0;
         _duration = 0;
         _remainingTime = 0;
+        _receivedTime = [NSDate date];
     }
     return self;
 }

@@ -10,6 +10,7 @@
 #import "FocusConstants.h"
 #import "FOCNotificationModel.h"
 #import <Crashlytics/Crashlytics.h>
+#import "CurrentNotification.h"
 
 static const int kPairButton = 1;
 static NSString *kStoredPeripheralId = @"StoredPeripheralId";
@@ -433,8 +434,12 @@ static const double kIgnoreInterval = 6000;
 
 - (void)didReceiveCurrentNotification:(int)current
 {
-    _notificationModel.current = current;
+    _notificationModel.current = current + 1;
     [self handleNotificationText];
+    
+     // FIXME need to show values for 0 current from broken device (HACK)
+    
+    [_delegate didChangeNotification:[[CurrentNotification alloc] initWithCurrent:current + 1]];
 }
 
 - (void)didReceiveDurationNotification:(int)duration

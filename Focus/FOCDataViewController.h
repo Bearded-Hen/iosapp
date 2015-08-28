@@ -27,7 +27,7 @@
 }
 
 @property (weak) id <FOCUiPageChangeDelegate> delegate;
-@property (weak) id <JBLineChartViewDataSource> graphViewDelegate;
+@property (weak) id <JBLineChartViewDelegate> graphViewDelegate;
 @property (weak) id <JBLineChartViewDataSource> graphDataDelegate;
 
 @property (strong, nonatomic) FOCUiPageModel *pageModel;
