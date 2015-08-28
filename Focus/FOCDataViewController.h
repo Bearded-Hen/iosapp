@@ -21,12 +21,15 @@
  * Controls how the view for an individual program should be displayed, and provides a
  * delegate for handling any events requiring changes to the model layer e.g. playing a program
  */
-@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, JBLineChartViewDataSource, JBLineChartViewDelegate> {
+@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
 }
 
 @property (weak) id <FOCUiPageChangeDelegate> delegate;
+@property (weak) id <JBLineChartViewDataSource> graphViewDelegate;
+@property (weak) id <JBLineChartViewDataSource> graphDataDelegate;
+
 @property (strong, nonatomic) FOCUiPageModel *pageModel;
 
 @property (weak, nonatomic) IBOutlet UILabel *programTitleLabel;

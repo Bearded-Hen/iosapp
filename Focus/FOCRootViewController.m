@@ -10,6 +10,7 @@
 #import "FOCRootViewController.h"
 #import "FOCModelController.h"
 #import "FOCDataViewController.h"
+#import "FOCColorMap.h"
 
 static NSString *kIdentifier = @"FOCDataViewController";
 
@@ -128,6 +129,8 @@ static NSString *kIdentifier = @"FOCDataViewController";
     dataViewController.pageModel = _pageData[index];
     dataViewController.pageModel.connectionText = _statusText;
     dataViewController.delegate = self;
+    dataViewController.graphDataDelegate = self;
+    dataViewController.graphViewDelegate = self;
     
     return dataViewController;
 }
@@ -275,6 +278,37 @@ static NSString *kIdentifier = @"FOCDataViewController";
         return nil;
     }
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
+}
+
+#pragma mark - JBLineChartViewDataSource
+
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return 1;
+}
+
+- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
+{
+    return 20;
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
+{
+    float r = rand() % 20;
+    r /= 10;
+    return r;
+}
+
+#pragma mark - JBLineChartViewDelegate
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return [FOCColorMap colorFromString:@"#5292C1"];
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return 0.0;
 }
 
 @end
