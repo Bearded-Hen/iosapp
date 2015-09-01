@@ -13,7 +13,8 @@
 #import "FOCColorMap.h"
 
 static NSString *kIdentifier = @"FOCDataViewController";
-static const long long kNotificationTimeout = 5000;
+static const int kMaxPhoneGraphPoints = 50;
+static const int kMaxPadGraphPoints = 100;
 
 @interface FOCRootViewController ()
 
@@ -185,24 +186,13 @@ static const long long kNotificationTimeout = 5000;
 - (void)didChangeNotification: (CurrentNotification *)notification
 {
     [_currentNotificationAry addObject:notification];
+    // removing old data via number of points (ensures smooth graph)
     
-    for (int i=0; i<[_currentNotificationAry count]; i++) {
-        CurrentNotification *notification = [_currentNotificationAry objectAtIndex:i];
-
-        long long diff = ([[NSDate date] timeIntervalSinceDate:notification.receivedDate] * 1000);
-        
-        if (diff > kNotificationTimeout) {
-            [_currentNotificationAry removeObjectAtIndex:i];
-            i--;
-        }
+    int allowedPoints = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kMaxPadGraphPoints : kMaxPhoneGraphPoints;
+    
+    while ([_currentNotificationAry count] > allowedPoints) {
+        [_currentNotificationAry removeObjectAtIndex:0]; // remove old data
     }
-    
-    if (_lastUpdate == nil || [[NSDate date] timeIntervalSinceDate:_lastUpdate] * 1000 > 5000) {
-        _lastUpdate = [NSDate date];
-    }
-    
-    NSLog(@"Reload data %d", [_currentNotificationAry count]);
-    
     [[self currentViewController] updateCurrentGraphData:_currentNotificationAry];
 }
 
@@ -211,6 +201,11 @@ static const long long kNotificationTimeout = 5000;
     for (FOCUiPageModel *model in _pageData) {
         model.isPlaying = playing;
     }
+    
+    if (!playing) {
+        [_currentNotificationAry removeAllObjects];
+    }
+    
     [self refreshDisplayedController];
 }
 

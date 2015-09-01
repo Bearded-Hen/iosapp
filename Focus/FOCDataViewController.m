@@ -88,7 +88,7 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     
     _currentGraph.dataSource = self;
     _currentGraph.delegate = self;
-    _currentGraph.backgroundColor = [UIColor whiteColor];
+    _currentGraph.backgroundColor = [UIColor clearColor];
     _currentGraph.maximumValue = 2.0;
     _currentGraph.minimumValue = 0.0;
     _currentGraph.showsLineSelection = false;
@@ -97,13 +97,7 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     [_backgroundImageView addSubview:_currentGraph];
     [_currentGraph reloadData];
     
-//    _currentGraph.hidden = !_pageModel.isPlaying;
-
-    UITapGestureRecognizer *tapListener = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didHitGraph)];
-
-    clickListener.numberOfTapsRequired = 1;
-    [_currentGraph addGestureRecognizer:tapListener];
-    
+    _currentGraph.hidden = !_pageModel.isPlaying;
 }
 
 - (void)didHitGraph
