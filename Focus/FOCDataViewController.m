@@ -45,12 +45,16 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
 @property NSDictionary *editableAttributes;
 @property NSArray *orderedEditKeys;
 
+@property (atomic) NSMutableArray *testData;
+
 @end
 
 @implementation FOCDataViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _testData = [[NSMutableArray alloc] init];
     
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
     [_btnProgramSettings.titleLabel setFont:[FOCFontAwesome font]];
@@ -82,9 +86,9 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     [_bluetoothConnectionIcon setUserInteractionEnabled:true];
     [_bluetoothConnectionIcon addGestureRecognizer:clickListener];
     
-    _currentGraph.dataSource = _graphDataDelegate;
-    _currentGraph.delegate = _graphViewDelegate;
-    _currentGraph.backgroundColor = [UIColor clearColor];
+    _currentGraph.dataSource = self;
+    _currentGraph.delegate = self;
+    _currentGraph.backgroundColor = [UIColor whiteColor];
     _currentGraph.maximumValue = 2.0;
     _currentGraph.minimumValue = 0.0;
     _currentGraph.showsLineSelection = false;
@@ -93,7 +97,20 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     [_backgroundImageView addSubview:_currentGraph];
     [_currentGraph reloadData];
     
-    _currentGraph.hidden = !_pageModel.isPlaying;
+//    _currentGraph.hidden = !_pageModel.isPlaying;
+
+    UITapGestureRecognizer *tapListener = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didHitGraph)];
+
+    clickListener.numberOfTapsRequired = 1;
+    [_currentGraph addGestureRecognizer:tapListener];
+    
+}
+
+- (void)didHitGraph
+{
+    [_testData addObject:[[NSNumber alloc] initWithInt:rand() % 20]];
+    [_currentGraph reloadData];
+    NSLog(@"Should test updating here");
 }
 
 - (void)showDeviceList
@@ -182,6 +199,13 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
 - (void)updateConnectionText:(NSString *)connectionText
 {
     _statusLabel.text = connectionText;
+}
+
+-(void)updateCurrentGraphData:(NSArray *)graphData
+{
+    [_testData removeAllObjects];
+    [_testData addObjectsFromArray:graphData];
+    [_currentGraph reloadData];
 }
 
 /**
@@ -503,6 +527,37 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
 - (UIEdgeInsets)collectionView: (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(kVerticalEdgeInset, kHorizontalEdgeInset, kVerticalEdgeInset, kHorizontalEdgeInset);
+}
+
+#pragma mark - JBLineChartViewDataSource
+
+- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
+{
+    return [_testData count];
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
+{
+    CurrentNotification *n = [_testData objectAtIndex:horizontalIndex];
+    return ((float)n.current) / 1000;
+}
+
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return 1;
+}
+
+#pragma mark - JBLineChartViewDelegate
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return [FOCColorMap colorFromString:@"#5292C1"];
+}
+
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return 0.0;
 }
 
 @end

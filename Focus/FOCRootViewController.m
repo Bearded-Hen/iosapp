@@ -23,6 +23,8 @@ static const long long kNotificationTimeout = 5000;
 @property int pageIndex;
 @property NSString *statusText;
 
+@property NSDate *lastUpdate;
+
 @end
 
 @implementation FOCRootViewController
@@ -106,7 +108,6 @@ static const long long kNotificationTimeout = 5000;
     }
     
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
-    [[self currentController].currentGraph reloadData];
 }
 
 - (FOCDataViewController *)currentController
@@ -137,8 +138,6 @@ static const long long kNotificationTimeout = 5000;
     dataViewController.pageModel = _pageData[index];
     dataViewController.pageModel.connectionText = _statusText;
     dataViewController.delegate = self;
-    dataViewController.graphDataDelegate = self;
-    dataViewController.graphViewDelegate = self;
     
     return dataViewController;
 }
@@ -193,13 +192,18 @@ static const long long kNotificationTimeout = 5000;
         long long diff = ([[NSDate date] timeIntervalSinceDate:notification.receivedDate] * 1000);
         
         if (diff > kNotificationTimeout) {
-            NSLog(@"Removed stale item %lld", diff);
             [_currentNotificationAry removeObjectAtIndex:i];
             i--;
         }
     }
-    NSLog(@"Notification count of %d", [_currentNotificationAry count]);
-    [self refreshDisplayedController];
+    
+    if (_lastUpdate == nil || [[NSDate date] timeIntervalSinceDate:_lastUpdate] * 1000 > 5000) {
+        _lastUpdate = [NSDate date];
+    }
+    
+    NSLog(@"Reload data %d", [_currentNotificationAry count]);
+    
+    [[self currentViewController] updateCurrentGraphData:_currentNotificationAry];
 }
 
 - (void)programStateChanged:(bool)playing
@@ -305,36 +309,6 @@ static const long long kNotificationTimeout = 5000;
         return nil;
     }
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
-}
-
-#pragma mark - JBLineChartViewDataSource
-
-- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
-{
-    return [_currentNotificationAry count];
-}
-
-- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
-{
-    FOCNotificationModel *notification = [_currentNotificationAry objectAtIndex:horizontalIndex];
-    return ((float)notification.current) / 1000;
-}
-
-- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
-{
-    return 1;
-}
-
-#pragma mark - JBLineChartViewDelegate
-
-- (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
-{
-    return [FOCColorMap colorFromString:@"#5292C1"];
-}
-
-- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
-{
-    return 0.0;
 }
 
 @end

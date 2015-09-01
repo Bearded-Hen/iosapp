@@ -13,7 +13,7 @@
 - (id)initWithCurrent:(int)current
 {
     if (self = [super init]) {
-        _current = 0;
+        _current = current;
         _receivedDate = [NSDate date];
     }
     return self;

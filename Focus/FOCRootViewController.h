@@ -12,17 +12,13 @@
 #import "FOCDeviceStateDelegate.h"
 #import "FOCUiPageChangeDelegate.h"
 
-#import "JBChartView.h"
-#import "JBBarChartView.h"
-#import "JBLineChartView.h"
-
 @class FOCUiPageModel;
 
 /**
  * Controls all the pages in the ViewPager, and what data they should display.
  * Responds to callbacks from the Focus Device manager and updates the UI appropriately.
  */
-@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCAppSyncDelegate, FOCUiPageChangeDelegate,  JBLineChartViewDataSource, JBLineChartViewDelegate> {
+@interface FOCRootViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource, FOCDeviceStateDelegate, FOCAppSyncDelegate, FOCUiPageChangeDelegate> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
 }

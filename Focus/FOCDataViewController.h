@@ -21,14 +21,12 @@
  * Controls how the view for an individual program should be displayed, and provides a
  * delegate for handling any events requiring changes to the model layer e.g. playing a program
  */
-@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout> {
+@interface FOCDataViewController : UIViewController<UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, JBLineChartViewDataSource, JBLineChartViewDelegate> {
     
     __weak id<FOCUiPageChangeDelegate> delegate_;
 }
 
 @property (weak) id <FOCUiPageChangeDelegate> delegate;
-@property (weak) id <JBLineChartViewDelegate> graphViewDelegate;
-@property (weak) id <JBLineChartViewDataSource> graphDataDelegate;
 
 @property (strong, nonatomic) FOCUiPageModel *pageModel;
 
@@ -46,5 +44,7 @@
  * Updates the text which is displayed on the bottom status bar.
  */
 -(void)updateConnectionText:(NSString *)connectionText;
+
+-(void)updateCurrentGraphData:(NSArray *)graphData;
 
 @end
