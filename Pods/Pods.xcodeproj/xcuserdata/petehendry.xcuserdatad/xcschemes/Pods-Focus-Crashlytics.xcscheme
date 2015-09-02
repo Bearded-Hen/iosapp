@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5DB27F77216EECC9DA809494"
+               BlueprintIdentifier = "9E77F65DEA4A74DB742AEEA1"
                BuildableName = "libPods-Focus-Crashlytics.a"
                BlueprintName = "Pods-Focus-Crashlytics"
                ReferencedContainer = "container:Pods.xcodeproj">

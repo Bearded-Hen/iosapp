@@ -109,6 +109,7 @@ static const int kMaxPadGraphPoints = 100;
     }
     
     NSLog(@"Refreshed and displayed %d programs", [_pageData count]);
+    [self refreshDisplayedController];
 }
 
 - (FOCDataViewController *)currentController
