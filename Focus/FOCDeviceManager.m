@@ -435,11 +435,6 @@ static const double kIgnoreInterval = 6000;
 - (void)didReceiveCurrentNotification:(int)current
 {
     if (_isPlayingProgram) {
-        current += 500;
-        current += rand() % 500;
-        
-        // FIXME hack which shows 0 values from broken device
-        
         _notificationModel.current = current;
         [self handleNotificationText];
         [_delegate didChangeNotification:[[CurrentNotification alloc] initWithCurrent:current]];
