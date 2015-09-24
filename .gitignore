@@ -3,3 +3,6 @@ Pods/
 Frameworks/
 Focus.xcworkspace/xcuserdata
 *.framework/
+
+Focus.xcworkspace/xcshareddata/
+Focus.xcworkspace/xcuserdata/
