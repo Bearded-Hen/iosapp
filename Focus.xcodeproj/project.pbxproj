@@ -65,6 +65,15 @@
 		F08E18B91B3D857A00FA765C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08E18B81B3D857A00FA765C /* Foundation.framework */; };
 		F0A154E11B8CCCE4000536D3 /* FOCDeviceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A154E01B8CCCE4000536D3 /* FOCDeviceListViewController.m */; };
 		F0CF5B661B90B9B800989C48 /* CurrentNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CF5B651B90B9B800989C48 /* CurrentNotification.m */; };
+		F0FE45BF1BB4226000A59290 /* cog.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45B61BB4226000A59290 /* cog.png */; };
+		F0FE45C01BB4226000A59290 /* cog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45B71BB4226000A59290 /* cog@2x.png */; };
+		F0FE45C11BB4226000A59290 /* cog@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45B81BB4226000A59290 /* cog@3x.png */; };
+		F0FE45C21BB4226000A59290 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45B91BB4226000A59290 /* play.png */; };
+		F0FE45C31BB4226000A59290 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45BA1BB4226000A59290 /* play@2x.png */; };
+		F0FE45C41BB4226000A59290 /* play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45BB1BB4226000A59290 /* play@3x.png */; };
+		F0FE45C51BB4226000A59290 /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45BC1BB4226000A59290 /* stop.png */; };
+		F0FE45C61BB4226000A59290 /* stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45BD1BB4226000A59290 /* stop@2x.png */; };
+		F0FE45C71BB4226000A59290 /* stop@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0FE45BE1BB4226000A59290 /* stop@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +200,15 @@
 		F0A154E01B8CCCE4000536D3 /* FOCDeviceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FOCDeviceListViewController.m; sourceTree = "<group>"; };
 		F0CF5B641B90B9B800989C48 /* CurrentNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentNotification.h; sourceTree = "<group>"; };
 		F0CF5B651B90B9B800989C48 /* CurrentNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentNotification.m; sourceTree = "<group>"; };
+		F0FE45B61BB4226000A59290 /* cog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cog.png; path = Focus/cog.png; sourceTree = "<group>"; };
+		F0FE45B71BB4226000A59290 /* cog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog@2x.png"; path = "Focus/cog@2x.png"; sourceTree = "<group>"; };
+		F0FE45B81BB4226000A59290 /* cog@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cog@3x.png"; path = "Focus/cog@3x.png"; sourceTree = "<group>"; };
+		F0FE45B91BB4226000A59290 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play.png; path = Focus/play.png; sourceTree = "<group>"; };
+		F0FE45BA1BB4226000A59290 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "play@2x.png"; path = "Focus/play@2x.png"; sourceTree = "<group>"; };
+		F0FE45BB1BB4226000A59290 /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "play@3x.png"; path = "Focus/play@3x.png"; sourceTree = "<group>"; };
+		F0FE45BC1BB4226000A59290 /* stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stop.png; path = Focus/stop.png; sourceTree = "<group>"; };
+		F0FE45BD1BB4226000A59290 /* stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop@2x.png"; path = "Focus/stop@2x.png"; sourceTree = "<group>"; };
+		F0FE45BE1BB4226000A59290 /* stop@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stop@3x.png"; path = "Focus/stop@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,6 +403,15 @@
 		F08E187A1B3D691A00FA765C = {
 			isa = PBXGroup;
 			children = (
+				F0FE45B61BB4226000A59290 /* cog.png */,
+				F0FE45B71BB4226000A59290 /* cog@2x.png */,
+				F0FE45B81BB4226000A59290 /* cog@3x.png */,
+				F0FE45B91BB4226000A59290 /* play.png */,
+				F0FE45BA1BB4226000A59290 /* play@2x.png */,
+				F0FE45BB1BB4226000A59290 /* play@3x.png */,
+				F0FE45BC1BB4226000A59290 /* stop.png */,
+				F0FE45BD1BB4226000A59290 /* stop@2x.png */,
+				F0FE45BE1BB4226000A59290 /* stop@3x.png */,
 				F020C4CB1B8DED1C000AE3A2 /* icon.xcassets */,
 				F08E18851B3D691A00FA765C /* Focus */,
 				F07113EA1B58F72700D0A7D1 /* QuartzCore.framework */,
@@ -547,14 +574,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				F07113681B555DEA00D0A7D1 /* program_gamer.png in Resources */,
+				F0FE45C21BB4226000A59290 /* play.png in Resources */,
 				F07113691B555DEA00D0A7D1 /* program_enduro.png in Resources */,
+				F0FE45C31BB4226000A59290 /* play@2x.png in Resources */,
 				F071135A1B54112800D0A7D1 /* FontAwesome.ttf in Resources */,
+				F0FE45C41BB4226000A59290 /* play@3x.png in Resources */,
 				F07113701B5562E100D0A7D1 /* bluetooth_disabled.png in Resources */,
 				F08E18981B3D691A00FA765C /* Main.storyboard in Resources */,
 				F07113671B555DEA00D0A7D1 /* program_pulse.png in Resources */,
+				F0FE45C01BB4226000A59290 /* cog@2x.png in Resources */,
 				F071136A1B555DEA00D0A7D1 /* program_noise.png in Resources */,
 				F071136E1B5562E100D0A7D1 /* bluetooth_connected.png in Resources */,
+				F0FE45C51BB4226000A59290 /* stop.png in Resources */,
 				F020C4CC1B8DED1C000AE3A2 /* icon.xcassets in Resources */,
+				F0FE45C71BB4226000A59290 /* stop@3x.png in Resources */,
+				F0FE45C61BB4226000A59290 /* stop@2x.png in Resources */,
+				F0FE45C11BB4226000A59290 /* cog@3x.png in Resources */,
+				F0FE45BF1BB4226000A59290 /* cog.png in Resources */,
 				F07113661B555DEA00D0A7D1 /* program_wave.png in Resources */,
 				F071136F1B5562E100D0A7D1 /* bluetooth_disconnected.png in Resources */,
 				F08E189A1B3D691A00FA765C /* Images.xcassets in Resources */,
