@@ -59,10 +59,10 @@ static NSString *kDeviceListSegueId = @"showDeviceList";
     [_btnPlayProgram.titleLabel setFont:[FOCFontAwesome font]];
     [_btnProgramSettings.titleLabel setFont:[FOCFontAwesome font]];
     
-    NSString *faCode = _pageModel.isPlaying ? @"fa-stop" :  @"fa-play";
+    NSString *faCode = _pageModel.isPlaying ? @"stop.png" :  @"play.png";
     
-    [_btnPlayProgram setTitle:[FOCFontAwesome unicodeForIcon:faCode] forState:UIControlStateNormal];
-    [_btnProgramSettings setTitle:[FOCFontAwesome unicodeForIcon:@"fa-cog"] forState:UIControlStateNormal];
+    [_btnPlayProgram setImage:[UIImage imageNamed:faCode] forState:UIControlStateNormal];
+    [_btnProgramSettings setImage:[UIImage imageNamed:@"cog.png"] forState:UIControlStateNormal];
     
     [_btnProgramSettings addTarget:self action:@selector(didClickSettingsButton) forControlEvents:UIControlEventTouchUpInside];
     
