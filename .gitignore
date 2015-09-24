@@ -1,3 +1,5 @@
+Products/
 Pods/
 Frameworks/
 Focus.xcworkspace/xcuserdata
+*.framework
